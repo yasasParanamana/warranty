@@ -136,7 +136,7 @@
         } else {
             element = document.getElementById(id);
         }
-        ;
+
 
         return element;
     };

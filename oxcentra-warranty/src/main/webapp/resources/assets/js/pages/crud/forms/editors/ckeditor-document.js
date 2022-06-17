@@ -15,7 +15,7 @@ var KTCkeditorDocument = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         DecoupledEditor
             .create(document.querySelector('#kt-ckeditor-2'))
@@ -28,7 +28,7 @@ var KTCkeditorDocument = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         DecoupledEditor
             .create(document.querySelector('#kt-ckeditor-3'))
@@ -41,7 +41,7 @@ var KTCkeditorDocument = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
     }
 
     return {

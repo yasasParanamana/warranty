@@ -777,7 +777,7 @@
                         animate(over, source, this.options);
                     }
                 })
-                    ;
+
                 }
             }
 
@@ -818,7 +818,7 @@
                     element.style.transform = '';
                 }
             })
-                ;
+
             }
 
             /**
@@ -997,7 +997,7 @@
                 },
                     this.draggable.options.placedTimeout
                 )
-                    ;
+
                 }
 
                 /**
@@ -1341,9 +1341,9 @@
                     this.lastWidth = overRect.width;
                     this.lastHeight = overRect.height;
                 })
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -1549,9 +1549,9 @@
                         const collidables = this.getCollidables();
                         this.currentlyCollidingElement = (0, _utils.closest)(target, element = > collidables.includes(element)
                     )
-                        ;
+
                     }
-                    ;
+
                 }
             }
 
@@ -2521,7 +2521,7 @@
                 overParent.insertBefore(source, over);
                 sourceParent.insertBefore(over, tmpElement);
             })
-                ;
+
             }
 
             /***/
@@ -3375,7 +3375,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -3472,7 +3472,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -3492,10 +3492,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -3529,10 +3529,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -3549,7 +3549,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -3563,7 +3563,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -3588,14 +3588,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -3611,11 +3611,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -3637,14 +3637,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -3665,7 +3665,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -3680,10 +3680,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -3760,7 +3760,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -3778,7 +3778,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -3850,7 +3850,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -4014,7 +4014,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -4463,7 +4463,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -4548,7 +4548,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -4573,7 +4573,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -4683,7 +4683,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -4796,7 +4796,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -5179,7 +5179,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -5396,7 +5396,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -5434,7 +5434,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -5720,7 +5720,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -5732,7 +5732,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -5876,7 +5876,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -6423,7 +6423,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -6502,9 +6502,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -6526,9 +6526,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -6567,7 +6567,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -6584,9 +6584,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -6603,9 +6603,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -6659,9 +6659,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -6678,12 +6678,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -6830,9 +6830,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -6844,9 +6844,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -7111,7 +7111,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -7147,7 +7147,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -7176,7 +7176,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -10120,7 +10120,7 @@
                 overParent.insertBefore(source, over);
                 sourceParent.insertBefore(over, tmpElement);
             })
-                ;
+
             }
 
             /***/
@@ -10974,7 +10974,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -11071,7 +11071,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -11091,10 +11091,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -11128,10 +11128,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -11148,7 +11148,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -11162,7 +11162,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -11187,14 +11187,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -11210,11 +11210,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -11236,14 +11236,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -11264,7 +11264,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -11279,10 +11279,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -11359,7 +11359,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -11377,7 +11377,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -11449,7 +11449,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -11613,7 +11613,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -11834,7 +11834,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -11846,7 +11846,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -11990,7 +11990,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -12537,7 +12537,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -12616,9 +12616,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -12640,9 +12640,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -12681,7 +12681,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -12698,9 +12698,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -12717,9 +12717,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -12773,9 +12773,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -12792,12 +12792,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -12944,9 +12944,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -12958,9 +12958,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -13173,7 +13173,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -13209,7 +13209,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -13238,7 +13238,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -13733,7 +13733,7 @@
                         animate(over, source, this.options);
                     }
                 })
-                    ;
+
                 }
             }
 
@@ -13774,7 +13774,7 @@
                     element.style.transform = '';
                 }
             })
-                ;
+
             }
 
             /**
@@ -13953,7 +13953,7 @@
                 },
                     this.draggable.options.placedTimeout
                 )
-                    ;
+
                 }
 
                 /**
@@ -14297,9 +14297,9 @@
                     this.lastWidth = overRect.width;
                     this.lastHeight = overRect.height;
                 })
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -14505,9 +14505,9 @@
                         const collidables = this.getCollidables();
                         this.currentlyCollidingElement = (0, _utils.closest)(target, element = > collidables.includes(element)
                     )
-                        ;
+
                     }
-                    ;
+
                 }
             }
 
@@ -15096,7 +15096,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -15181,7 +15181,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -15206,7 +15206,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -15316,7 +15316,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -15429,7 +15429,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -15691,7 +15691,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -15947,7 +15947,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -16164,7 +16164,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -18553,7 +18553,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -18650,7 +18650,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -18670,10 +18670,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -18707,10 +18707,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -18727,7 +18727,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -18741,7 +18741,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -18766,14 +18766,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -18789,11 +18789,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -18815,14 +18815,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -18843,7 +18843,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -18858,10 +18858,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -18938,7 +18938,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -18956,7 +18956,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -19028,7 +19028,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -19192,7 +19192,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -19641,7 +19641,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -19726,7 +19726,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -19751,7 +19751,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -19861,7 +19861,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -19974,7 +19974,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -20357,7 +20357,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -20574,7 +20574,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -20612,7 +20612,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -20898,7 +20898,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -20910,7 +20910,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -21054,7 +21054,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -21601,7 +21601,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -21680,9 +21680,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -21704,9 +21704,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -21745,7 +21745,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -21762,9 +21762,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -21781,9 +21781,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -21837,9 +21837,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -21856,12 +21856,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -22008,9 +22008,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -22022,9 +22022,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -22289,7 +22289,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -22325,7 +22325,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -22354,7 +22354,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -23589,7 +23589,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -23686,7 +23686,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -23706,10 +23706,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -23743,10 +23743,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -23763,7 +23763,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -23777,7 +23777,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -23802,14 +23802,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -23825,11 +23825,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -23851,14 +23851,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -23879,7 +23879,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -23894,10 +23894,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -23974,7 +23974,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -23992,7 +23992,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -24064,7 +24064,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -24228,7 +24228,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -24677,7 +24677,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -24762,7 +24762,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -24787,7 +24787,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -24897,7 +24897,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -25010,7 +25010,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -25393,7 +25393,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -25610,7 +25610,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -25648,7 +25648,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -25934,7 +25934,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -25946,7 +25946,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -26090,7 +26090,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -26637,7 +26637,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -26716,9 +26716,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -26740,9 +26740,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -26781,7 +26781,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -26798,9 +26798,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -26817,9 +26817,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -26873,9 +26873,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -26892,12 +26892,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -27044,9 +27044,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -27058,9 +27058,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -27325,7 +27325,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -27361,7 +27361,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -27390,7 +27390,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -29210,7 +29210,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -29307,7 +29307,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -29327,10 +29327,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -29364,10 +29364,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -29384,7 +29384,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -29398,7 +29398,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -29423,14 +29423,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -29446,11 +29446,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -29472,14 +29472,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -29500,7 +29500,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -29515,10 +29515,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -29595,7 +29595,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -29613,7 +29613,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -29685,7 +29685,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -29849,7 +29849,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -30298,7 +30298,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -30383,7 +30383,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -30408,7 +30408,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -30518,7 +30518,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -30631,7 +30631,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -31014,7 +31014,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -31231,7 +31231,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -31420,7 +31420,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -31432,7 +31432,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -31576,7 +31576,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -32123,7 +32123,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -32202,9 +32202,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -32226,9 +32226,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -32267,7 +32267,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -32284,9 +32284,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -32303,9 +32303,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -32359,9 +32359,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -32378,12 +32378,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -32530,9 +32530,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -32544,9 +32544,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -32811,7 +32811,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -32847,7 +32847,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -32876,7 +32876,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -33331,7 +33331,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -34742,7 +34742,7 @@
         >
             `Released ${event.source.textContent.trim() || event.source.id || 'draggable element'}`
         }
-            ;
+
 
             const defaultClasses = {
                 'container:dragging': 'draggable-container--is-dragging',
@@ -34839,7 +34839,7 @@
 
                     const defaultPlugins = Object.values(Draggable.Plugins).map(Plugin = > Plugin
                 )
-                    ;
+
                     const defaultSensors = [_Sensors.MouseSensor, _Sensors.TouchSensor];
 
                     this.addPlugin(...[...defaultPlugins,
@@ -34859,10 +34859,10 @@
 
                     this.on('mirror:created', ({mirror}) = > this.mirror = mirror
                 )
-                    ;
+
                     this.on('mirror:destroy', () = > this.mirror = null
                 )
-                    ;
+
 
                     this.trigger(draggableInitializedEvent);
                 }
@@ -34896,10 +34896,10 @@
 
                     this.removePlugin(...this.plugins.map(plugin = > plugin.constructor
                 ))
-                    ;
+
                     this.removeSensor(...this.sensors.map(sensor = > sensor.constructor
                 ))
-                    ;
+
                 }
 
                 /**
@@ -34916,7 +34916,7 @@
                 const
                 activePlugins = plugins.map(Plugin = > new Plugin(this)
             )
-                ;
+
 
                 activePlugins
             .
@@ -34930,7 +34930,7 @@
                 attach()
 
             )
-                ;
+
                 this
             .
                 plugins = [...this.plugins
@@ -34955,14 +34955,14 @@
             {
                 const removedPlugins = this.plugins.filter(plugin = > plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 removedPlugins.forEach(plugin = > plugin.detach()
             )
-                ;
+
                 this.plugins = this.plugins.filter(plugin = > !plugins.includes(plugin.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -34978,11 +34978,11 @@
             {
                 const activeSensors = sensors.map(Sensor = > new Sensor(this.containers, this.options)
             )
-                ;
+
 
                 activeSensors.forEach(sensor = > sensor.attach()
             )
-                ;
+
                 this.sensors = [...this.sensors,
             ...
                 activeSensors
@@ -35004,14 +35004,14 @@
             {
                 const removedSensors = this.sensors.filter(sensor = > sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 removedSensors.forEach(sensor = > sensor.detach()
             )
-                ;
+
                 this.sensors = this.sensors.filter(sensor = > !sensors.includes(sensor.constructor)
             )
-                ;
+
 
                 return this;
             }
@@ -35032,7 +35032,7 @@
                 ;
                 this.sensors.forEach(sensor = > sensor.addContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -35047,10 +35047,10 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
                 this.sensors.forEach(sensor = > sensor.removeContainer(...containers
             ))
-                ;
+
                 return this;
             }
 
@@ -35127,7 +35127,7 @@
             },
                 []
             )
-                ;
+
             }
 
             /**
@@ -35145,7 +35145,7 @@
                 filter(childElement = > {
                     return childElement !== this.originalSource && childElement !== this.mirror;
             })
-                ;
+
             }
 
             /**
@@ -35217,7 +35217,7 @@
                     detail: newSensorEvent
                 }));
             })
-                ;
+
             }
 
             /**
@@ -35381,7 +35381,7 @@
             },
                 this.options.placedTimeout
             )
-                ;
+
 
                 this.source = null;
                 this.originalSource = null;
@@ -35830,7 +35830,7 @@
                 },
                     0
                 )
-                    ;
+
                 }
 
                 /**
@@ -35915,7 +35915,7 @@
 
                     const nativeDraggableElement = (0, _utils.closest)(event.target, element = > element.draggable
                 )
-                    ;
+
 
                     if (nativeDraggableElement) {
                         nativeDraggableElement.draggable = false;
@@ -35940,7 +35940,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -36050,7 +36050,7 @@
             event.preventDefault();
         },
             {
-                passive: false
+                false
             }
         )
             ;
@@ -36163,7 +36163,7 @@
                         this.dragging = !dragStartEvent.canceled();
                         preventScrolling = this.dragging;
                     }
-                    ;
+
                 }
 
                 /**
@@ -36546,7 +36546,7 @@
                 },
                     this.options.delay
                 )
-                    ;
+
                 }
 
                 /**
@@ -36763,7 +36763,7 @@
             {
                 this.containers = this.containers.filter(container = > !containers.includes(container)
             )
-                ;
+
             }
 
             /**
@@ -36801,7 +36801,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -37087,7 +37087,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.source);
                 })
-                    ;
+
                 }
 
                 /**
@@ -37099,7 +37099,7 @@
                     this.findScrollableElementFrame = requestAnimationFrame(() = > {
                         this.scrollableElement = this.getScrollableElement(dragEvent.sensorEvent.target);
                 })
-                    ;
+
 
                     if (!this.scrollableElement) {
                         return;
@@ -37243,7 +37243,7 @@
                 }
                 return hasOverflow(parent);
             })
-                ;
+
 
                 if (position === 'fixed' || !scrollableElement) {
                     return getDocumentScrollingElement();
@@ -37790,7 +37790,7 @@
                         this.initialY = initialY;
                         return _extends({mirrorOffset, initialX, initialY}, args);
                     }
-                    ;
+
 
                     const initialState = {
                         mirror,
@@ -37869,9 +37869,9 @@
 
                 return withPromise(resolve = > {
                     const sourceRect = source.getBoundingClientRect();
-                resolve(_extends({source, sourceRect}, args));
+                resolve(_extends({source, sourceRect}, args))
             })
-                ;
+
             }
 
             /**
@@ -37893,9 +37893,9 @@
 
                 const mirrorOffset = {top, left};
 
-                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args));
+                resolve(_extends({sensorEvent, sourceRect, mirrorOffset, options}, args))
             })
-                ;
+
             }
 
             /**
@@ -37934,7 +37934,7 @@
 
                 resolve(_extends({mirror, source, options}, args));
             })
-                ;
+
             }
 
             /**
@@ -37951,9 +37951,9 @@
 
                 return withPromise(resolve = > {
                     mirror.classList.add(mirrorClass);
-                resolve(_extends({mirror, mirrorClass}, args));
+                resolve(_extends({mirror, mirrorClass}, args))
             })
-                ;
+
             }
 
             /**
@@ -37970,9 +37970,9 @@
                 return withPromise(resolve = > {
                     mirror.removeAttribute('id');
                 delete mirror.id;
-                resolve(_extends({mirror}, args));
+                resolve(_extends({mirror}, args))
             })
-                ;
+
             }
 
             /**
@@ -38026,9 +38026,9 @@
                         frame: withFrame
                     }
                 )
-                    ;
+
                 }
-                ;
+
             }
 
             /**
@@ -38045,12 +38045,12 @@
                         requestAnimationFrame(() = > {
                             callback(resolve, reject);
                     })
-                        ;
+
                     } else {
                         callback(resolve, reject);
             }
             })
-                ;
+
             }
 
             /**
@@ -38197,9 +38197,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > decorateElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
 
                 /**
@@ -38211,9 +38211,9 @@
                     requestAnimationFrame(() = > {
                         this.getElements().forEach(element = > stripElement(element)
                 )
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -38478,7 +38478,7 @@
                             this.originalTriggerMethod.call(this.draggable, event);
                         }
                     }
-                    ;
+
                 }
 
                 /**
@@ -38514,7 +38514,7 @@
             },
                 expire
             )
-                ;
+
             }
 
             /**
@@ -38543,7 +38543,7 @@
             document.addEventListener('DOMContentLoaded', () = > {
                 document.body.appendChild(liveRegion);
         })
-            ;
+
 
             /***/
         }),
@@ -39173,7 +39173,7 @@
                 overParent.insertBefore(source, over);
                 sourceParent.insertBefore(over, tmpElement);
             })
-                ;
+
             }
 
             /***/
@@ -39854,7 +39854,7 @@
                         animate(over, source, this.options);
                     }
                 })
-                    ;
+
                 }
             }
 
@@ -39895,7 +39895,7 @@
                     element.style.transform = '';
                 }
             })
-                ;
+
             }
 
             /**
@@ -40074,7 +40074,7 @@
                 },
                     this.draggable.options.placedTimeout
                 )
-                    ;
+
                 }
 
                 /**
@@ -40418,9 +40418,9 @@
                     this.lastWidth = overRect.width;
                     this.lastHeight = overRect.height;
                 })
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -40467,7 +40467,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -40813,9 +40813,9 @@
                         const collidables = this.getCollidables();
                         this.currentlyCollidingElement = (0, _utils.closest)(target, element = > collidables.includes(element)
                     )
-                        ;
+
                     }
-                    ;
+
                 }
             }
 
@@ -41313,7 +41313,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -41715,9 +41715,9 @@
                         const collidables = this.getCollidables();
                         this.currentlyCollidingElement = (0, _utils.closest)(target, element = > collidables.includes(element)
                     )
-                        ;
+
                     }
-                    ;
+
                 }
             }
 
@@ -42149,7 +42149,7 @@
                 return requestAnimationFrame(() = > {
                     requestAnimationFrame(callback);
             })
-                ;
+
             }
 
             /***/
@@ -42550,9 +42550,9 @@
                     this.lastWidth = overRect.width;
                     this.lastHeight = overRect.height;
                 })
-                    ;
+
                 })
-                    ;
+
                 }
             }
 
@@ -42972,7 +42972,7 @@
                 },
                     this.draggable.options.placedTimeout
                 )
-                    ;
+
                 }
 
                 /**
@@ -43628,7 +43628,7 @@
                         animate(over, source, this.options);
                     }
                 })
-                    ;
+
                 }
             }
 
@@ -43669,7 +43669,7 @@
                     element.style.transform = '';
                 }
             })
-                ;
+
             }
 
             /**

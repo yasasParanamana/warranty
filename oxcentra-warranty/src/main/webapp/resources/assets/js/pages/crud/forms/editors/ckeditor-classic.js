@@ -13,7 +13,7 @@ var KTCkeditor = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         ClassicEditor
             .create(document.querySelector('#kt-ckeditor-2'))
@@ -24,7 +24,7 @@ var KTCkeditor = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         ClassicEditor
             .create(document.querySelector('#kt-ckeditor-3'))
@@ -35,7 +35,7 @@ var KTCkeditor = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         ClassicEditor
             .create(document.querySelector('#kt-ckeditor-4'))
@@ -46,7 +46,7 @@ var KTCkeditor = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
 
         ClassicEditor
             .create(document.querySelector('#kt-ckeditor-5'))
@@ -57,7 +57,7 @@ var KTCkeditor = function () {
         catch(error = > {
             console.error(error);
     } )
-        ;
+
     }
 
     return {

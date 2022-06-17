@@ -49,7 +49,7 @@ var KTCalendarGoogle = function () {
                 },
 
                 loading: function (bool) {
-                    return;
+
 
                     /*
                     KTApp.block(portlet.getSelf(), {

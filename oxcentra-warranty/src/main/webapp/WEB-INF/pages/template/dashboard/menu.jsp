@@ -94,7 +94,7 @@
                 <c:if test="${not changePwdMode}" var="condition">
                     <c:forEach items="${sectionList}" var="section">
                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                            <a href="javascript:;" class="menu-link menu-toggle" id="${section.sectionCode}">
+                            <a href="javascript:" class="menu-link menu-toggle" id="${section.sectionCode}">
                                                     <span class="svg-icon menu-icon">
                 										<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
                 										<svg xmlns="http://www.w3.org/2000/svg"
