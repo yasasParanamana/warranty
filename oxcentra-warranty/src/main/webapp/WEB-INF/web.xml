@@ -13,7 +13,7 @@
     -->
 
     <listener>
-        <listener-class>com.oxcentra.rdbsms.util.listner.SessionListener</listener-class>
+        <listener-class>com.oxcentra.warranty.util.listner.SessionListener</listener-class>
     </listener>
 
     <context-param>

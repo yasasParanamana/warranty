@@ -1,3 +1,3 @@
 <div>
-    Epic Lanka Pvt Ltd
+    Oxcentra Pvt Ltd
 </div>

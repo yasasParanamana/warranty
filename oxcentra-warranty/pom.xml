@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oxcentra</artifactId>
-    <groupId>com.epic.rdbsms</groupId>
+    <groupId>com.oxcentra.warranty</groupId>
     <version>1.00</version>
     <packaging>war</packaging>
-    <name>warrantry</name>
+    <name>warranty</name>
 
     <properties>
         <springframework.version>5.2.0.RELEASE</springframework.version>

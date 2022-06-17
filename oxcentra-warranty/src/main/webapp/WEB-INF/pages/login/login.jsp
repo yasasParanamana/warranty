@@ -25,7 +25,7 @@
                 <!--end: Aside header-->
                 <!--begin: Aside content-->
                 <div class="flex-column-fluid d-flex flex-column justify-content-center">
-                    <h3 class="font-size-h1 mb-5 text-white text-combank">RDB SMS</h3>
+                    <h3 class="font-size-h1 mb-5 text-white text-combank">OXCENTRA - WARRANTY</h3>
                     <p class="font-weight-lighter text-white opacity-80">Having set a benchmark in banking in Sri Lanka
                         we have set standards, created an identity and forged an unsurpassable trend. Recognised as a
                         trend setter, we have maintained our cultural identity while providing a range of products and
@@ -35,7 +35,7 @@
                 <!--end: Aside content-->
                 <!--begin: Aside footer for desktop-->
                 <div class="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
-                    <div class="opacity-70 font-weight-bold text-white">&copy; 2021 Epic Lanka (PVT) LTD</div>
+                    <div class="opacity-70 font-weight-bold text-white">&copy; 2022 OXCENTRA (PVT) LTD</div>
                     <%--<div class="d-flex">--%>
                     <%--<a href="#" class="text-white">Privacy</a>--%>
                     <%--<a href="#" class="text-white ml-10">Legal</a>--%>
@@ -172,7 +172,7 @@
             <!--end::Content body-->
             <!--begin::Content footer for mobile-->
             <div class="d-flex d-lg-none flex-column-auto flex-column flex-sm-row justify-content-between align-items-center mt-5 p-5">
-                <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">&copy; 2021 Epic Lanka (PVT) LTD
+                <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">&copy; 2022  Oxcentra (PVT) LTD
                 </div>
                 <%--<div class="d-flex order-1 order-sm-2 my-2">--%>
                 <%--<a href="#" class="text-dark-75 text-hover-primary">Privacy</a>--%>

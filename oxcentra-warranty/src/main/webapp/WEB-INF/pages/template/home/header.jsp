@@ -16,7 +16,7 @@
                     <li class="menu-item menu-item-submenu menu-item-rel menu-item-active" data-menu-toggle="click"
                         aria-haspopup="true">
                         <div class="menu-link menu-toggle">
-                            <span class="menu-text text-combank">Regional Development Bank SMS</span>
+                            <span class="menu-text text-combank">oxcentra-warranty</span>
                             <i class="menu-arrow"></i>
                         </div>
                 </ul>
