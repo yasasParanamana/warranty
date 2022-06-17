@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <!-- Base Definition -->
+    <definition name="login-template" template="/WEB-INF/pages/template/login/template.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="dashboard-template" template="/WEB-INF/pages/template/dashboard/template.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header_mob" value="/WEB-INF/pages/template/home/header_mob.jsp"/>
+        <put-attribute name="header" value="/WEB-INF/pages/template/home/header.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/pages/template/home/menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/pages/template/home/footer.jsp"/>
+    </definition>
+
+    <definition name="home-template" template="/WEB-INF/pages/template/home/template.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header_mob" value="/WEB-INF/pages/template/home/header_mob.jsp"/>
+        <put-attribute name="header" value="/WEB-INF/pages/template/home/header.jsp"/>
+        <put-attribute name="menu" value="/WEB-INF/pages/template/home/menu.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/pages/template/home/footer.jsp"/>
+    </definition>
+
+    <definition name="newuser-template" template="/WEB-INF/pages/template/userregistration/template.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/pages/template/userregistration/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/pages/template/userregistration/footer.jsp"/>
+    </definition>
+
+    <definition name="login/login" extends="login-template">
+        <put-attribute name="body" value="/WEB-INF/pages/login/login.jsp"/>
+    </definition>
+
+    <definition name="home/home" extends="dashboard-template">
+        <put-attribute name="body" value="/WEB-INF/pages/home/home.jsp"/>
+    </definition>
+
+    <definition name="profile/changepassword" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/profile/changepassword.jsp"/>
+    </definition>
+
+    <definition name="userroleview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/usermgt/userrole/userrole-mgt.jsp"/>
+    </definition>
+
+    <definition name="smsoutboxsumreportview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/reportmgt/smsoutboxsum/smsoutboxsummary-mgt.jsp"/>
+    </definition>
+
+    <definition name="taskview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/usermgt/task/task-mgt.jsp"/>
+    </definition>
+
+    <definition name="sectionview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/usermgt/section/section-mgt.jsp"/>
+    </definition>
+
+    <definition name="cusserachview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/customermgt/customer-search.jsp"/>
+    </definition>
+
+    <definition name="passwordparamview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/passwordparam/password-param.jsp"/>
+    </definition>
+
+    <definition name="passwordpolicyview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/passwordpolicy/password-policy.jsp"/>
+    </definition>
+
+    <definition name="passwordchangeview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/profile/changepassword.jsp"/>
+    </definition>
+
+    <definition name="pageview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/usermgt/page/page-mgt.jsp"/>
+    </definition>
+
+    <definition name="auditview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/audit/audit.jsp"/>
+    </definition>
+
+    <definition name="systemuserview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/usermgt/systemuser/systemuser-mgt.jsp"/>
+    </definition>
+
+    <definition name="departmentview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/department/department-mgt.jsp"/>
+    </definition>
+
+    <definition name="txntypeview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/txntype/txntype-mgt.jsp"/>
+    </definition>
+
+    <definition name="channeltxntypeview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/channeltxntype/channeltxntype-mgt.jsp"/>
+    </definition>
+
+    <definition name="smsmtportview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/smsmtport/smsmtport-mgt.jsp"/>
+    </definition>
+
+    <definition name="categorytelcoview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/alerttypetelcomgt/categorytelco/categorytelco-mgt.jsp"/>
+    </definition>
+
+    <definition name="viewuserparam" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/userparam/userparam-mgt.jsp"/>
+    </definition>
+
+    <definition name="categoryview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/category/category-mgt.jsp"/>
+    </definition>
+
+    <definition name="templatemgtview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/templatemgt/template-mgt.jsp"/>
+    </definition>
+
+    <definition name="smppconfigview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/smppconfig/smppconfig-mgt.jsp"/>
+    </definition>
+
+    <definition name="smsoutboxreportview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/reportmgt/smsoutbox/smsoutbox-mgt.jsp"/>
+    </definition>
+
+    <definition name="channelview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/channel/channel-mgt.jsp"/>
+    </definition>
+
+    <definition name="404" extends="newuser-template">
+        <put-attribute name="body" value="/errors/404.jsp"/>
+    </definition>
+
+    <definition name="error" extends="newuser-template">
+        <put-attribute name="body" value="/errors/error.jsp"/>
+    </definition>
+</tiles-definitions>

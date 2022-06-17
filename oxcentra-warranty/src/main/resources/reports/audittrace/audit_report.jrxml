@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="customerReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="2395a014-2610-4efd-a0e5-d9dc92c95b20">
+	<property name="ireport.scriptlethandling" value="2"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="9"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="alternateStyle">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></conditionExpression>
+			<style backcolor="#FFCCCC"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="fromdate" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{fromdate}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="todate" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{todate}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="username" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{username}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="section" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{section}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="page" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{page}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="task" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{task}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="description" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{description}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQL_tdate" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{todate}+" 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="printeddate" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{printeddate}]]></defaultValueExpression>
+	</parameter>
+	<field name="auditid" class="java.math.BigDecimal"/>
+	<field name="lastupdateduser" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="section" class="java.lang.String"/>
+	<field name="page" class="java.lang.String"/>
+	<field name="task" class="java.lang.String"/>
+	<field name="createdtime" class="java.sql.Date"/>
+	<field name="userrole" class="java.lang.String"/>
+	<field name="ip" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="166" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-1" mode="Opaque" x="0" y="2" width="781" height="61" forecolor="#FF0000" backcolor="#0033CC" uuid="e892dcf7-33df-4670-966a-4b91348c30c3"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="2" width="779" height="26" forecolor="#FFFFFF" uuid="7e8d1ae3-019c-4912-860d-55bbcb16b5db"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RDB Bank]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="68" width="783" height="1" forecolor="#3366FF" uuid="8d4a9819-f01e-4f59-8d5f-4ca89701a6f8"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-3" x="1" y="72" width="781" height="21" backcolor="#FFFF99" uuid="270c3ed2-0ba7-449e-be6b-bb25e40320c6"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Audit Search Parameters]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="266" y="127" width="58" height="17" backcolor="#FFFFFF" uuid="3d4c71b5-0e85-4130-99a7-8bf22b2cbcad"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Task            ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" stretchType="RelativeToBandHeight" mode="Transparent" x="21" y="125" width="58" height="17" backcolor="#FFFFFF" uuid="330b24f2-afcc-4648-bf49-3a2bda3e1620"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Page
+]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" x="333" y="128" width="157" height="17" uuid="437af66c-cad2-4e77-8ace-33a0c804fe6f"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{task} == "--" ? "-ALL-" :$P{task}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="125" width="157" height="17" backcolor="#FFFFFF" uuid="37041add-48f3-4902-90bc-193c0979fb90"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{page} == "--" ? "-ALL-" : $P{page}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-7" stretchType="RelativeToBandHeight" mode="Transparent" x="21" y="93" width="58" height="17" backcolor="#FFFFFF" uuid="47538286-fbc7-4325-8ab1-ad14c20d8b66"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[From Date   ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" stretchType="RelativeToBandHeight" x="21" y="109" width="58" height="17" uuid="cc958861-1a70-46f3-b014-ac4391592220"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Username              				          ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" stretchType="RelativeToBandHeight" mode="Transparent" x="266" y="111" width="58" height="17" backcolor="#FFFFFF" uuid="10fb4831-38e7-4464-8049-31f0ba9501d1"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Section            ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" x="87" y="94" width="157" height="17" uuid="308260c1-5b33-4b59-afba-5e7722f116fd"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fromdate} == "--" ? "-ALL-" :$P{fromdate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="110" width="157" height="16" backcolor="#FFFFFF" uuid="3a9a29c2-0d48-4ddb-9d07-e95ccc27da4b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{username} == "--" ? "-ALL-" : $P{username}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" x="333" y="112" width="157" height="17" uuid="7ad153d6-31b5-41e1-bcfd-69a8380237aa"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{section} == "--" ? "-ALL-" : $P{section}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="266" y="95" width="58" height="17" uuid="2dfa0537-9ef7-4eab-a728-dbb76fbc3eff"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[To Date       ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" x="333" y="95" width="157" height="17" uuid="178c5c57-c610-4430-9104-ae1c2ee4c8c6"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{todate} == "--" ? "-ALL-" :$P{todate}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement key="rectangle-4" mode="Transparent" x="578" y="70" width="198" height="86" forecolor="#3333FF" backcolor="#C7E0FE" uuid="0ae738cb-245d-41db-9f1d-dcaeec7032cf"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-19" stretchType="RelativeToBandHeight" x="582" y="93" width="61" height="17" uuid="824e15ee-d7c0-4cb4-8dbc-8196eeffd463"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total Record Count    ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" x="655" y="93" width="104" height="17" uuid="54b21d5e-7349-485f-aa2a-1985145a3af1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-20" stretchType="RelativeToBandHeight" x="584" y="120" width="61" height="17" uuid="de3483d2-73c5-4abd-b99a-0de500d9638c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Generated on  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="1" y="43" width="779" height="17" forecolor="#FFFFFF" uuid="d603c120-91b0-4c5c-8113-cd41be7b2bdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Audit Summary Report]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="655" y="120" width="120" height="17" uuid="7f14e22b-b69e-4136-84a2-2d16563ae5be"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{printeddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="325" y="128" width="8" height="16" backcolor="#FFFFFF" uuid="eaae5888-2896-4a0c-8399-7706542d4116"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="79" y="110" width="8" height="16" backcolor="#FFFFFF" uuid="4a361f02-8c7c-4208-9bed-e87738c25dd9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="79" y="94" width="8" height="16" backcolor="#FFFFFF" uuid="5332292f-98a5-40e0-a329-55c5671c772f"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="325" y="112" width="8" height="17" backcolor="#FFFFFF" uuid="902c0f84-cf5c-4126-af1f-e4a5d283fad9"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="79" y="125" width="8" height="17" backcolor="#FFFFFF" uuid="4a7c5190-96ef-4e16-8c13-4860b7b2017d"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="325" y="95" width="8" height="17" backcolor="#FFFFFF" uuid="fcc6ea15-74b0-4ae1-9eef-2f419aa805ff"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="646" y="93" width="8" height="17" backcolor="#FFFFFF" uuid="7a8abdb0-338f-445b-a1f9-d4577f19bf5d"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="646" y="120" width="8" height="17" backcolor="#FFFFFF" uuid="2c6e8e4e-4873-49b9-8455-7f74d7b604c4"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="142" width="157" height="16" backcolor="#FFFFFF" uuid="9017c0d4-1f5b-41c5-a4fc-6ebb925ef491"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{description} == "--" ? "-ALL-" : $P{description}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-4" stretchType="RelativeToBandHeight" mode="Transparent" x="79" y="141" width="8" height="17" backcolor="#FFFFFF" uuid="54110a85-27cf-4ae2-90e7-275d7ff06131"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" stretchType="RelativeToBandHeight" mode="Transparent" x="21" y="141" width="58" height="17" backcolor="#FFFFFF" uuid="c5cf9c22-7844-422b-8458-e70bcf803cd0"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-7" x="700" y="-1" width="82" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="8f095e93-9ba8-4f9c-8fb7-f69fc943a2ae"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-15" x="700" y="2" width="81" height="14" forecolor="#FFFFFF" uuid="99387c53-4309-4a88-a46e-3ef044b7b032"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Created Date]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-9" x="0" y="-1" width="70" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="a1e1f6e7-376e-48d8-a5c0-6f1fde143445"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-17" x="1" y="2" width="69" height="14" forecolor="#FFFFFF" uuid="9ea1c55c-c43c-4420-906e-6ddd19dab978"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Audit ID]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-10" x="469" y="-1" width="61" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="31fc89c7-64df-4911-83f7-9227ec7f4907"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-18" x="469" y="2" width="60" height="14" forecolor="#FFFFFF" uuid="47776228-5515-4b45-91c3-6c182023d7bf"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Task]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-2" x="70" y="-1" width="76" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="12ccf30c-1dce-4e8f-bb1a-ae679e0ff672"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-10" x="70" y="2" width="76" height="14" forecolor="#FFFFFF" uuid="562f8c64-0b81-4be3-b6d8-7b52c703f13b"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[User Role]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-3" x="146" y="-1" width="161" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="9161643f-d626-4dbd-8a50-94009023b640"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-11" x="147" y="2" width="160" height="14" forecolor="#FFFFFF" uuid="151f3b67-4d00-463a-92c4-afb4b3099124"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-4" x="307" y="-1" width="88" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="047f3344-8bc9-4220-b020-5db6f6e19d8d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-5" x="395" y="-1" width="74" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="91fb51fb-e150-4eb2-ad64-4624ef54f2ab"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-12" x="307" y="2" width="88" height="14" forecolor="#FFFFFF" uuid="6dc10b0c-3705-43ff-bc86-de07a011aa0d"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="396" y="2" width="73" height="14" forecolor="#FFFFFF" uuid="355b13e2-226e-418c-b239-80b293df8c1b"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-7" x="530" y="-1" width="77" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="8e9ec654-591c-4eb7-9de8-398aed00006f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-7" x="607" y="-1" width="93" height="17" forecolor="#FFFFFF" backcolor="#0066FF" uuid="d12fcb0d-b759-46e3-8f59-0e3633ed483b"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-15" x="607" y="2" width="93" height="14" forecolor="#FFFFFF" uuid="799fd79d-c1ef-403d-9751-1263ffde954c"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Last Updated User]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="530" y="2" width="76" height="14" forecolor="#FFFFFF" uuid="1d1f7d12-aeed-4dab-ad68-759d561bfee8"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IP]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Prevent">
+			<staticText>
+				<reportElement style="alternateStyle" stretchType="RelativeToTallestObject" mode="Opaque" x="1" y="0" width="781" height="18" uuid="a14f06b8-1b2a-4868-b0f1-2d78136cfde4"/>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed" lineColor="#FF0000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="396" y="0" width="73" height="18" uuid="ea5223d0-25ff-4c56-b9f1-2fde081d3a20"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{page} == null  ? "--" :$F{page}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="70" y="0" width="76" height="18" uuid="87afcc24-1555-4891-803b-0a976af417c5"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph lineSpacing="Single" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{userrole} == null  ? "--" : $F{userrole}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="307" y="0" width="88" height="18" uuid="73f92b49-37f1-4f8b-930d-0bc3cb208c03"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section} == null  ? "--" :$F{section}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="1" y="0" width="69" height="18" uuid="c4f71b33-d497-4891-a6fd-2738619427d8"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{auditid} == null  ? "--" : $F{auditid}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy  h.mm a" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="703" y="0" width="78" height="18" uuid="697de90b-d92e-4318-b432-94f9e889aee8"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdtime} == null  ? "--" :$F{createdtime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="147" y="0" width="160" height="18" uuid="d80cce14-7143-4dd1-afdf-588231f6b331"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph lineSpacing="Single" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description} == null  ? "--" :$F{description}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="607" y="0" width="94" height="18" uuid="6be5387e-96ff-431e-b028-0602bde34cb1"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastupdateduser} == null  ? "--" :$F{lastupdateduser}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="530" y="0" width="76" height="18" uuid="9a217f45-d9c9-43f4-9dea-8319be120277"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ip} == null  ? "--" :$F{ip}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" stretchType="RelativeToTallestObject" x="469" y="0" width="60" height="18" uuid="4f3fb40a-26b9-4511-9992-c2e118765fbc"/>
+				<box topPadding="2" bottomPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{task} == null  ? "--" :$F{task}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="340" y="8" width="100" height="18" uuid="7880c4f1-467c-4cc3-ba29-31de8cf233ef"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
