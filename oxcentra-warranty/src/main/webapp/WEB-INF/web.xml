@@ -6,12 +6,6 @@
 
     <display-name>oxcentra_warranty</display-name>
 
-    <!--
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
-    -->
-
     <listener>
         <listener-class>com.oxcentra.warranty.util.listner.SessionListener</listener-class>
     </listener>

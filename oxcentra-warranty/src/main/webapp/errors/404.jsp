@@ -11,6 +11,6 @@
     <title></title>
 </head>
 <body>
-<h3>404 - PAGE NOT FOUND</h3>
+<h3>404 - OOPS, PAGE NOT FOUND</h3>
 </body>
 </html>

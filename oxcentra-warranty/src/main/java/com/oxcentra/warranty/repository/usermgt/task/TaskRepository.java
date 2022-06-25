@@ -34,12 +34,12 @@ public class TaskRepository {
     @Autowired
     CommonRepository commonRepository;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_TASK t left outer join STATUS s on s.statuscode=t.status where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_TASK = "insert into WEB_TASK (taskcode,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?)";
-    private final String SQL_UPDATE_TASK = "update WEB_TASK set description=?,status=?,lastupdateduser=?,lastupdatedtime=? where taskcode=?";
-    private final String SQL_FIND_TASK = "select t.taskcode,t.description,t.status,t.createdtime,t.createduser,t.lastupdatedtime,t.lastupdateduser from WEB_TASK t where t.taskcode = ? ";
-    private final String SQL_DELETE_TASK = "delete from WEB_TASK where taskcode=?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_task t left outer join status s on s.statuscode=t.status where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
+    private final String SQL_INSERT_TASK = "insert into web_task (taskcode,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?)";
+    private final String SQL_UPDATE_TASK = "update web_task set description=?,status=?,lastupdateduser=?,lastupdatedtime=? where taskcode=?";
+    private final String SQL_FIND_TASK = "select t.taskcode,t.description,t.status,t.createdtime,t.createduser,t.lastupdatedtime,t.lastupdateduser from web_task t where t.taskcode = ? ";
+    private final String SQL_DELETE_TASK = "delete from web_task where taskcode=?";
 
     @Transactional(readOnly = true)
     public long getDataCount(TaskInputBean taskInputBean) throws Exception {
@@ -74,8 +74,8 @@ public class TaskRepository {
 
             String sql = "" +
                     " select " +
-                    " t.taskcode, t.description, s.description as statusdes,t.createduser,t.createdtime,t.lastupdateduser,t.lastupdatedtime from WEB_TASK t " +
-                    " left outer join STATUS s on s.statuscode=t.status " +
+                    " t.taskcode, t.description, s.description as statusdes,t.createduser,t.createdtime,t.lastupdateduser,t.lastupdatedtime from web_task t " +
+                    " left outer join status s on s.statuscode=t.status " +
                     " where " + dynamicClause.toString() + sortingStr +
                     " limit " + taskInputBean.displayLength + " offset " + taskInputBean.displayStart;
 
@@ -165,9 +165,9 @@ public class TaskRepository {
 
             String sql =
                     " select wta.id, wta.key1, wta.key2, s.description key3, t.description task, wta.createdtime, wta.lastupdatedtime, wta.lastupdateduser " +
-                            " from WEB_TMPAUTHREC wta" +
-                            " left outer join STATUS s on s.statuscode = wta.key3 " +
-                            " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                            " from web_tmpauthrec wta" +
+                            " left outer join status s on s.statuscode = wta.key3 " +
+                            " left outer join web_task t on t.taskcode = wta.task " +
                             " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                             " limit " + taskInputBean.displayLength + " offset " + taskInputBean.displayStart;
 

@@ -2,7 +2,6 @@ package com.oxcentra.warranty.annotation.accesscontrol;
 
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
-import com.oxcentra.warranty.mapping.usermgt.Page;
 import com.oxcentra.warranty.mapping.usermgt.PageTask;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.oxcentra.warranty.util.varlist.RedirectVarList.REDIRECT_LOGOUT_ERROR_6;
 
 @Aspect
 @Component
@@ -29,7 +30,6 @@ public class AccessControlAspect {
     public Object checkAccessControl(ProceedingJoinPoint proceedingJoinPoint, AccessControl accessControl) {
         try {
             if (sessionBean != null) {
-                Map<String, List<Page>> pageMap = sessionBean.getPageMap();
                 Map<String, PageTask> pageTaskMap = sessionBean.getPageTaskMap();
                 if (pageTaskMap != null && !pageTaskMap.isEmpty() && pageTaskMap.size() > 0) {
                     String pageCode = accessControl.pageCode();
@@ -46,27 +46,27 @@ public class AccessControlAspect {
 
                                     return proceedingJoinPoint.proceed();
                                 } else {
-                                    return new ModelAndView("redirect:/logout.htm?error=6");
+                                    return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
                                 }
                             } else {
-                                return new ModelAndView("redirect:/logout.htm?error=6");
+                                return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
                             }
                         } else {
-                            return new ModelAndView("redirect:/logout.htm?error=6");
+                            return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
                         }
                     } else {
-                        return new ModelAndView("redirect:/logout.htm?error=6");
+                        return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
                     }
                 } else {
-                    return new ModelAndView("redirect:/logout.htm?error=6");
+                    return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
                 }
             } else {
-                return new ModelAndView("redirect:/logout.htm?error=6");
+                return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
             }
         } catch (Exception e) {
-            return new ModelAndView("redirect:/logout.htm?error=6");
+            return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
         } catch (Throwable throwable) {
-            return new ModelAndView("redirect:/logout.htm?error=6");
+            return new ModelAndView(REDIRECT_LOGOUT_ERROR_6);
         }
     }
 }

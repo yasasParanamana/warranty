@@ -22,12 +22,12 @@ import java.util.List;
 @Scope("prototype")
 public class PageRepository {
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_PAGE p left outer join STATUS s on s.statuscode=p.status where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_FIND_PAGE = "select p.pagecode, p.description, p.url, p.sortkey, p.aflag, p.cflag, p.status, p.createdtime, p.lastupdatedtime, p.lastupdateduser from WEB_PAGE p where p.pagecode = ? ";
-    private final String SQL_UPDATE_PAGE = "update WEB_PAGE set description=?, sortkey=?, cflag=?, status=?, lastupdateduser=?, lastupdatedtime=? where pagecode=?";
-    private final String SQL_CHECK_SORTKEY_EXIST = "select count(pagecode) from WEB_PAGE where sortkey = ? and pagecode != ?";
-    private final String SQL_CHECK_TEMP_SORTKEY_EXIST = "select count(id) from WEB_TMPAUTHREC where page= ? and key4 = ? and status = ? ";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_page p left outer join status s on s.statuscode=p.status where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
+    private final String SQL_FIND_PAGE = "select p.pagecode, p.description, p.url, p.sortkey, p.aflag, p.cflag, p.status, p.createdtime, p.lastupdatedtime, p.lastupdateduser from web_page p where p.pagecode = ? ";
+    private final String SQL_UPDATE_PAGE = "update web_page set description=?, sortkey=?, cflag=?, status=?, lastupdateduser=?, lastupdatedtime=? where pagecode=?";
+    private final String SQL_CHECK_SORTKEY_EXIST = "select count(pagecode) from web_page where sortkey = ? and pagecode != ?";
+    private final String SQL_CHECK_TEMP_SORTKEY_EXIST = "select count(id) from web_tmpauthrec where page= ? and key4 = ? and status = ? ";
     @Autowired
     SessionBean sessionBean;
     @Autowired
@@ -66,8 +66,8 @@ public class PageRepository {
             }
 
             String sql =
-                    " select p.pagecode, p.description, p.url, p.sortkey, p.aflag, p.cflag, s.description as statusdes, p.lastupdateduser, p.lastupdatedtime, p.createduser, p.createdtime from WEB_PAGE p " +
-                            " left outer join STATUS s on s.statuscode=p.status " +
+                    " select p.pagecode, p.description, p.url, p.sortkey, p.aflag, p.cflag, s.description as statusdes, p.lastupdateduser, p.lastupdatedtime, p.createduser, p.createdtime from web_page p " +
+                            " left outer join status s on s.statuscode=p.status " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + pageInputBean.displayLength + " offset " + pageInputBean.displayStart;
 
@@ -180,9 +180,9 @@ public class PageRepository {
 
             String sql =
                     " select wta.id, wta.key1, wta.key2, wta.key3, wta.key4, wta.key5, wta.key6, s.description key7, t.description task, wta.createdtime, wta.lastupdatedtime, wta.lastupdateduser " +
-                            " from WEB_TMPAUTHREC wta" +
-                            " left outer join STATUS s on s.statuscode = wta.key3 " +
-                            " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                            " from web_tmpauthrec wta" +
+                            " left outer join status s on s.statuscode = wta.key3 " +
+                            " left outer join web_task t on t.taskcode = wta.task " +
                             " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                             " limit " + pageInputBean.displayLength + " offset " + pageInputBean.displayStart;
 

@@ -47,41 +47,41 @@ public class CommonRepository {
 
     //    private final String SQL_SYSTEM_TIME = "select to_char(sysdate, 'mm-dd-yyyy hh24:mi:ss') now from dual ";
     private final String SQL_SYSTEM_TIME = "select current_timestamp";
-    private final String SQL_USERPARAM_BY_PARAMCODE_AND_USERROLETYPE = "select value from PASSWORDPARAM where passwordparam = ? and userroletype = ?";
-    private final String SQL_USERROLE_STATUS_BY_USERROLECODE = "select status from USERROLE where userrolecode=?";
-    private final String SQL_INSERT_AUDITTRACE = "insert into WEB_SYSTEMAUDIT(USERROLE , section , page , task , ip , remarks , field , oldvalue , newvalue, lastupdateduser, DESCRIPTION) values(? , ? , ? , ? , ? , ? , ? , ? , ?, ?, ?)";
-    private final String SQL_GET_STATUS_LIST_BY_CATEGORY = "SELECT STATUSCODE,DESCRIPTION FROM STATUS WHERE STATUSCATEGORY = ?";
-    private final String SQL_GET_ACTIVE_DEACTIVE_STATUS_LIST = "SELECT STATUSCODE,DESCRIPTION FROM STATUS WHERE STATUSCODE IN (?,?)";
-    private final String SQL_INSERT_TEMPAUTH_RECORD = "INSERT INTO WEB_TMPAUTHREC (PAGE,TASK,STATUS,KEY1,KEY2,KEY3,KEY4,KEY5,KEY6,KEY7,KEY8,KEY9,KEY10,KEY11,KEY12,KEY13,KEY14,KEY15,KEY16,KEY17,KEY18,KEY19,KEY20,TMPRECORD,CREATEDTIME,LASTUPDATEDTIME,LASTUPDATEDUSER) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private final String SQL_CHECK_PAGE_IS_DUALAUTHENTICATE = "SELECT COUNT(PAGECODE) FROM WEB_PAGE WHERE CFLAG=1 AND PAGECODE=?";
-    private final String SQL_GET_DUALAUTH_RECORD = "SELECT PAGE,TASK,STATUS,KEY1,KEY2,KEY3,KEY4,KEY5,KEY6,KEY7,KEY8,KEY9,KEY10,KEY11,KEY12,KEY13,KEY14,KEY15,KEY16,KEY17,KEY18,KEY19,KEY20,TMPRECORD,CREATEDTIME,LASTUPDATEDTIME,LASTUPDATEDUSER FROM WEB_TMPAUTHREC WHERE ID = ?";
-    private final String SQL_UPDATE_DUALAUTH_RECORD = "UPDATE WEB_TMPAUTHREC SET STATUS=?,LASTUPDATEDUSER=?,LASTUPDATEDTIME=? WHERE ID=?";
-    private final String SQL_COUNT_DUALAUTH = "SELECT COUNT(*) FROM WEB_TMPAUTHREC WHERE PAGE=? AND STATUS=? AND KEY1=?";
-    private final String SQL_GET_SECTION_LIST = "SELECT SECTIONCODE,DESCRIPTION FROM WEB_SECTION ORDER BY DESCRIPTION ASC";
-    private final String SQL_GET_PAGE_LIST = "SELECT PAGECODE,DESCRIPTION FROM WEB_PAGE ORDER BY DESCRIPTION ASC";
-    private final String SQL_GET_TASK_LIST = "SELECT TASKCODE,DESCRIPTION FROM WEB_TASK ORDER BY DESCRIPTION ASC";
-    private final String SQL_GET_USERROLE_TYPE_LIST = "SELECT USERROLETYPECODE, DESCRIPTION FROM USERROLETYPE";
-    private final String SQL_GET_ACTIVE_USERROLE_TYPE_LIST = "SELECT USERROLETYPECODE, DESCRIPTION FROM USERROLETYPE WHERE STATUS=?";
-    private final String SQL_GET_COMMON_PASSWORD_PARAM_LIST = "SELECT PARAMCODE, DESCRIPTION, UNIT FROM COMMON_PASSWORDPARAM";
-    private final String SQL_GET_USERROLE_LIST = "SELECT USERROLECODE, DESCRIPTION, USERROLETYPE, STATUS FROM USERROLE where STATUS='ACT' ORDER BY USERROLECODE";
-    private final String SQL_GET_USERROLETYPE_LIST = "SELECT USERROLETYPECODE, DESCRIPTION FROM USERROLETYPE ORDER BY USERROLETYPECODE";
-    private final String SQL_GET_USERROLE_LIST_BY_USERROLECODE = "select userrolecode , description , status , lastupdateduser , lastupdatedtime , createdtime , USERROLETYPE from USERROLE where USERROLETYPE = ?";
-    private final String SQL_GET_PRIORITY_LIST = "select prioritylevel,description,status,createdtime,lastupdatedtime,lastupdateduser from PRIORITY where status = ?";
-    private final String SQL_GET_TELCO_LIST = "select code, description from TELCO where status = ?";
-    private final String SQL_GET_CATEGORY_LIST = "select category, description from CATEGORY where status = ?";
-    private final String SQL_GET_MT_PORT_LIST = "SELECT MTPORT FROM SMSMTPORT where status = ?";
-    private final String SQL_GET_DEPARTMENT_LIST = "select code,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser from DEPARTMENT where status = ?";
+    private final String SQL_USERPARAM_BY_PARAMCODE_AND_USERROLETYPE = "select value from passwordparam where passwordparam = ? and userroletype = ?";
+    private final String SQL_USERROLE_STATUS_BY_USERROLECODE = "select status from userrole where userrolecode=?";
+    private final String SQL_INSERT_AUDITTRACE = "insert into web_systemaudit(userrole , section , page , task , ip , remarks , field , oldvalue , newvalue, lastupdateduser, description) values(? , ? , ? , ? , ? , ? , ? , ? , ?, ?, ?)";
+    private final String SQL_GET_STATUS_LIST_BY_CATEGORY = "select statuscode,description from status where statuscategory = ?";
+    private final String SQL_GET_ACTIVE_DEACTIVE_STATUS_LIST = "select statuscode,description from status where statuscode in (?,?)";
+    private final String SQL_INSERT_TEMPAUTH_RECORD = "insert into web_tmpauthrec (page,task,status,key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12,key13,key14,key15,key16,key17,key18,key19,key20,tmprecord,createdtime,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private final String SQL_CHECK_PAGE_IS_DUALAUTHENTICATE = "select count(pagecode) from web_page where cflag=1 and pagecode=?";
+    private final String SQL_GET_DUALAUTH_RECORD = "select page,task,status,key1,key2,key3,key4,key5,key6,key7,key8,key9,key10,key11,key12,key13,key14,key15,key16,key17,key18,key19,key20,tmprecord,createdtime,lastupdatedtime,lastupdateduser from web_tmpauthrec where id = ?";
+    private final String SQL_UPDATE_DUALAUTH_RECORD = "update web_tmpauthrec set status=?,lastupdateduser=?,lastupdatedtime=? where id=?";
+    private final String SQL_COUNT_DUALAUTH = "select count(*) from web_tmpauthrec where page=? and status=? and key1=?";
+    private final String SQL_GET_SECTION_LIST = "select sectioncode,description from web_section order by description asc";
+    private final String SQL_GET_PAGE_LIST = "select pagecode,description from web_page order by description asc";
+    private final String SQL_GET_TASK_LIST = "select taskcode,description from web_task order by description asc";
+    private final String SQL_GET_USERROLE_TYPE_LIST = "select userroletypecode, description from userroletype";
+    private final String SQL_GET_ACTIVE_USERROLE_TYPE_LIST = "select userroletypecode, description from userroletype where status=?";
+    private final String SQL_GET_COMMON_PASSWORD_PARAM_LIST = "select paramcode, description, unit from common_passwordparam";
+    private final String SQL_GET_USERROLE_LIST = "select userrolecode, description, userroletype, status from userrole where status='act' order by userrolecode";
+    private final String SQL_GET_USERROLETYPE_LIST = "select userroletypecode, description from userroletype order by userroletypecode";
+    private final String SQL_GET_USERROLE_LIST_BY_USERROLECODE = "select userrolecode , description , status , lastupdateduser , lastupdatedtime , createdtime , userroletype from userrole where userroletype = ?";
+    private final String SQL_GET_PRIORITY_LIST = "select prioritylevel,description,status,createdtime,lastupdatedtime,lastupdateduser from priority where status = ?";
+    private final String SQL_GET_TELCO_LIST = "select code, description from telco where status = ?";
+    private final String SQL_GET_CATEGORY_LIST = "select category, description from category where status = ?";
+    private final String SQL_GET_MT_PORT_LIST = "select mtport from smsmtport where status = ?";
+    private final String SQL_GET_DEPARTMENT_LIST = "select code,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser from department where status = ?";
     private final String SQL_GET_SMSCHANNEL_LIST = "select channelcode,description,password,status,createdtime,createduser,lastupdatedtime,lastupdateduser from SMSCHANNEL where status = ?";
-    private final String SQL_GET_TXNTYPE_LIST = "select txntype,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser from TXN_TYPE where status = ?";
-    private final String SQL_GET_SMSTEMPLATE_LIST = "select templatecode,messageformat,description,status,createdtime,lastupdatedtime,lastupdateduser from SMSOUTPUTTEMPLATE where status = ?";
+    private final String SQL_GET_TXNTYPE_LIST = "select txntype,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser from txn_type where status = ?";
+    private final String SQL_GET_SMSTEMPLATE_LIST = "select templatecode,messageformat,description,status,createdtime,lastupdatedtime,lastupdateduser from smsoutputtemplate where status = ?";
 
-    private final String SQL_GET_USERPARAM_CATEGORY_LIST = "select * from USERPARAMCATEGORY";
-    private final String SQL_FIND_COMPARISON_FIELD = "select * from COMPARISONFIELD";
-    private final String SQL_GET_DELIVERY_STATUS_LIST = "select * from DELIVERYSTATUS";
+    private final String SQL_GET_USERPARAM_CATEGORY_LIST = "select * from userparamcategory";
+    private final String SQL_FIND_COMPARISON_FIELD = "select * from comparisonfield";
+    private final String SQL_GET_DELIVERY_STATUS_LIST = "select * from deliverystatus";
 
-    private final String SQL_FIND_DELIVERY_STATUS = "select statuscode,description from DELIVERYSTATUS d where d.statuscode = ?";
+    private final String SQL_FIND_DELIVERY_STATUS = "select statuscode,description from deliverystatus d where d.statuscode = ?";
     private final String SQL_FIND_STATUS = "select statuscode,description from STATUS s where s.statuscode = ?";
-    private final String SQL_FIND_TXN_TYPE = "select TXNTYPE,DESCRIPTION from TXN_TYPE tx where tx.TXNTYPE = ?";
+    private final String SQL_FIND_TXN_TYPE = "select txntype,description from txn_type tx where tx.txntype = ?";
     private final String SQL_FIND_TELCO = "select code,description from TELCO d where d.code = ?";
 
     /**
@@ -164,8 +164,8 @@ public class CommonRepository {
             List<Map<String, Object>> statusList = jdbcTemplate.queryForList(SQL_GET_ACTIVE_DEACTIVE_STATUS_LIST, commonVarList.STATUS_ACTIVE, commonVarList.STATUS_DEACTIVE);
             statusBeanList = statusList.stream().map((record) -> {
                 Status statusBean = new Status();
-                statusBean.setStatusCode(record.get("STATUSCODE").toString());
-                statusBean.setDescription(record.get("DESCRIPTION").toString());
+                statusBean.setStatusCode(record.get("statuscode").toString());
+                statusBean.setDescription(record.get("description").toString());
                 return statusBean;
             }).collect(Collectors.toList());
         } catch (EmptyResultDataAccessException ere) {
@@ -819,8 +819,8 @@ public class CommonRepository {
             List<Map<String, Object>> telcoList = jdbcTemplate.queryForList(SQL_GET_TELCO_LIST, commonVarList.STATUS_ACTIVE);
             telcoBeanList = telcoList.stream().map((record) -> {
                 CommonTelcoBean commonTelcoBean = new CommonTelcoBean();
-                commonTelcoBean.setCode(record.get("CODE").toString());
-                commonTelcoBean.setDescription(record.get("DESCRIPTION").toString());
+                commonTelcoBean.setCode(record.get("code").toString());
+                commonTelcoBean.setDescription(record.get("description").toString());
                 return commonTelcoBean;
             }).collect(Collectors.toList());
         } catch (EmptyResultDataAccessException ere) {
@@ -832,57 +832,6 @@ public class CommonRepository {
         return telcoBeanList;
     }
 
-   /* @Transactional(readOnly = true)
-    public List<Department> getDepartmentList(String statusCode) {
-        List<Department> departmentList;
-        try {
-            List<Map<String, Object>> resultList = jdbcTemplate.queryForList(SQL_GET_DEPARTMENT_LIST, statusCode);
-            departmentList = resultList.stream().map((record) -> {
-                Department department = new Department();
-                department.setCode(record.get("code").toString());
-                department.setDescription(record.get("description").toString());
-                department.setStatus(record.get("status").toString());
-                department.setCreatedTime(record.get("createdtime") != null ? (Date) record.get("createdtime") : null);
-                department.setCreatedUser(record.get("createduser") != null ? record.get("createduser").toString() : null);
-                department.setLastUpdatedTime(record.get("lastupdatedtime") != null ? (Date) record.get("lastupdatedtime") : null);
-                department.setLastUpdatedUser(record.get("lastupdateduser") != null ? record.get("lastupdateduser").toString() : null);
-                return department;
-            }).collect(Collectors.toList());
-        } catch (EmptyResultDataAccessException ere) {
-            //handle the empty result data access exception
-            departmentList = new ArrayList<>();
-        } catch (Exception e) {
-            throw e;
-        }
-        return departmentList;
-    }*/
-
-  /*  @Transactional(readOnly = true)
-    public List<SmsChannel> getSmsChannelList(String statusCode) {
-        List<SmsChannel> smsChannelList;
-        try {
-            List<Map<String, Object>> resultList = jdbcTemplate.queryForList(SQL_GET_SMSCHANNEL_LIST, statusCode);
-            smsChannelList = resultList.stream().map((record) -> {
-                SmsChannel smsChannel = new SmsChannel();
-                smsChannel.setChannelCode(record.get("channelcode").toString());
-                smsChannel.setDescription(record.get("description").toString());
-                smsChannel.setPassword(record.get("password") != null ? record.get("password").toString() : "");
-                smsChannel.setStatus(record.get("status").toString());
-                smsChannel.setCreatedTime(record.get("createdtime") != null ? (Date) record.get("createdtime") : null);
-                smsChannel.setCreatedUser(record.get("createduser") != null ? record.get("createduser").toString() : null);
-                smsChannel.setLastUpdatedTime(record.get("lastupdatedtime") != null ? (Date) record.get("lastupdatedtime") : null);
-                smsChannel.setLastUpdatedUser(record.get("lastupdateduser") != null ? record.get("lastupdateduser").toString() : null);
-                return smsChannel;
-            }).collect(Collectors.toList());
-        } catch (EmptyResultDataAccessException ere) {
-            //handle the empty result data access exception
-            smsChannelList = new ArrayList<>();
-        } catch (Exception e) {
-            throw e;
-        }
-        return smsChannelList;
-    }*/
-
     @Transactional(readOnly = true)
     public List<CommonCategoryBean> getCategoryList(String statusCode) throws Exception {
         List<CommonCategoryBean> categoryBeanList;
@@ -890,8 +839,8 @@ public class CommonRepository {
             List<Map<String, Object>> categoryList = jdbcTemplate.queryForList(SQL_GET_CATEGORY_LIST, statusCode);
             categoryBeanList = categoryList.stream().map((record) -> {
                 CommonCategoryBean commonCategoryBean = new CommonCategoryBean();
-                commonCategoryBean.setCategory(record.get("CATEGORY").toString());
-                commonCategoryBean.setDescription(record.get("DESCRIPTION").toString());
+                commonCategoryBean.setCategory(record.get("category").toString());
+                commonCategoryBean.setDescription(record.get("description").toString());
                 return commonCategoryBean;
             }).collect(Collectors.toList());
         } catch (EmptyResultDataAccessException ere) {
@@ -910,7 +859,7 @@ public class CommonRepository {
             mtPortList = jdbcTemplate.query(SQL_GET_MT_PORT_LIST, new Object[]{commonVarList.STATUS_ACTIVE}, new RowMapper<String>() {
                 @Override
                 public String mapRow(ResultSet resultSet, int i) throws SQLException {
-                    return resultSet.getString("MTPORT");
+                    return resultSet.getString("mtport");
                 }
             });
         } catch (EmptyResultDataAccessException ere) {
@@ -929,8 +878,8 @@ public class CommonRepository {
                 @Override
                 public UserParamCategory mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                     UserParamCategory category = new UserParamCategory();
-                    category.setParamCategoryCode(resultSet.getString("CODE"));
-                    category.setDescription(resultSet.getString("DESCRIPTION"));
+                    category.setParamCategoryCode(resultSet.getString("code"));
+                    category.setDescription(resultSet.getString("description"));
                     return category;
                 }
             });
@@ -940,55 +889,6 @@ public class CommonRepository {
         return categoryList;
     }
 
-   /* public List<DeliveryStatus> getDeliveryStatusList() throws Exception {
-        List<DeliveryStatus> deliveryStatusList;
-        try {
-            deliveryStatusList = jdbcTemplate.query(SQL_GET_DELIVERY_STATUS_LIST, new RowMapper<DeliveryStatus>() {
-                @Override
-                public DeliveryStatus mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                    DeliveryStatus deliveryStatus = new DeliveryStatus();
-                    deliveryStatus.setCode(resultSet.getString("STATUSCODE"));
-                    deliveryStatus.setDescription(resultSet.getString("DESCRIPTION"));
-                    return deliveryStatus;
-                }
-            });
-        } catch (Exception e) {
-            throw e;
-        }
-        return deliveryStatusList;
-    }
-
-    @Transactional(readOnly = true)
-    public DeliveryStatus getDeliveryStatus(String code) {
-        DeliveryStatus deliveryStatus = null;
-        try {
-            deliveryStatus = jdbcTemplate.queryForObject(SQL_FIND_DELIVERY_STATUS, new Object[]{code}, new RowMapper<DeliveryStatus>() {
-                @Override
-                public DeliveryStatus mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    DeliveryStatus deliveryStatus = new DeliveryStatus();
-
-                    try {
-                        deliveryStatus.setCode(rs.getString("STATUSCODE"));
-                    } catch (Exception e) {
-                        deliveryStatus.setCode(null);
-                    }
-
-                    try {
-                        deliveryStatus.setDescription(rs.getString("DESCRIPTION"));
-                    } catch (Exception e) {
-                        deliveryStatus.setDescription(null);
-                    }
-
-                    return deliveryStatus;
-                }
-            });
-        } catch (EmptyResultDataAccessException erse) {
-            deliveryStatus = null;
-        } catch (Exception e) {
-            throw e;
-        }
-        return deliveryStatus;
-    }*/
 
     @Transactional(readOnly = true)
     public Status getStatus(String code) {
@@ -1000,13 +900,13 @@ public class CommonRepository {
                     Status status = new Status();
 
                     try {
-                        status.setStatusCode(rs.getString("STATUSCODE"));
+                        status.setStatusCode(rs.getString("statuscode"));
                     } catch (Exception e) {
                         status.setStatusCode(null);
                     }
 
                     try {
-                        status.setDescription(rs.getString("DESCRIPTION"));
+                        status.setDescription(rs.getString("description"));
                     } catch (Exception e) {
                         status.setDescription(null);
                     }
@@ -1021,139 +921,5 @@ public class CommonRepository {
         }
         return status;
     }
-
-   /* @Transactional(readOnly = true)
-    public List<TxnType> getTxnTypeList(String statusCode) {
-        List<TxnType> txnTypeList;
-        try {
-            List<Map<String, Object>> resultList = jdbcTemplate.queryForList(SQL_GET_TXNTYPE_LIST, statusCode);
-            txnTypeList = resultList.stream().map((record) -> {
-                TxnType txnType = new TxnType();
-                txnType.setTxntype(record.get("txntype").toString());
-                txnType.setDescription(record.get("description").toString());
-                txnType.setStatus(record.get("status").toString());
-                txnType.setCreatedTime(record.get("createdtime") != null ? (Date) record.get("createdtime") : null);
-                txnType.setCreatedUser(record.get("createduser") != null ? record.get("createduser").toString() : null);
-                txnType.setLastUpdatedTime(record.get("lastupdatedtime") != null ? (Date) record.get("lastupdatedtime") : null);
-                txnType.setLastUpdatedUser(record.get("lastupdateduser") != null ? record.get("lastupdateduser").toString() : null);
-                return txnType;
-            }).collect(Collectors.toList());
-        } catch (EmptyResultDataAccessException ere) {
-            //handle the empty result data access exception
-            txnTypeList = new ArrayList<>();
-        } catch (Exception e) {
-            throw e;
-        }
-        return txnTypeList;
-    }
-
-    @Transactional(readOnly = true)
-    public List<SmsOutputTemplate> getTemplateList(String statusCode) {
-        List<SmsOutputTemplate> outputTemplateList;
-        try {
-            List<Map<String, Object>> resultList = jdbcTemplate.queryForList(SQL_GET_SMSTEMPLATE_LIST, statusCode);
-            outputTemplateList = resultList.stream().map((record) -> {
-                SmsOutputTemplate smsOutputTemplate = new SmsOutputTemplate();
-                smsOutputTemplate.setTemplatecode(record.get("templatecode").toString());
-                smsOutputTemplate.setDescription(record.get("description").toString());
-                smsOutputTemplate.setMessageformat(record.get("messageformat").toString());
-                smsOutputTemplate.setStatus(record.get("status").toString());
-                smsOutputTemplate.setCreatedTime(record.get("createdtime") != null ? (Date) record.get("createdtime") : null);
-                smsOutputTemplate.setLastUpdatedTime(record.get("lastupdatedtime") != null ? (Date) record.get("lastupdatedtime") : null);
-                smsOutputTemplate.setLastUpdatedUser(record.get("lastupdateduser") != null ? record.get("lastupdateduser").toString() : null);
-                return smsOutputTemplate;
-            }).collect(Collectors.toList());
-        } catch (EmptyResultDataAccessException ere) {
-            //handle the empty result data access exception
-            outputTemplateList = new ArrayList<>();
-        } catch (Exception e) {
-            throw e;
-        }
-        return outputTemplateList;
-    }
-
-
-    @Transactional(readOnly = true)
-    public List<Comparisonfield> getComparisonfieldList() {
-        List<Comparisonfield> comparisonfieldList;
-        try {
-            comparisonfieldList = jdbcTemplate.query(SQL_FIND_COMPARISON_FIELD, new RowMapper<Comparisonfield>() {
-                @Override
-                public Comparisonfield mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                    Comparisonfield comparisonfield = new Comparisonfield();
-                    comparisonfield.setComparisonfieldcode(resultSet.getString("COMPARISONFIELDCODE"));
-                    comparisonfield.setDescription(resultSet.getString("DESCRIPTION"));
-                    return comparisonfield;
-                }
-            });
-        } catch (Exception e) {
-            throw e;
-        }
-        return comparisonfieldList;
-    }
-
-    @Transactional(readOnly = true)
-    public TxnType getTxnType(String code) throws Exception {
-        TxnType txnType = null;
-        try {
-            txnType = jdbcTemplate.queryForObject(SQL_FIND_TXN_TYPE, new Object[]{code}, new RowMapper<TxnType>() {
-                @Override
-                public TxnType mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    TxnType txnType = new TxnType();
-
-                    try {
-                        txnType.setTxntype(rs.getString("TXNTYPE"));
-                    } catch (Exception e) {
-                        txnType.setTxntype(null);
-                    }
-
-                    try {
-                        txnType.setDescription(rs.getString("DESCRIPTION"));
-                    } catch (Exception e) {
-                        txnType.setDescription(null);
-                    }
-
-                    return txnType;
-                }
-            });
-        } catch (EmptyResultDataAccessException erse) {
-            txnType = null;
-        } catch (Exception e) {
-            throw e;
-        }
-        return txnType;
-    }
-
-    @Transactional(readOnly = true)
-    public Telco getTelco(String code) {
-        Telco telco = null;
-        try {
-            telco = jdbcTemplate.queryForObject(SQL_FIND_TELCO, new Object[]{code}, new RowMapper<Telco>() {
-                @Override
-                public Telco mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Telco telco = new Telco();
-
-                    try {
-                        telco.setCode(rs.getString("CODE"));
-                    } catch (Exception e) {
-                        telco.setCode(null);
-                    }
-
-                    try {
-                        telco.setDescription(rs.getString("DESCRIPTION"));
-                    } catch (Exception e) {
-                        telco.setDescription(null);
-                    }
-
-                    return telco;
-                }
-            });
-        } catch (EmptyResultDataAccessException erse) {
-            telco = null;
-        } catch (Exception e) {
-            throw e;
-        }
-        return telco;
-    }*/
 
 }

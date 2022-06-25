@@ -86,7 +86,7 @@
                 sPaginationType: "full_numbers",
                 bDeferRender: true,
                 responsive: true,
-                lengthMenu: [5, 10, 20, 50, 100],
+                lengthMenu: [10, 20, 50, 100],
                 searching: false,
                 initComplete: function (settings, json) {
                     document.getElementById('data-table-loading-dual').style.display = "none";
@@ -282,7 +282,7 @@
                 sPaginationType: "full_numbers",
                 bDeferRender: true,
                 responsive: true,
-                lengthMenu: [5, 10, 20, 50, 100],
+                lengthMenu: [10, 20, 50, 100],
                 searching: false,
                 initComplete: function (settings, json) {
                     document.getElementById('data-table-loading').style.display = "none";

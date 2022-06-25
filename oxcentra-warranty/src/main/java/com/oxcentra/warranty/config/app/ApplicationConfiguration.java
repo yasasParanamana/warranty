@@ -82,6 +82,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         registry.viewResolver(viewResolver);
     }
 
+    @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }

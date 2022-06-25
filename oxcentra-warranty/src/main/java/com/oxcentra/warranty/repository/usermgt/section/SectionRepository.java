@@ -37,12 +37,12 @@ public class SectionRepository {
     @Autowired
     CommonRepository commonRepository;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_SECTION ws left outer join STATUS s on s.statuscode=ws.status where ";
-    private final String SQL_INSERT_SECTION = "insert into WEB_SECTION(sectioncode,description,status,sortkey,createduser,createdtime,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?,?) ";
-    private final String SQL_UPDATE_SECTION = "update WEB_SECTION ws set ws.description = ? , ws.status = ?, ws.sortkey=?, ws.lastupdateduser=?, ws.lastupdatedtime=? where ws.sectioncode = ?";
-    private final String SQL_FIND_SECTION = "select sectioncode,description,status,sortkey,createdtime,lastupdatedtime,lastupdateduser from WEB_SECTION ws where ws.sectioncode = ?";
-    private final String SQL_DELETE_SECTION = "delete from WEB_SECTION where sectioncode = ?";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_section ws left outer join status s on s.statuscode=ws.status where ";
+    private final String SQL_INSERT_SECTION = "insert into web_section(sectioncode,description,status,sortkey,createduser,createdtime,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?,?) ";
+    private final String SQL_UPDATE_SECTION = "update web_section ws set ws.description = ? , ws.status = ?, ws.sortkey=?, ws.lastupdateduser=?, ws.lastupdatedtime=? where ws.sectioncode = ?";
+    private final String SQL_FIND_SECTION = "select sectioncode,description,status,sortkey,createdtime,lastupdatedtime,lastupdateduser from web_section ws where ws.sectioncode = ?";
+    private final String SQL_DELETE_SECTION = "delete from web_section where sectioncode = ?";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
 
 
     @Transactional(readOnly = true)
@@ -77,8 +77,8 @@ public class SectionRepository {
 
             String sql =
                     " select ws.sectioncode as sectioncode,ws.description as description, ws.status as status,ws.sortkey as sortkey,s.description as statusdescription," +
-                            " ws.createdtime as createdtime, ws.createduser as createduser, ws.lastupdatedtime as lastupdatedtime ,ws.lastupdateduser as lastupdateduser from WEB_SECTION ws " +
-                            " left outer join STATUS s on s.statuscode=ws.status " +
+                            " ws.createdtime as createdtime, ws.createduser as createduser, ws.lastupdatedtime as lastupdatedtime ,ws.lastupdateduser as lastupdateduser from web_section ws " +
+                            " left outer join status s on s.statuscode=ws.status " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + sectionInputBean.displayLength + " offset " + sectionInputBean.displayStart;
 
@@ -175,9 +175,9 @@ public class SectionRepository {
             }
             String sql = "" +
                     " select wta.id,wta.key1,wta.key2,wta.key3,wta.key4, s.description as statusdescription ,t.description as taskdescription ,wta.createdtime,wta.lastupdatedtime,wta.lastupdateduser " +
-                    " from WEB_TMPAUTHREC wta" +
-                    " left outer join STATUS s on s.statuscode = wta.key3 " +
-                    " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                    " from web_tmpauthrec wta" +
+                    " left outer join status s on s.statuscode = wta.key3 " +
+                    " left outer join web_task t on t.taskcode = wta.task " +
                     " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause + sortingStr +
                     " limit " + sectionInputBean.displayLength + " offset " + sectionInputBean.displayStart;
 

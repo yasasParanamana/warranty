@@ -62,6 +62,10 @@
         <put-attribute name="body" value="/WEB-INF/pages/usermgt/section/section-mgt.jsp"/>
     </definition>
 
+    <definition name="warrantyclaimsview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/claims/claims-mgt.jsp"/>
+    </definition>
+
     <definition name="cusserachview" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/customermgt/customer-search.jsp"/>
     </definition>

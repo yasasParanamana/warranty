@@ -37,26 +37,26 @@ import java.util.List;
 @Scope("prototype")
 public class UserRoleRepository {
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from USERROLE u left outer join STATUS s on s.statuscode=u.status where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_USERROLE = "insert into USERROLE (userrolecode, description, userroletype, status, createduser, createdtime, lastupdatedtime, lastupdateduser) values (?,?,?,?,?,?,?,?)";
-    private final String SQL_FIND_USERROLE = "select u.userrolecode, u.description, u.userroletype, u.status, u.createduser, u.createdtime, u.lastupdatedtime, u.lastupdateduser from USERROLE u where u.userrolecode = ? ";
-    private final String SQL_UPDATE_USERROLE = "update USERROLE set description=?, userroletype=?, status=?, lastupdateduser=?, lastupdatedtime=? where userrolecode=?";
-    private final String SQL_DELETE_USERROLE = "delete from USERROLE where userrolecode=?";
-    private final String SQL_GET_ALL_SECTION_LIST = "select sectioncode, description from WEB_SECTION ";
-    private final String SQL_GET_ASSIGNED_PAGE_LIST = "select p.pagecode pagecode, p.description description from WEB_SECTIONPAGE sp inner join WEB_PAGE p on p.pagecode=sp.page where sp.USERROLE=? and sp.section=?";
-    private final String SQL_GET_ALL_PAGE_LIST = "select pagecode, description from WEB_PAGE ";
-    private final String SQL_GET_ASSIGNED_PAGE_LIST_FOR_USERROLE = "select p.pagecode pagecode, p.description description from WEB_SECTIONPAGE sp inner join WEB_PAGE p on p.pagecode=sp.page where sp.USERROLE=?";
-    private final String SQL_UNASSIGNED_PAGE_TASK = "delete from WEB_PAGETASK  where USERROLE=:USERROLE and page in (:pages)";
-    private final String SQL_UNASSIGNED_PAGE = "delete from WEB_SECTIONPAGE where USERROLE=:USERROLE and page in (:pages)";
-    private final String SQL_ASSIGNED_PAGE = "insert into WEB_SECTIONPAGE (USERROLE, section, page, lastupdateduser) values (?,?,?,?)";
-    private final String SQL_GET_ASSIGNED_SECTION_LIST = "select distinct s.sectioncode sectioncode, s.description description from WEB_SECTION s inner join WEB_SECTIONPAGE sp on sp.section=s.sectioncode where sp.USERROLE=?";
-    private final String SQL_GET_ASSIGNED_TASK_LIST = "select t.taskcode taskcode, t.description description from WEB_TASK t inner join WEB_PAGETASK pt on pt.task=t.taskcode where pt.USERROLE=? and pt.page=? ";
-    private final String SQL_GET_ALL_PAGE_TASK_LIST = "select t.taskcode taskcode, t.description description from WEB_TASK t inner join WEB_PAGETASK_TEMPLATE ptt on ptt.task=t.taskcode where ptt.page=? ";
-    private final String SQL_UNASSIGNED_TASK = "delete from WEB_PAGETASK where USERROLE = :USERROLE and page=:page and task in (:tasks)";
-    private final String SQL_ASSIGNED_TASK = "insert into WEB_PAGETASK (USERROLE, page, task, lastupdateduser) values (?,?,?,?)";
-    private final String SQL_GET_PAGE_DESC = "select description from WEB_PAGE s where s.PAGECODE = ?";
-    private final String SQL_GET_TASK_DESC = "select description from WEB_TASK s where s.TASKCODE = ?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from userrole u left outer join status s on s.statuscode=u.status where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
+    private final String SQL_INSERT_USERROLE = "insert into userrole (userrolecode, description, userroletype, status, createduser, createdtime, lastupdatedtime, lastupdateduser) values (?,?,?,?,?,?,?,?)";
+    private final String SQL_FIND_USERROLE = "select u.userrolecode, u.description, u.userroletype, u.status, u.createduser, u.createdtime, u.lastupdatedtime, u.lastupdateduser from userrole u where u.userrolecode = ? ";
+    private final String SQL_UPDATE_USERROLE = "update userrole set description=?, userroletype=?, status=?, lastupdateduser=?, lastupdatedtime=? where userrolecode=?";
+    private final String SQL_DELETE_USERROLE = "delete from userrole where userrolecode=?";
+    private final String SQL_GET_ALL_SECTION_LIST = "select sectioncode, description from web_section ";
+    private final String SQL_GET_ASSIGNED_PAGE_LIST = "select p.pagecode pagecode, p.description description from web_sectionpage sp inner join web_page p on p.pagecode=sp.page where sp.userrole=? and sp.section=?";
+    private final String SQL_GET_ALL_PAGE_LIST = "select pagecode, description from web_page ";
+    private final String SQL_GET_ASSIGNED_PAGE_LIST_FOR_USERROLE = "select p.pagecode pagecode, p.description description from web_sectionpage sp inner join web_page p on p.pagecode=sp.page where sp.userrole=?";
+    private final String SQL_UNASSIGNED_PAGE_TASK = "delete from web_pagetask  where userrole=:userrole and page in (:pages)";
+    private final String SQL_UNASSIGNED_PAGE = "delete from web_sectionpage where userrole=:userrole and page in (:pages)";
+    private final String SQL_ASSIGNED_PAGE = "insert into web_sectionpage (userrole, section, page, lastupdateduser) values (?,?,?,?)";
+    private final String SQL_GET_ASSIGNED_SECTION_LIST = "select distinct s.sectioncode sectioncode, s.description description from web_section s inner join web_sectionpage sp on sp.section=s.sectioncode where sp.userrole=?";
+    private final String SQL_GET_ASSIGNED_TASK_LIST = "select t.taskcode taskcode, t.description description from web_task t inner join web_pagetask pt on pt.task=t.taskcode where pt.userrole=? and pt.page=? ";
+    private final String SQL_GET_ALL_PAGE_TASK_LIST = "select t.taskcode taskcode, t.description description from web_task t inner join web_pagetask_template ptt on ptt.task=t.taskcode where ptt.page=? ";
+    private final String SQL_UNASSIGNED_TASK = "delete from web_pagetask where userrole = :userrole and page=:page and task in (:tasks)";
+    private final String SQL_ASSIGNED_TASK = "insert into web_pagetask (userrole, page, task, lastupdateduser) values (?,?,?,?)";
+    private final String SQL_GET_PAGE_DESC = "select description from web_page s where s.pagecode = ?";
+    private final String SQL_GET_TASK_DESC = "select description from web_task s where s.taskcode = ?";
 
     @Autowired
     SessionBean sessionBean;
@@ -98,9 +98,9 @@ public class UserRoleRepository {
             }
 
             String sql =
-                    " select u.userrolecode, u.description, ut.description as userroletypedesc, u.status, s.description as statusdes, u.createduser, u.createdtime, u.lastupdateduser, u.lastupdatedtime from USERROLE u " +
-                            " left outer join USERROLETYPE ut on ut.userroletypecode=u.userroletype " +
-                            " left outer join STATUS s on s.statuscode=u.status " +
+                    " select u.userrolecode, u.description, ut.description as userroletypedesc, u.status, s.description as statusdes, u.createduser, u.createdtime, u.lastupdateduser, u.lastupdatedtime from userrole u " +
+                            " left outer join userroletype ut on ut.userroletypecode=u.userroletype " +
+                            " left outer join status s on s.statuscode=u.status " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + userRoleInputBean.displayLength + " offset " + userRoleInputBean.displayStart;
 
@@ -202,9 +202,9 @@ public class UserRoleRepository {
             }
             String sql =
                     " select wta.id, wta.key1, wta.key2, wta.key3, wta.key5, wta.key6, wta.tmprecord, s.description key4, t.description task, wta.createdtime, wta.lastupdatedtime, wta.lastupdateduser " +
-                            " from WEB_TMPAUTHREC wta" +
-                            " left outer join STATUS s on s.statuscode = wta.key4 " +
-                            " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                            " from web_tmpauthrec wta" +
+                            " left outer join status s on s.statuscode = wta.key4 " +
+                            " left outer join web_task t on t.taskcode = wta.task " +
                             " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                             " limit " + userRoleInputBean.displayLength + " offset " + userRoleInputBean.displayStart;
 
@@ -615,7 +615,7 @@ public class UserRoleRepository {
                     Page page = new Page();
 
                     try {
-                        page.setDescription(rs.getString("DESCRIPTION"));
+                        page.setDescription(rs.getString("description"));
                     } catch (Exception e) {
                         page.setDescription(null);
                     }
@@ -641,7 +641,7 @@ public class UserRoleRepository {
                     Task task = new Task();
 
                     try {
-                        task.setDescription(rs.getString("DESCRIPTION"));
+                        task.setDescription(rs.getString("description"));
                     } catch (Exception e) {
                         task.setDescription(null);
                     }
@@ -667,7 +667,7 @@ public class UserRoleRepository {
 
                 MapSqlParameterSource parameters = new MapSqlParameterSource();
                 parameters.addValue("pages", pages);
-                parameters.addValue("USERROLE", userRoleInputBean.getUserroleCode());
+                parameters.addValue("userrole", userRoleInputBean.getUserroleCode());
 
                 count = namedParameterJdbcTemplate.update(SQL_UNASSIGNED_PAGE_TASK, parameters);
                 count = namedParameterJdbcTemplate.update(SQL_UNASSIGNED_PAGE, parameters);
@@ -788,10 +788,10 @@ public class UserRoleRepository {
 
 
     @Transactional(readOnly = true)
-    public List<String> getAssignedTaskCodes(String userroleCode, String pageCode) throws Exception {
+    public List<String> getAssignedTaskCodes(String userRoleCode, String pageCode) throws Exception {
         List<String> assignTaskCodeList;
         try {
-            assignTaskCodeList = jdbcTemplate.query(SQL_GET_ASSIGNED_TASK_LIST, new Object[]{userroleCode, pageCode}, new RowMapper<String>() {
+            assignTaskCodeList = jdbcTemplate.query(SQL_GET_ASSIGNED_TASK_LIST, new Object[]{userRoleCode, pageCode}, new RowMapper<String>() {
                 @Override
                 public String mapRow(ResultSet rs, int rowNum) throws SQLException {
                     return rs.getString("taskcode");
@@ -814,7 +814,7 @@ public class UserRoleRepository {
                 List<String> tasks = userRoleInputBean.getUnAssignList();
 
                 MapSqlParameterSource parameters = new MapSqlParameterSource();
-                parameters.addValue("USERROLE", userRoleInputBean.getUserroleCode());
+                parameters.addValue("userrole", userRoleInputBean.getUserroleCode());
                 parameters.addValue("page", userRoleInputBean.getPage());
                 parameters.addValue("tasks", tasks);
 

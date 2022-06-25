@@ -5,6 +5,7 @@ import com.oxcentra.warranty.bean.audit.AuditValueBean;
 import com.oxcentra.warranty.bean.common.CommonBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Repository
 @Scope("prototype")
 public class AuditRepository {
@@ -33,14 +35,14 @@ public class AuditRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_SYSTEMAUDIT a left outer join WEB_SECTION s on s.sectioncode=a.section left outer join WEB_PAGE p on p.pagecode=a.page left outer join USERROLE u on u.userrolecode=a.userrole left outer join WEB_TASK t on t.taskcode=a.task where ";
-    private final String SQL_FIND_AUDIT = "select a.systemauditid, a.description, s.description as sectiondes,p.description as pagedes, t.description as taskdes,r.description roledes,a.createtime,a.lastupdateduser,a.lastupdatedtime,a.remarks,a.ip,a.field,a.oldvalue,a.newvalue from WEB_SYSTEMAUDIT a left outer join WEB_SECTION s on s.sectioncode=a.section left outer join WEB_PAGE p on p.pagecode=a.page left outer join WEB_TASK t on t.taskcode=a.task left outer join USERROLE r on r.userrolecode=a.userrole where a.systemauditid=?";
-    private final String SQL_GET_ASSIGNED_TASK_LIST = "select t.taskcode taskcode, t.description description from WEB_TASK t inner join WEB_PAGETASK pt on pt.task=t.taskcode where pt.page=? ";
-    private final String SQL_GET_ASSIGNED_PAGE_LIST_FOR_SECTION = "select p.pagecode pagecode, p.description description from WEB_SECTIONPAGE sp inner join WEB_PAGE p on p.pagecode=sp.page where sp.section=?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_systemaudit a left outer join web_section s on s.sectioncode=a.section left outer join web_page p on p.pagecode=a.page left outer join userrole u on u.userrolecode=a.userrole left outer join web_task t on t.taskcode=a.task where ";
+    private final String SQL_FIND_AUDIT = "select a.systemauditid, a.description, s.description as sectiondes,p.description as pagedes, t.description as taskdes,r.description roledes,a.createtime,a.lastupdateduser,a.lastupdatedtime,a.remarks,a.ip,a.field,a.oldvalue,a.newvalue from web_systemaudit a left outer join web_section s on s.sectioncode=a.section left outer join web_page p on p.pagecode=a.page left outer join web_task t on t.taskcode=a.task left outer join userrole r on r.userrolecode=a.userrole where a.systemauditid=?";
+    private final String SQL_GET_ASSIGNED_TASK_LIST = "select t.taskcode taskcode, t.description description from web_task t inner join web_pagetask pt on pt.task=t.taskcode where pt.page=? ";
+    private final String SQL_GET_ASSIGNED_PAGE_LIST_FOR_SECTION = "select p.pagecode pagecode, p.description description from web_sectionpage sp inner join web_page p on p.pagecode=sp.page where sp.section=?";
 
     @Transactional(readOnly = true)
     public long getDataCount(AuditTraceInputBean auditInputBean) throws Exception {
-        System.out.println("***** -2");
+
         long count = 0;
         try {
             StringBuilder dynamicClause = new StringBuilder(SQL_GET_LIST_DATA_COUNT);
@@ -72,11 +74,11 @@ public class AuditRepository {
 
             String sql = "" +
                     " select " + "a.systemauditid, a.remarks, u.description as userroledes, a.ip, a.description, s.description as sectiondes, p.description as pagedes, t.description as taskdes, a.lastupdateduser, a.lastupdatedtime "
-                    + "from WEB_SYSTEMAUDIT a "
-                    + "left outer join WEB_SECTION s on s.sectioncode=a.section "
-                    + "left outer join WEB_PAGE p on p.pagecode=a.page "
-                    + "left outer join USERROLE u on u.userrolecode=a.userrole "
-                    + "left outer join WEB_TASK t on t.taskcode=a.task "
+                    + "from web_systemaudit a "
+                    + "left outer join web_section s on s.sectioncode=a.section "
+                    + "left outer join web_page p on p.pagecode=a.page "
+                    + "left outer join userrole u on u.userrolecode=a.userrole "
+                    + "left outer join web_task t on t.taskcode=a.task "
                     + "where " + dynamicClause.toString() + sortingStr + "limit " + auditTraceInputBean.displayLength +
                     " offset " + auditTraceInputBean.displayStart;
 
@@ -181,7 +183,6 @@ public class AuditRepository {
 
     @Transactional(readOnly = true)
     public List<Audittrace> getAuditTraceSearchResultListForReport(AuditTraceInputBean auditTraceInputBean) throws Exception {
-        System.out.println("***** 1");
         List<Audittrace> auditTraceList = null;
         try {
             StringBuilder dynamicClause = this.setDynamicClause(auditTraceInputBean, new StringBuilder());
@@ -190,11 +191,11 @@ public class AuditRepository {
 
             String sql = "" +
                     " select " +
-                    " a.systemauditid, a.remarks, u.description as userroledes, a.ip, a.description, s.description as sectiondes, p.description as pagedes, t.description as taskdes, a.lastupdateduser, a.createtime, a.lastupdatedtime from WEB_SYSTEMAUDIT a "
-                    + "left outer join WEB_SECTION s on s.sectioncode=a.section "
-                    + "left outer join WEB_PAGE p on p.pagecode=a.page "
-                    + "left outer join USERROLE u on u.userrolecode=a.userrole "
-                    + "left outer join WEB_TASK t on t.taskcode=a.task "
+                    " a.systemauditid, a.remarks, u.description as userroledes, a.ip, a.description, s.description as sectiondes, p.description as pagedes, t.description as taskdes, a.lastupdateduser, a.createtime, a.lastupdatedtime from web_systemaudit a "
+                    + "left outer join web_section s on s.sectioncode=a.section "
+                    + "left outer join web_page p on p.pagecode=a.page "
+                    + "left outer join userrole u on u.userrolecode=a.userrole "
+                    + "left outer join web_task t on t.taskcode=a.task "
                     + "where " + dynamicClause.toString() + sortingStr;
 
             auditTraceList = jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -496,7 +497,6 @@ public class AuditRepository {
 
     @Transactional(readOnly = true)
     public List<Audittrace> getAuditExcelResults(AuditTraceInputBean auditInputBean) throws Exception {
-        System.out.println("***** 3");
         List<Audittrace> auditTraceList;
         try {
             StringBuilder dynamicClause = this.setDynamicClause(auditInputBean, new StringBuilder());
@@ -505,11 +505,11 @@ public class AuditRepository {
 
             String sql
                     = "select a.systemauditid, a.remarks, a.description, s.description as sectiondes, p.description as pagedes, t.description as taskdes, a.lastupdatedtime, a.lastupdateduser,a.ip,u.description as userrole "
-                    + "from WEB_SYSTEMAUDIT a "
-                    + "left outer join WEB_SECTION s on s.sectioncode=a.section "
-                    + "left outer join WEB_PAGE p on p.pagecode=a.page "
-                    + "left outer join WEB_TASK t on t.taskcode=a.task "
-                    + "left outer join USERROLE u on u.userrolecode=a.userrole "
+                    + "from web_systemaudit a "
+                    + "left outer join web_section s on s.sectioncode=a.section "
+                    + "left outer join web_page p on p.pagecode=a.page "
+                    + "left outer join web_task t on t.taskcode=a.task "
+                    + "left outer join userrole u on u.userrolecode=a.userrole "
                     + "where " + dynamicClause.toString() + sortingStr;
 
             auditTraceList = jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -627,11 +627,6 @@ public class AuditRepository {
             DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat formatter = new SimpleDateFormat("YYYY/MM/dd 00:00:00");
 
-            /*
-            if (auditTraceInputBean.getUserName() != null && !auditTraceInputBean.getUserName().isEmpty()) {
-                dynamicClause.append("and lower(a.lastupdateduser) like lower('%").append(auditTraceInputBean.getUserName()).append("%')");
-            }
-*/
             if (auditTraceInputBean.getSection() != null && !auditTraceInputBean.getSection().isEmpty()) {
                 dynamicClause.append("and a.section = '").append(auditTraceInputBean.getSection()).append("'");
             }

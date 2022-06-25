@@ -30,14 +30,14 @@ import java.util.List;
 @Scope("prototype")
 public class SystemUserRepository {
 
-    private final String SQL_FIND_SYSTEMUSER_BY_NIC = "select username from WEB_SYSTEMUSER where username != ? and nic = ?";
-    private final String SQL_FIND_SYSTEMUSER_BY_SERVICEID = "select username from WEB_SYSTEMUSER where username != ? and serviceid = ?";
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_SYSTEMUSER wu left outer join STATUS s on s.statuscode=wu.status where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_SYSTEMUSER = "insert into WEB_SYSTEMUSER(username,password,userrole,expirydate,fullname,email,mobile,nic,serviceid,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,createduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-    private final String SQL_FIND_SYSTEMUSER = "select username,password,USERROLE,expirydate,fullname,email,nic,serviceid,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime from WEB_SYSTEMUSER wsu where wsu.username = ?";
-    private final String SQL_UPDATE_SYSTEMUSER = "update WEB_SYSTEMUSER wsu set userrole = ?, fullname = ?, email = ?, mobile = ?, status = ?, nic = ?, serviceid = ?, lastupdateduser = ?, lastupdatedtime = ? where wsu.username = ?";
-    private final String SQL_DELETE_SYSTEMUSER = "delete from WEB_SYSTEMUSER where username = ?";
+    private final String SQL_FIND_SYSTEMUSER_BY_NIC = "select username from web_systemuser where username != ? and nic = ?";
+    private final String SQL_FIND_SYSTEMUSER_BY_SERVICEID = "select username from web_systemuser where username != ? and serviceid = ?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_systemuser wu left outer join status s on s.statuscode=wu.status where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
+    private final String SQL_INSERT_SYSTEMUSER = "insert into web_systemuser(username,password,userrole,expirydate,fullname,email,mobile,nic,serviceid,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,createduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    private final String SQL_FIND_SYSTEMUSER = "select username,password,userrole,expirydate,fullname,email,nic,serviceid,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime from web_systemuser wsu where wsu.username = ?";
+    private final String SQL_UPDATE_SYSTEMUSER = "update web_systemuser wsu set userrole = ?, fullname = ?, email = ?, mobile = ?, status = ?, nic = ?, serviceid = ?, lastupdateduser = ?, lastupdatedtime = ? where wsu.username = ?";
+    private final String SQL_DELETE_SYSTEMUSER = "delete from web_systemuser where username = ?";
     @Autowired
     SessionBean sessionBean;
     @Autowired
@@ -81,9 +81,9 @@ public class SystemUserRepository {
             String sql =
                     " select wu.username as username,wu.fullname as fullname, u.description as userrole," +
                             " wu.email as email,wu.mobile as mobile,wu.nic,wu.serviceid,wu.expirydate as expirydate,wu.loggeddate as loggeddate," +
-                            " s.description as statusdescription,wu.createtime as createdtime,wu.createduser as createduser,wu.lastupdatedtime,wu.lastupdateduser from WEB_SYSTEMUSER wu " +
-                            " left outer join STATUS s on s.statuscode=wu.status " +
-                            " left outer join USERROLE u on u.userrolecode=wu.USERROLE " +
+                            " s.description as statusdescription,wu.createtime as createdtime,wu.createduser as createduser,wu.lastupdatedtime,wu.lastupdateduser from web_systemuser wu " +
+                            " left outer join status s on s.statuscode=wu.status " +
+                            " left outer join userrole u on u.userrolecode=wu.userrole " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + systemUserInputBean.displayLength + " offset " + systemUserInputBean.displayStart;
 
@@ -226,9 +226,9 @@ public class SystemUserRepository {
 
             String sql = "" +
                     " select wta.id,wta.key1,wta.key2,wta.key3,wta.key4,wta.key5,wta.key6,wta.key8,wta.key9,s.description as statusdescription ,t.description as taskdescription ,wta.createdtime,wta.lastupdatedtime,wta.lastupdateduser " +
-                    " from WEB_TMPAUTHREC wta" +
-                    " left outer join STATUS s on s.statuscode=wta.key5 " +
-                    " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                    " from web_tmpauthrec wta" +
+                    " left outer join status s on s.statuscode=wta.key5 " +
+                    " left outer join web_task t on t.taskcode = wta.task " +
                     " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause + sortingStr +
                     " limit " + systemUserInputBean.displayLength + " offset " + systemUserInputBean.displayStart;
 
@@ -395,7 +395,7 @@ public class SystemUserRepository {
                     }
 
                     try {
-                        systemUser.setUserRoleCode(rs.getString("USERROLE"));
+                        systemUser.setUserRoleCode(rs.getString("userrole"));
                     } catch (Exception e) {
                         systemUser.setUserRoleCode(null);
                     }
@@ -542,7 +542,7 @@ public class SystemUserRepository {
             }
 
             if (systemUserInputBean.getUserRoleCode() != null && !systemUserInputBean.getUserRoleCode().isEmpty()) {
-                dynamicClause.append("and wu.USERROLE = '").append(systemUserInputBean.getUserRoleCode()).append("'");
+                dynamicClause.append("and wu.userrole = '").append(systemUserInputBean.getUserRoleCode()).append("'");
             }
 
             if (systemUserInputBean.getMobileNumber() != null && !systemUserInputBean.getMobileNumber().isEmpty()) {
