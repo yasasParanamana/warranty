@@ -1,4 +1,4 @@
-package com.oxcentra.warranty.repository.usermgt.section;
+package com.oxcentra.warranty.repository.warranty.claim;
 
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.usermgt.section.SectionInputBean;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @Repository
 @Scope("prototype")
-public class SectionRepository {
+public class ClaimRepository {
 
     @Autowired
     SessionBean sessionBean;
@@ -76,16 +76,8 @@ public class SectionRepository {
             }
 
             String sql =
-                    " select ws.sectioncode as sectioncode," +
-                            "ws.description as description," +
-                            " ws.status as status," +
-                            "ws.sortkey as sortkey," +
-                            "s.description as statusdescription," +
-                            " ws.createdtime as createdtime," +
-                            " ws.createduser as createduser," +
-                            " ws.lastupdatedtime as lastupdatedtime ," +
-                            "ws.lastupdateduser as lastupdateduser" +
-                            " from web_section ws " +
+                    " select ws.sectioncode as sectioncode,ws.description as description, ws.status as status,ws.sortkey as sortkey,s.description as statusdescription," +
+                            " ws.createdtime as createdtime, ws.createduser as createduser, ws.lastupdatedtime as lastupdatedtime ,ws.lastupdateduser as lastupdateduser from web_section ws " +
                             " left outer join status s on s.statuscode=ws.status " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + sectionInputBean.displayLength + " offset " + sectionInputBean.displayStart;

@@ -19,8 +19,8 @@
             <div class="d-flex flex-row-fluid flex-column justify-content-between">
                 <!--begin: Aside header-->
                 <a href="#" class="flex-column-auto mt-5 pb-lg-0 pb-10">
-                    <img src="${pageContext.request.contextPath}/resources/assets/media/logos/RDBNEWLOGIN.png"
-                         class="max-h-70px" alt=""/>
+                    <!-- img src="${pageContext.request.contextPath}/resources/assets/media/logos/RDBNEWLOGIN.png"
+                         class="max-h-70px" alt=""/ -->
                 </a>
                 <!--end: Aside header-->
                 <!--begin: Aside content-->

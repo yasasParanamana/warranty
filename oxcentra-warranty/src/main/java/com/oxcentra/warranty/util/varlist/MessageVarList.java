@@ -351,4 +351,17 @@ public class MessageVarList {
     public static final String CHANNEL_MGT_EMPTY_STATUS = "channel.empty.status";
     //-------------------------- department mgt-----------------------------------------------------------------------//
 
+    //-------------------------- supplier mgt-----------------------------------------------------------------------//
+    public static final String SUPPLIER_MGT_ADDED_SUCCESSFULLY = "section.added.success";
+    public static final String SUPPLIER_MGT_UPDATE_SUCCESSFULLY = "section.updated.success";
+    public static final String SUPPLIER_MGT_DELETE_SUCCESSFULLY = "section.deleted.success";
+    public static final String SUPPLIER_MGT_CONFIRM_SUCCESSFULLY = "section.confirm.success";
+    public static final String SUPPLIER_MGT_REJECT_SUCCESSFULLY = "section.reject.success";
+    public static final String SUPPLIER_MGT_ALREADY_EXISTS = "section.already.exists";
+    public static final String SUPPLIER_MGT_NORECORD_FOUND = "section.norecord.found";
+    public static final String SUPPLIER_MGT_EMPTY_SECTIONCODE = "section.empty.sectionCode";
+    public static final String SUPPLIER_MGT_EMPTY_DESCRIPTION = "section.empty.description";
+    public static final String SUPPLIER_MGT_EMPTY_STATUS = "section.empty.status";
+    public static final String SUPPLIER_MGT_EMPTY_SORTKEY = "section.empty.sortKey";
+    //-------------------------- section mgt-----------------------------------------------------------------------//
 }

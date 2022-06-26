@@ -66,6 +66,14 @@
         <put-attribute name="body" value="/WEB-INF/pages/warranty/claims/claims-mgt.jsp"/>
     </definition>
 
+    <definition name="sparepartview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/claims/claims-mgt.jsp"/>
+    </definition>
+
+    <definition name="supplierview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/supplier/supplier-mgt.jsp"/>
+    </definition>
+
     <definition name="cusserachview" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/customermgt/customer-search.jsp"/>
     </definition>
