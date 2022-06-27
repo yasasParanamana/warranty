@@ -349,7 +349,7 @@ public class MessageVarList {
     public static final String CHANNEL_MGT_EMPTY_CHANNELCODE = "channel.empty.channelCode";
     public static final String CHANNEL_MGT_EMPTY_DESCRIPTION = "channel.empty.description";
     public static final String CHANNEL_MGT_EMPTY_STATUS = "channel.empty.status";
-    //-------------------------- department mgt-----------------------------------------------------------------------//
+    //-------------------------- channel mgt-----------------------------------------------------------------------//
 
     //-------------------------- supplier mgt-----------------------------------------------------------------------//
     public static final String SUPPLIER_MGT_ADDED_SUCCESSFULLY = "supplier.added.success";
@@ -363,5 +363,19 @@ public class MessageVarList {
     public static final String SUPPLIER_MGT_EMPTY_DESCRIPTION = "supplier.empty.description";
     public static final String SUPPLIER_MGT_EMPTY_STATUS = "supplier.empty.status";
     public static final String SUPPLIER_MGT_EMPTY_SORTKEY = "supplier.empty.sortKey";
-    //-------------------------- section mgt-----------------------------------------------------------------------//
+    //-------------------------- supplier mgt-----------------------------------------------------------------------//
+
+    //-------------------------- dealership mgt-----------------------------------------------------------------------//
+    public static final String DEALERSHIP_MGT_ADDED_SUCCESSFULLY = "dealership.added.success";
+    public static final String DEALERSHIP_MGT_UPDATE_SUCCESSFULLY = "dealership.updated.success";
+    public static final String DEALERSHIP_MGT_DELETE_SUCCESSFULLY = "dealership.deleted.success";
+    public static final String DEALERSHIP_MGT_CONFIRM_SUCCESSFULLY = "dealership.confirm.success";
+    public static final String DEALERSHIP_MGT_REJECT_SUCCESSFULLY = "dealership.reject.success";
+    public static final String DEALERSHIP_MGT_ALREADY_EXISTS = "dealership.already.exists";
+    public static final String DEALERSHIP_MGT_NO_RECORD_FOUND = "dealership.norecord.found";
+    public static final String DEALERSHIP_MGT_EMPTY_SECTIONCODE = "dealership.empty.sectionCode";
+    public static final String DEALERSHIP_MGT_EMPTY_DESCRIPTION = "dealership.empty.description";
+    public static final String DEALERSHIP_MGT_EMPTY_STATUS = "dealership.empty.status";
+    public static final String DEALERSHIP_MGT_EMPTY_SORTKEY = "dealership.empty.sortKey";
+    //-------------------------- dealership mgt-----------------------------------------------------------------------//
 }

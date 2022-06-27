@@ -74,6 +74,10 @@
         <put-attribute name="body" value="/WEB-INF/pages/warranty/supplier/supplier-mgt.jsp"/>
     </definition>
 
+    <definition name="dealershipview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/dealership/dealership-mgt.jsp"/>
+    </definition>
+
     <definition name="cusserachview" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/customermgt/customer-search.jsp"/>
     </definition>
@@ -110,18 +114,6 @@
         <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/txntype/txntype-mgt.jsp"/>
     </definition>
 
-    <definition name="channeltxntypeview" extends="home-template">
-        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/channeltxntype/channeltxntype-mgt.jsp"/>
-    </definition>
-
-    <definition name="smsmtportview" extends="home-template">
-        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/smsmtport/smsmtport-mgt.jsp"/>
-    </definition>
-
-    <definition name="categorytelcoview" extends="home-template">
-        <put-attribute name="body" value="/WEB-INF/pages/alerttypetelcomgt/categorytelco/categorytelco-mgt.jsp"/>
-    </definition>
-
     <definition name="viewuserparam" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/userparam/userparam-mgt.jsp"/>
     </definition>
@@ -132,14 +124,6 @@
 
     <definition name="templatemgtview" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/templatemgt/template-mgt.jsp"/>
-    </definition>
-
-    <definition name="smppconfigview" extends="home-template">
-        <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/smppconfig/smppconfig-mgt.jsp"/>
-    </definition>
-
-    <definition name="smsoutboxreportview" extends="home-template">
-        <put-attribute name="body" value="/WEB-INF/pages/reportmgt/smsoutbox/smsoutbox-mgt.jsp"/>
     </definition>
 
     <definition name="channelview" extends="home-template">

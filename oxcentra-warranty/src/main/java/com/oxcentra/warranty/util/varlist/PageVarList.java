@@ -26,4 +26,5 @@ public class PageVarList {
     public static final String PASSWORD_CHANGE_MGT_PAGE = "PWCM";
     public static final String CUSTOMER_SEARCH_MGT_PAGE = "CUSS";//---------sort key 7
     public static final String SUPPLIER_MGT_PAGE = "SUPPLIER";
+    public static final String DEALERSHIP_MGT_PAGE = "DEALERSHIP";
 }

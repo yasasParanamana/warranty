@@ -48,14 +48,14 @@ public class SupplierService {
     MessageSource messageSource;
 
     @Autowired
-    SupplierRepository sectionRepository;
+    SupplierRepository supplierRepository;
 
     private final String fields = "SupplierInputBean Supplier Code|Description|Status|Sort Key|Created Time|Last Updated Time|Last Updated User";
 
-    public long getCount(SupplierInputBean SupplierInputBean) {
+    public long getCount(SupplierInputBean supplierInputBean) {
         long count = 0;
         try {
-            count = sectionRepository.getDataCount(SupplierInputBean);
+            count = supplierRepository.getDataCount(supplierInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -64,16 +64,16 @@ public class SupplierService {
         return count;
     }
 
-    public List<Supplier> getSupplierSearchResultList(SupplierInputBean SupplierInputBean) {
-        List<Supplier> sectionList;
+    public List<Supplier> getSupplierSearchResultList(SupplierInputBean supplierInputBean) {
+        List<Supplier> supplierList;
         try {
             //set audit trace values
             audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
             audittrace.setPage(SUPPLIER_MGT_PAGE);
             audittrace.setTask(VIEW_TASK);
-            audittrace.setDescription("Get section search list.");
-            //Get section search list.
-            sectionList = sectionRepository.getSupplierSearchList(SupplierInputBean);
+            audittrace.setDescription("Get supplier search list.");
+            //Get supplier search list.
+            supplierList = supplierRepository.getSupplierSearchList(supplierInputBean);
         } catch (EmptyResultDataAccessException ere) {
             audittrace.setSkip(true);
             throw ere;
@@ -84,13 +84,13 @@ public class SupplierService {
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
         }
-        return sectionList;
+        return supplierList;
     }
 
-    public long getDataCountDual(SupplierInputBean SupplierInputBean) {
+    public long getDataCountDual(SupplierInputBean supplierInputBean) {
         long count = 0;
         try {
-            count = sectionRepository.getDataCountDual(SupplierInputBean);
+            count = supplierRepository.getDataCountDual(supplierInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -99,16 +99,16 @@ public class SupplierService {
         return count;
     }
 
-    public List<TempAuthRec> getSupplierSearchResultsDual(SupplierInputBean SupplierInputBean) {
-        List<TempAuthRec> sectionDualList = null;
+    public List<TempAuthRec> getSupplierSearchResultsDual(SupplierInputBean supplierInputBean) {
+        List<TempAuthRec> supplierDualList = null;
         try {
             //set audit trace values
             audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
             audittrace.setPage(SUPPLIER_MGT_PAGE);
             audittrace.setTask(VIEW_TASK);
-            audittrace.setDescription("Get section dual authentication search list.");
-            //Get section dual authentication search list
-//            sectionDualList = sectionRepository.getSupplierSearchResultsDual(SupplierInputBean);
+            audittrace.setDescription("Get supplier dual authentication search list.");
+            //Get supplier dual authentication search list
+//            supplierDualList = supplierRepository.getSupplierSearchResultsDual(supplierInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -117,31 +117,31 @@ public class SupplierService {
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
         }
-        return sectionDualList;
+        return supplierDualList;
     }
 
-    public String insertSupplier(SupplierInputBean SupplierInputBean, Locale locale) {
+    public String insertSupplier(SupplierInputBean supplierInputBean, Locale locale) {
         String message = "";
         String auditDescription = "";
         try {
-            Supplier supplier = sectionRepository.getSupplier(SupplierInputBean.getSupplierCode());
+            Supplier supplier = supplierRepository.getSupplier(supplierInputBean.getSupplierCode());
             if (supplier == null) {
                 //set the other values to input bean
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                SupplierInputBean.setCreatedTime(currentDate);
-                SupplierInputBean.setLastUpdatedTime(currentDate);
-                SupplierInputBean.setLastUpdatedUser(lastUpdatedUser);
-                SupplierInputBean.setCreatedUser(lastUpdatedUser);
+                supplierInputBean.setCreatedTime(currentDate);
+                supplierInputBean.setLastUpdatedTime(currentDate);
+                supplierInputBean.setLastUpdatedUser(lastUpdatedUser);
+                supplierInputBean.setCreatedUser(lastUpdatedUser);
 
                 //check the page dual auth enable or disable
                 if (commonRepository.checkPageIsDualAuthenticate(SUPPLIER_MGT_PAGE)) {
-                    auditDescription = "Requested to add section (code: " + SupplierInputBean.getSupplierCode() + ")";
+                    auditDescription = "Requested to add supplier (code: " + supplierInputBean.getSupplierCode() + ")";
 //                    message = this.insertDualAuthRecord(SupplierInputBean, TaskVarList.ADD_TASK);
                 } else {
-                    auditDescription = "Supplier (code: " + SupplierInputBean.getSupplierCode()+ ") added by " + sessionBean.getUsername();
-                    message = sectionRepository.insertSupplier(SupplierInputBean);
+                    auditDescription = "Supplier (code: " + supplierInputBean.getSupplierCode()+ ") added by " + sessionBean.getUsername();
+                    message = supplierRepository.insertSupplier(supplierInputBean);
                 }
             } else {
                 message = SUPPLIER_MGT_ADDED_SUCCESSFULLY;
@@ -173,27 +173,27 @@ public class SupplierService {
     }
 
     public Supplier getSupplier(String supplierCode) {
-        Supplier section;
+        Supplier supplier;
         try {
-            section = sectionRepository.getSupplier(supplierCode);
+            supplier = supplierRepository.getSupplier(supplierCode);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
             throw e;
         }
-        return section;
+        return supplier;
     }
 
-    public String updateSupplier(SupplierInputBean SupplierInputBean, Locale locale) {
+    public String updateSupplier(SupplierInputBean supplierInputBean, Locale locale) {
         String message = "";
         String auditDescription = "";
         Supplier existingSupplier = null;
         try {
-            existingSupplier = sectionRepository.getSupplier(SupplierInputBean.getSupplierCode());
+            existingSupplier = supplierRepository.getSupplier(supplierInputBean.getSupplierCode());
             if (existingSupplier != null) {
                 //check changed values
                 String oldValueAsString = this.getSupplierAsString(existingSupplier, true);
-                String newValueAsString = this.getSupplierAsString(SupplierInputBean, true);
+                String newValueAsString = this.getSupplierAsString(supplierInputBean, true);
                 //check the old value and new value
                 if (oldValueAsString.equals(newValueAsString)) {
                     message = MessageVarList.COMMON_ERROR_NO_VALUE_CHANGE;
@@ -201,16 +201,16 @@ public class SupplierService {
                     //set the other values to input bean
                     Date currentDate = commonRepository.getCurrentDate();
                     String lastUpdatedUser = sessionBean.getUsername();
-                    SupplierInputBean.setLastUpdatedTime(currentDate);
-                    SupplierInputBean.setLastUpdatedUser(lastUpdatedUser);
+                    supplierInputBean.setLastUpdatedTime(currentDate);
+                    supplierInputBean.setLastUpdatedUser(lastUpdatedUser);
 
                     //check the page dual auth enable or disable
                     if (commonRepository.checkPageIsDualAuthenticate(SUPPLIER_MGT_PAGE)) {
-                        auditDescription = "Requested to update section (code: " + SupplierInputBean.getSupplierCode() + ")";
+                        auditDescription = "Requested to update supplier (code: " + supplierInputBean.getSupplierCode() + ")";
 //                        message = this.insertDualAuthRecord(SupplierInputBean, TaskVarList.UPDATE_TASK);
                     } else {
-                        auditDescription = "Supplier (code: " + SupplierInputBean.getSupplierCode() + ") updated by " + sessionBean.getUsername();
-                        message = sectionRepository.updateSupplier(SupplierInputBean);
+                        auditDescription = "Supplier (code: " + supplierInputBean.getSupplierCode() + ") updated by " + sessionBean.getUsername();
+                        message = supplierRepository.updateSupplier(supplierInputBean);
                     }
                 }
             } else {
@@ -235,7 +235,7 @@ public class SupplierService {
                 //create audit record
                 audittrace.setField(fields);
                 audittrace.setOldvalue(this.getSupplierAsString(existingSupplier, false));
-                audittrace.setNewvalue(this.getSupplierAsString(SupplierInputBean, false));
+                audittrace.setNewvalue(this.getSupplierAsString(supplierInputBean, false));
             }
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
@@ -249,26 +249,26 @@ public class SupplierService {
         try {
             //check the page dual auth enable or disable
             if (commonRepository.checkPageIsDualAuthenticate(SUPPLIER_MGT_PAGE)) {
-                //get the existing section
-                Supplier section = sectionRepository.getSupplier(supplierCode);
-                if (section != null) {
-                    SupplierInputBean SupplierInputBean = new SupplierInputBean();
+                //get the existing supplier
+                Supplier supplier = supplierRepository.getSupplier(supplierCode);
+                if (supplier != null) {
+                    SupplierInputBean supplierInputBean = new SupplierInputBean();
                     //set the values to input bean
-                    SupplierInputBean.setSupplierCode(section.getSupplierCode());
-                    SupplierInputBean.setSupplierName(section.getSupplierName());
-                    SupplierInputBean.setStatus(section.getStatus());
-                    SupplierInputBean.setCreatedTime(section.getCreatedTime());
-                    SupplierInputBean.setLastUpdatedTime(section.getLastUpdatedTime());
-                    SupplierInputBean.setLastUpdatedUser(section.getLastUpdatedUser());
+                    supplierInputBean.setSupplierCode(supplier.getSupplierCode());
+                    supplierInputBean.setSupplierName(supplier.getSupplierName());
+                    supplierInputBean.setStatus(supplier.getStatus());
+                    supplierInputBean.setCreatedTime(supplier.getCreatedTime());
+                    supplierInputBean.setLastUpdatedTime(supplier.getLastUpdatedTime());
+                    supplierInputBean.setLastUpdatedUser(supplier.getLastUpdatedUser());
                     //set audit description
-                    auditDescription = "Requested to deleted section (code: " + supplierCode + ")";
+                    auditDescription = "Requested to deleted supplier (code: " + supplierCode + ")";
                     //insert the record to dual auth table
 //                    message = this.insertDualAuthRecord(SupplierInputBean, TaskVarList.DELETE_TASK);
                 } else {
                     message = SUPPLIER_MGT_NORECORD_FOUND;
                 }
             } else {
-                message = sectionRepository.deleteSupplier(supplierCode);
+                message = supplierRepository.deleteSupplier(supplierCode);
                 auditDescription = "Supplier (Code: " + supplierCode + ") deleted by " + sessionBean.getUsername();
             }
         } catch (EmptyResultDataAccessException ere) {
@@ -300,45 +300,45 @@ public class SupplierService {
     public String confirmSupplier(String supplierCode) {
         String message = "";
         String auditDescription = "";
-        SupplierInputBean SupplierInputBean = null;
+        SupplierInputBean supplierInputBean = null;
         Supplier existingSupplier = null;
         try {
             //get tmp auth record
             TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(supplierCode);
             if (tempAuthRecBean != null) {
-                SupplierInputBean = new SupplierInputBean();
-//                SupplierInputBean.setId(tempAuthRecBean.getKey1());
-//                SupplierInputBean.setDescription(tempAuthRecBean.getKey2());
-//                SupplierInputBean.setStatus(tempAuthRecBean.getKey3());
-//                SupplierInputBean.setSortKey(tempAuthRecBean.getKey4());
-                SupplierInputBean.setLastUpdatedTime(commonRepository.getCurrentDate());
-                SupplierInputBean.setLastUpdatedUser(sessionBean.getUsername());
+                supplierInputBean = new SupplierInputBean();
+//                supplierInputBean.setId(tempAuthRecBean.getKey1());
+//                supplierInputBean.setDescription(tempAuthRecBean.getKey2());
+//                supplierInputBean.setStatus(tempAuthRecBean.getKey3());
+//                supplierInputBean.setSortKey(tempAuthRecBean.getKey4());
+                supplierInputBean.setLastUpdatedTime(commonRepository.getCurrentDate());
+                supplierInputBean.setLastUpdatedUser(sessionBean.getUsername());
 
                 //get the existing session
                 try {
 //                    String code = SupplierInputBean.getId();
-                    existingSupplier = sectionRepository.getSupplier(supplierCode);
+                    existingSupplier = supplierRepository.getSupplier(supplierCode);
                 } catch (EmptyResultDataAccessException e) {
                     existingSupplier = null;
                 }
 
                 if (TaskVarList.ADD_TASK.equals(tempAuthRecBean.getTask())) {
                     if (existingSupplier == null) {
-                        SupplierInputBean.setCreatedUser(sessionBean.getUsername());
-                        SupplierInputBean.setCreatedTime(commonRepository.getCurrentDate());
-                        message = sectionRepository.insertSupplier(SupplierInputBean);
+                        supplierInputBean.setCreatedUser(sessionBean.getUsername());
+                        supplierInputBean.setCreatedTime(commonRepository.getCurrentDate());
+                        message = supplierRepository.insertSupplier(supplierInputBean);
                     } else {
                         message = MessageVarList.SUPPLIER_MGT_ALREADY_EXISTS;
                     }
                 } else if (TaskVarList.UPDATE_TASK.equals(tempAuthRecBean.getTask())) {
                     if (existingSupplier != null) {
-                        message = sectionRepository.updateSupplier(SupplierInputBean);
+                        message = supplierRepository.updateSupplier(supplierInputBean);
                     } else {
                         message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
                     }
                 } else if (TaskVarList.DELETE_TASK.equals(tempAuthRecBean.getTask())) {
                     if (existingSupplier != null) {
-                        message = sectionRepository.deleteSupplier(SupplierInputBean.getSupplierCode());
+                        message = supplierRepository.deleteSupplier(supplierInputBean.getSupplierCode());
                     } else {
                         message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
                     }
@@ -351,7 +351,7 @@ public class SupplierService {
                     if (message.isEmpty()) {
                         StringBuilder auditDesBuilder = new StringBuilder();
                         auditDesBuilder.append("Approved performing  '").append(tempAuthRecBean.getTask())
-                                .append("' operation on task (task code: ").append(SupplierInputBean.getSupplierCode())
+                                .append("' operation on task (task code: ").append(supplierInputBean.getSupplierCode())
                                 .append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" approved by ")
                                 .append(sessionBean.getUsername());
 
@@ -386,7 +386,7 @@ public class SupplierService {
                 audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
                 audittrace.setDescription(auditDescription);
                 audittrace.setField(fields);
-                audittrace.setNewvalue(this.getSupplierAsString(SupplierInputBean, false));
+                audittrace.setNewvalue(this.getSupplierAsString(supplierInputBean, false));
                 audittrace.setOldvalue(this.getSupplierAsString(existingSupplier, false));
             }
             //set audit to session bean
@@ -395,18 +395,18 @@ public class SupplierService {
         return message;
     }
 
-    public String rejectSupplier(String sectionCode) {
+    public String rejectSupplier(String supplierCode) {
         String message = "";
         String auditDescription = "";
         try {
             //get temp auth record
-            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(sectionCode);
+            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(supplierCode);
             if (tempAuthRecBean != null) {
-                message = commonRepository.updateTempAuthRecord(sectionCode, StatusVarList.STATUS_AUTH_REJ);
+                message = commonRepository.updateTempAuthRecord(supplierCode, StatusVarList.STATUS_AUTH_REJ);
                 if (message.isEmpty()) {
                     //create audit description
                     StringBuilder auditDesBuilder = new StringBuilder();
-                    auditDesBuilder.append("Rejected performing  '").append(tempAuthRecBean.getTask()).append("' operation on section (code: ").append(tempAuthRecBean.getKey1()).append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" rejected by ").append(sessionBean.getUsername());
+                    auditDesBuilder.append("Rejected performing  '").append(tempAuthRecBean.getTask()).append("' operation on supplier (code: ").append(tempAuthRecBean.getKey1()).append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" rejected by ").append(sessionBean.getUsername());
                     auditDescription = auditDesBuilder.toString();
                 } else {
                     message = MessageVarList.COMMON_ERROR_PROCESS;
@@ -459,113 +459,113 @@ public class SupplierService {
 //        return message;
 //    }
 
-    private String getSupplierAsString(SupplierInputBean SupplierInputBean, boolean checkChanges) {
-        StringBuilder sectionStringBuilder = new StringBuilder();
+    private String getSupplierAsString(SupplierInputBean supplierInputBean, boolean checkChanges) {
+        StringBuilder supplierStringBuilder = new StringBuilder();
         try {
-            if (SupplierInputBean != null) {
+            if (supplierInputBean != null) {
 
-                if (SupplierInputBean.getSupplierName()!= null && !SupplierInputBean.getSupplierName().isEmpty()) {
-                    sectionStringBuilder.append(SupplierInputBean.getSupplierName());
+                if (supplierInputBean.getSupplierName()!= null && !supplierInputBean.getSupplierName().isEmpty()) {
+                    supplierStringBuilder.append(supplierInputBean.getSupplierName());
                 } else {
-                    sectionStringBuilder.append("error");
+                    supplierStringBuilder.append("error");
                 }
 
-                sectionStringBuilder.append("|");
-                if (SupplierInputBean.getSupplierPhone() != null && !SupplierInputBean.getSupplierPhone().isEmpty()) {
-                    sectionStringBuilder.append(SupplierInputBean.getSupplierPhone());
+                supplierStringBuilder.append("|");
+                if (supplierInputBean.getSupplierPhone() != null && !supplierInputBean.getSupplierPhone().isEmpty()) {
+                    supplierStringBuilder.append(supplierInputBean.getSupplierPhone());
                 } else {
-                    sectionStringBuilder.append("--");
+                    supplierStringBuilder.append("--");
                 }
 
-                sectionStringBuilder.append("|");
-                if (SupplierInputBean.getStatus() != null && !SupplierInputBean.getStatus().isEmpty()) {
-                    sectionStringBuilder.append(SupplierInputBean.getStatus());
+                supplierStringBuilder.append("|");
+                if (supplierInputBean.getStatus() != null && !supplierInputBean.getStatus().isEmpty()) {
+                    supplierStringBuilder.append(supplierInputBean.getStatus());
                 } else {
-                    sectionStringBuilder.append("--");
+                    supplierStringBuilder.append("--");
                 }
 
                 if (!checkChanges) {
-                    sectionStringBuilder.append("|");
-                    if (SupplierInputBean.getCreatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(SupplierInputBean.getCreatedTime()));
+                    supplierStringBuilder.append("|");
+                    if (supplierInputBean.getCreatedTime() != null) {
+                        supplierStringBuilder.append(common.formatDateToString(supplierInputBean.getCreatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (SupplierInputBean.getLastUpdatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(SupplierInputBean.getLastUpdatedTime()));
+                    supplierStringBuilder.append("|");
+                    if (supplierInputBean.getLastUpdatedTime() != null) {
+                        supplierStringBuilder.append(common.formatDateToString(supplierInputBean.getLastUpdatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (SupplierInputBean.getLastUpdatedUser() != null) {
-                        sectionStringBuilder.append(SupplierInputBean.getLastUpdatedUser());
+                    supplierStringBuilder.append("|");
+                    if (supplierInputBean.getLastUpdatedUser() != null) {
+                        supplierStringBuilder.append(supplierInputBean.getLastUpdatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
                 }
             }
         } catch (Exception e) {
             throw e;
         }
-        return sectionStringBuilder.toString();
+        return supplierStringBuilder.toString();
     }
 
-    private String getSupplierAsString(Supplier section, boolean checkChanges) {
-        StringBuilder sectionStringBuilder = new StringBuilder();
+    private String getSupplierAsString(Supplier supplier, boolean checkChanges) {
+        StringBuilder supplierStringBuilder = new StringBuilder();
         try {
-            if (section != null) {
-                if (section.getSupplierName()!= null && !section.getSupplierName().isEmpty()) {
-                    sectionStringBuilder.append(section.getSupplierName());
+            if (supplier != null) {
+                if (supplier.getSupplierName()!= null && !supplier.getSupplierName().isEmpty()) {
+                    supplierStringBuilder.append(supplier.getSupplierName());
                 } else {
-                    sectionStringBuilder.append("error");
+                    supplierStringBuilder.append("error");
                 }
 
-                sectionStringBuilder.append("|");
-                if (section.getSupplierPhone() != null && !section.getSupplierPhone().isEmpty()) {
-                    sectionStringBuilder.append(section.getSupplierPhone());
+                supplierStringBuilder.append("|");
+                if (supplier.getSupplierPhone() != null && !supplier.getSupplierPhone().isEmpty()) {
+                    supplierStringBuilder.append(supplier.getSupplierPhone());
                 } else {
-                    sectionStringBuilder.append("--");
+                    supplierStringBuilder.append("--");
                 }
 
-                sectionStringBuilder.append("|");
-                if (section.getStatus() != null && !section.getStatus().isEmpty()) {
-                    sectionStringBuilder.append(section.getStatus());
+                supplierStringBuilder.append("|");
+                if (supplier.getStatus() != null && !supplier.getStatus().isEmpty()) {
+                    supplierStringBuilder.append(supplier.getStatus());
                 } else {
-                    sectionStringBuilder.append("--");
+                    supplierStringBuilder.append("--");
                 }
 
 
                 if (!checkChanges) {
-                    sectionStringBuilder.append("|");
-                    if (section.getCreatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(section.getCreatedTime()));
+                    supplierStringBuilder.append("|");
+                    if (supplier.getCreatedTime() != null) {
+                        supplierStringBuilder.append(common.formatDateToString(supplier.getCreatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
 
 
-                    sectionStringBuilder.append("|");
-                    if (section.getLastUpdatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(section.getLastUpdatedTime()));
+                    supplierStringBuilder.append("|");
+                    if (supplier.getLastUpdatedTime() != null) {
+                        supplierStringBuilder.append(common.formatDateToString(supplier.getLastUpdatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (section.getLastUpdatedUser() != null) {
-                        sectionStringBuilder.append(section.getLastUpdatedUser());
+                    supplierStringBuilder.append("|");
+                    if (supplier.getLastUpdatedUser() != null) {
+                        supplierStringBuilder.append(supplier.getLastUpdatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
+                        supplierStringBuilder.append("--");
                     }
                 }
             }
         } catch (Exception e) {
             throw e;
         }
-        return sectionStringBuilder.toString();
+        return supplierStringBuilder.toString();
     }
 
 

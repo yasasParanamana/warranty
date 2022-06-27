@@ -62,10 +62,12 @@
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'sectionCode', 'value': $('#sectionCode').val()},
-                        {'name': 'description', 'value': $('#description').val()},
+                        {'name': 'supplierCode', 'value': $('#supplierCode').val()},
+                        {'name': 'supplierName', 'value': $('#supplierName').val()},
+                        {'name': 'supplierPhone', 'value': $('#supplierPhone').val()},
+                        {'name': 'supplierEmail', 'value': $('#supplierEmail').val()},
+                        {'name': 'supplierAddress', 'value': $('#supplierAddress').val()},
                         {'name': 'status', 'value': $('#status').val()},
-                        {'name': 'sortKey', 'value': $('#sortKey').val()}
                     );
                     $.ajax({
                         dataType: 'json',
@@ -84,7 +86,7 @@
                 bDeferRender: true,
                 responsive: true,
                 lengthMenu: [10, 20, 50, 100],
-                searching: true,
+                searching: false,
                 initComplete: function (settings, json) {
                     document.getElementById('data-table-loading').style.display = "none";
                     document.getElementById('data-table-wrapper').style.display = "block";
@@ -96,7 +98,7 @@
                     {
                         title: "Section Code",
                         targets: 0,
-                        mDataProp: "sectionCode",
+                        mDataProp: "supplierCode",
                         defaultContent: "--"
                     },
                     {
@@ -109,35 +111,7 @@
                         title: "Status",
                         targets: 2,
                         mDataProp: "status",
-                        defaultContent: "--",
-                        render: function (data, type, full, meta) {
-                            var status = {
-                                'Active': {
-                                    'title': 'Active',
-                                    'class': ' label-light-info'
-                                },
-                                'Inactive': {
-                                    'title': 'Inactive',
-                                    'class': ' label-light-danger'
-                                },
-                                'New': {
-                                    'title': 'New',
-                                    'class': ' label-light-primary'
-                                },
-                                'Changed': {
-                                    'title': 'Changed',
-                                    'class': ' label-light-success'
-                                },
-                                'Reset': {
-                                    'title': 'Reset',
-                                    'class': ' label-light-warning'
-                                }
-                            };
-                            if (typeof status[data] === 'undefined') {
-                                return data;
-                            }
-                            return '<span class="label label-lg font-weight-bold' + status[data].class + ' label-inline">' + status[data].title + '</span>';
-                        },
+                        defaultContent: "--"
                     },
                     {
                         title: "Sort Key",
@@ -146,18 +120,21 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "Created User",
-                        targets: 4,
-                        mDataProp: "createdUser",
-                        defaultContent: "--"
-                    },
-                    {
                         label: 'Created Time',
                         name: 'createdTime',
-                        targets: 5,
+                        targets: 4,
                         mDataProp: "createdTime",
                         render: function (data) {
-                            return moment(data).format("YYYY-MM-DD")
+                            return moment(data).format("YYYY-MM-DD hh:mm a")
+                        }
+                    },
+                    {
+                        title: "Last Updated Time",
+                        targets: 5,
+                        mDataProp: "lastUpdatedTime",
+                        defaultContent: "--",
+                        render: function (data) {
+                            return moment(data).format("YYYY-MM-DD hh:mm a")
                         }
                     },
                     {
@@ -167,23 +144,14 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "Last Updated Time",
-                        targets: 7,
-                        mDataProp: "lastUpdatedTime",
-                        defaultContent: "--",
-                        render: function (data) {
-                            return moment(data).format("YYYY-MM-DD")
-                        }
-                    },
-                    {
                         visible: ${section.vupdate},
                         title: "Update",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editTaskInit(\'' + full.sectionCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editSection(\'' + full.supplierCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
-                        targets: 8,
+                        targets: 7,
                         defaultContent: "--"
                     },
                     {
@@ -192,72 +160,13 @@
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteTaskInit(\'' + full.sectionCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
+                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteSection(\'' + full.supplierCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
-                        targets: 9,
+                        targets: 8,
                         defaultContent: "--"
                     }
-                    <%--        {--%>
-                    <%--            visible: ${section.vupdate},--%>
-                    <%--            title: "Update",--%>
-                    <%--            sortable: false,--%>
-                    <%--            className: "dt-center",--%>
-                    <%--            mRender: function (data, type, full) {--%>
-                    <%--                return '<div>\n\--%>
-                    <%--<c:if test="${section.vupdate}"><a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2"  title="Update" id=' + full.sectionCode + ' onclick="editSection(\'' + full.sectionCode + '\')"><span class="svg-icon svg-icon-md"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/><rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/></g></svg></span></a>\n\--%>
-                    <%--</c:if>\</div>';--%>
-                    <%--        },--%>
-                    <%--            targets: 7,--%>
-                    <%--            defaultContent: "--"--%>
-                    <%--        },--%>
-                    <%--        {--%>
-                    <%--            visible: ${section.vdelete},--%>
-                    <%--            title: "Delete",--%>
-                    <%--            sortable: false,--%>
-                    <%--            className: "dt-center",--%>
-                    <%--            mRender: function (data, type, full) {--%>
-                    <%--                return '<div>\n\--%>
-                    <%--<c:if test="${section.vdelete}"><a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete" id=' + full.sectionCode + ' onclick="deleteSection(\'' + full.sectionCode + '\')"><span class="svg-icon svg-icon-md"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/><path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/></g></svg></span></a>\n\--%>
-                    <%--</c:if>\</div>';--%>
-                    <%--        },--%>
-                    <%--            targets: 8,--%>
-                    <%--            defaultContent: "--"--%>
-                    <%--        }--%>
                 ]
             });
-        }
-
-        function editTaskInit(sectionCode) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/getSection.json",
-                data: {
-                    sectionCode: sectionCode
-                },
-                dataType: "json",
-                type: 'GET',
-                contentType: "application/json",
-                success: function (data) {
-                    $('#responseMsgUpdate').hide();
-
-                    $('#eSectionCode').val(data.sectionCode);
-                    $('#eSectionCode').attr('readOnly', true);
-
-                    $('#eDescription').val(data.description);
-                    $('#eStatus').val(data.status);
-                    $('#eSortKey').val(data.sortKey);
-                    $('#modalUpdateSection').modal('toggle');
-                    $('#modalUpdateSection').modal('show');
-                },
-                error: function (data) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-        }
-
-        function deleteTaskInit(keyval) {
-            $('#deleteCodeCommon').val(keyval);
-            $('#modalDeleteCommon').modal('toggle');
-            $('#modalDeleteCommon').modal('show');
         }
 
         function loadDataTableDual() {
@@ -294,7 +203,7 @@
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'sectionCode', 'value': $('#sectionCode').val()},
+                        {'name': 'supplierCode', 'value': $('#supplierCode').val()},
                         {'name': 'description', 'value': $('#description').val()},
                         {'name': 'status', 'value': $('#status').val()},
                         {'name': 'sortKey', 'value': $('#sortKey').val()}
@@ -350,35 +259,7 @@
                         title: "Status",
                         targets: 3,
                         mDataProp: "key3",
-                        defaultContent: "--",
-                        render: function (data, type, full, meta) {
-                            var status = {
-                                'Active': {
-                                    'title': 'Active',
-                                    'class': ' label-light-info'
-                                },
-                                'Inactive': {
-                                    'title': 'Inactive',
-                                    'class': ' label-light-danger'
-                                },
-                                'New': {
-                                    'title': 'New',
-                                    'class': ' label-light-primary'
-                                },
-                                'Changed': {
-                                    'title': 'Changed',
-                                    'class': ' label-light-success'
-                                },
-                                'Reset': {
-                                    'title': 'Reset',
-                                    'class': ' label-light-warning'
-                                }
-                            };
-                            if (typeof status[data] === 'undefined') {
-                                return data;
-                            }
-                            return '<span class="label label-lg font-weight-bold' + status[data].class + ' label-inline">' + status[data].title + '</span>';
-                        },
+                        defaultContent: "--"
                     },
                     {
                         title: "Sort Key",
@@ -387,14 +268,8 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "Task",
-                        targets: 5,
-                        mDataProp: "task",
-                        defaultContent: "--"
-                    },
-                    {
                         title: "Created Time",
-                        targets: 6,
+                        targets: 5,
                         mDataProp: "createdTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -403,7 +278,7 @@
                     },
                     {
                         title: "Last Updated Time",
-                        targets: 7,
+                        targets: 6,
                         mDataProp: "lastUpdatedTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -412,7 +287,7 @@
                     },
                     {
                         title: "Last Updated User",
-                        targets: 8,
+                        targets: 7,
                         mDataProp: "lastUpdatedUser",
                         defaultContent: "--"
                     },
@@ -421,10 +296,10 @@
                         title: "Confirm",
                         sortable: false,
                         className: "dt-center",
-                        mRender: function (data, type, full, meta) {
+                        mRender: function (data, type, full) {
                             return '<button id="confirmBtn" class="btn btn-default btn-sm"  onclick="confirmSection(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-confirm.svg" alt=""></button>';
                         },
-                        targets: 9,
+                        targets: 8,
                         defaultContent: "--"
                     },
                     {
@@ -432,15 +307,47 @@
                         title: "Reject",
                         sortable: false,
                         className: "dt-center",
-                        mRender: function (data, type, full, meta) {
+                        mRender: function (data, type, full) {
                             return '<button id="rejectBtn" class="btn btn-default btn-sm" onclick="rejectSection(\'' + full.id + '\');"><img src="${pageContext.request.contextPath}/resources/images/action-reject.svg" alt=""></button>';
                         },
-                        targets: 10,
+                        targets: 9,
                         defaultContent: "--"
                     }
-
                 ]
             });
+        }
+
+        function editSection(supplierCode) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/getSection.json",
+                data: {
+                    supplierCode: supplierCode
+                },
+                dataType: "json",
+                type: 'GET',
+                contentType: "application/json",
+                success: function (data) {
+                    $('#responseMsgUpdate').hide();
+
+                    $('#eSectionCode').val(data.supplierCode);
+                    $('#eSectionCode').attr('readOnly', true);
+
+                    $('#eDescription').val(data.description);
+                    $('#eStatus').val(data.status);
+                    $('#eSortKey').val(data.sortKey);
+                    $('#modalUpdateSection').modal('toggle');
+                    $('#modalUpdateSection').modal('show');
+                },
+                error: function (data) {
+                    window.location = "${pageContext.request.contextPath}/logout.htm";
+                }
+            });
+        }
+
+        function deleteSection(keyval) {
+            $('#deleteCodeCommon').val(keyval);
+            $('#modalDeleteCommon').modal('toggle');
+            $('#modalDeleteCommon').modal('show');
         }
 
         function confirmSection(keyval) {
@@ -461,7 +368,7 @@
         }
 
         function resetSearch() {
-            $('#sectionCode').val("");
+            $('#supplierCode').val("");
             $('#description').val("");
             $('#status').val("");
             $('#sortKey').val("");
@@ -479,7 +386,7 @@
             $.ajax({
                 type: 'POST',
                 url: '${pageContext.request.contextPath}/deleteSection.json',
-                data: {sectionCode: $('#deleteCodeCommon').val()},
+                data: {supplierCode: $('#deleteCodeCommon').val()},
                 beforeSend: function (xhr) {
                     if (header && token) {
                         xhr.setRequestHeader(header, token);
@@ -542,11 +449,6 @@
             });
         }
 
-        function searchStart() {
-            oTable.fnDraw();
-            oTableDual.fnDraw();
-        }
-
         function rejectCommon() {
             $.ajax({
                 type: 'POST',
@@ -582,209 +484,188 @@
         }
     </script>
 </head>
-
-
-<!--begin::Content-->
-<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-    <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
-            <div class="d-flex align-items-center flex-wrap mr-1">
-                <!--begin::Page Heading-->
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Section Management</h5>
-                    <!--end::Page Title-->
-                </div>
-                <!--end::Page Heading-->
-            </div>
-            <!--end::Info-->
-        </div>
-    </div>
-    <!--end::Subheader-->
-    <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!--begin::Card-->
-                    <div class="card card-custom gutter-b">
-                        <div class="card-header">
-                            <h3 class="card-title">Search Section</h3>
+<body>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- start search box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Search Section</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                                    title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
                         </div>
-                        <!--begin::Form-->
+                    </div>
+
+                    <div class="card-body">
                         <form:form class="form" id="sectionform" name="sectionform" action="addSection"
                                    theme="simple" method="post" modelAttribute="section">
-                            <%--                        <form class="form">--%>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-lg-3">
-                                        <label>Section Code:</label>
-                                        <div class="input-group">
-                                            <input id="sectionCode" name="sectionCode" type="text"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                                   maxlength="8" class="form-control"
-                                                   placeholder="Section Code">
-                                        </div>
-                                        <span class="form-text text-muted">Please enter section code</span>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="supplierCode">Section Code</label>
+                                        <input id="supplierCode" name="supplierCode" type="text"
+                                               onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
+                                               maxlength="8" class="form-control form-control-sm"
+                                               placeholder="Section Code">
                                     </div>
-                                    <div class="col-lg-3">
-                                        <label>Description:</label>
-                                        <div class="input-group">
-                                            <input id="description" name="description" type="text"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                                   maxlength="128" class="form-control"
-                                                   placeholder="Description">
-                                        </div>
-                                        <span class="form-text text-muted">Please enter description</span>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <input id="description" name="description" type="text"
+                                               onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
+                                               maxlength="128" class="form-control form-control-sm"
+                                               placeholder="Description">
                                     </div>
-                                    <div class="col-lg-3">
-                                        <label>Status:</label>
-                                        <select id="status" class="form-control">
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select id="status" name="status" class="form-control form-control-sm">
                                             <option selected value="">Select Status</option>
                                             <c:forEach items="${section.statusList}" var="status">
                                                 <option value="${status.statusCode}">${status.description}</option>
                                             </c:forEach>
                                         </select>
-                                        <span class="form-text text-muted">Please select status</span>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label>Sort Key:</label>
-                                        <div class="input-group">
-                                            <input id="sortKey" name="sortKey" type="number"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^0-9 ]/g, ''))"
-                                                   maxlength="3" class="form-control"
-                                                   placeholder="Sort Key">
-                                        </div>
-                                        <span class="form-text text-muted">Please enter sort key</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
-                                            Search
-                                        </button>
-                                        <button type="reset" class="btn btn-sm btn-secondary" onclick="resetSearch()">
-                                            Reset
-                                        </button>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="sortKey">Sort Key</label>
+                                        <input id="sortKey" name="sortKey" type="text"
+                                               onkeyup="$(this).val($(this).val().replace(/[^0-9 ]/g, ''))"
+                                               maxlength="128" class="form-control form-control-sm"
+                                               placeholder="Sort Key">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-between">
+                                <div class="col-md-10 col-sm-8">
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-4">
+                                            <button type="button" class="btn btn-block btn-primary btn-sm"
+                                                    onclick="search()">Search
+                                            </button>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-4">
+                                            <button type="button" class="btn btn-block btn-secondary btn-sm"
+                                                    onclick="resetSearch()">Reset
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!--end::Form-->
+                                <c:if test="${section.vadd}">
+                                    <div class="col-md-2 col-sm-4">
+                                        <button type="button" class="btn btn-block btn-primary btn-sm"
+                                                onclick="openAddModal()">Add Section
+                                        </button>
+                                    </div>
+                                </c:if>
                             </div>
                         </form:form>
-                        <!--end::Card-->
                     </div>
                 </div>
-            </div>
-            <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <div class="card-header flex-wrap border-0 pt-1 pb-0">
-                    <div class="card-title">
-                        <h3 class="card-label">Section Management
-                            <span class="d-block text-muted pt-2 font-size-sm">Section list</span></h3>
-                    </div>
-                    <div class="card-toolbar">
-                        <!--begin::Button-->
-                        <c:if test="${section.vadd}">
-                            <a href="#" onclick="openAddModal()" class="btn btn-sm btn-primary font-weight-bolder">
-											<span class="svg-icon svg-icon-md">
-												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg"
-                                                     width="24px"
-                                                     height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<circle fill="#000000" cx="9" cy="15" r="6"/>
-														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                                                              fill="#000000" opacity="0.3"/>
-													</g>
-												</svg>
-                                                <!--end::Svg Icon-->
-											</span>New Record</a>
-                        </c:if>
-                        <!--end::Button-->
-                    </div>
-                </div>
-                <div class="card-body">
-                    <!--begin: Datatable-->
-                    <div id="data-table-loading" style="display: block;">
-                        <div class="loader"></div>
-                        <div class="loading-text">Loading..</div>
-                    </div>
-                    <div id="data-table-wrapper" style="display: none;">
-                        <table class="table table-separate table-head-custom table-checkable" id="table">
-                            <thead>
-                            <tr>
-                                <th>Section Code</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Sort Key</th>
-                                <th>Created User</th>
-                                <th>Created Time</th>
-                                <th>Last Updated User</th>
-                                <th>Last Updated Time</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <!--end: Datatable-->
-                    </div>
-                </div>
-            </div>
-            <!--end::Card-->
-            <!--begin::Card-->
-            <c:if test="${section.vdualauth}">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                        <div class="card-title">
-                            <h3 class="card-label">Sections to be confirmed</h3>
+
+                <!-- start data table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Section</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                                    title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
                         </div>
                     </div>
+
                     <div class="card-body">
-                        <!--begin: Datatable-->
+                        <div id="data-table-loading" style="display: block;">
+                            <div class="loader"></div>
+                            <div class="loading-text">Loading..</div>
+                        </div>
+                        <div id="data-table-wrapper" style="display: none;">
+                            <div id="tablediv">
+                                <table id="table" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Section Code</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Sort Key</th>
+                                        <th>Created Time</th>
+                                        <th>Last Updated Time</th>
+                                        <th>Last Updated User</th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <c:if test="${section.vdualauth}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Sections to be confirmed</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                        data-toggle="tooltip" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
                         <div id="data-table-loading-dual" style="display: block;">
                             <div class="loader"></div>
                             <div class="loading-text">Loading..</div>
                         </div>
+
                         <div id="data-table-wrapper-dual" style="display: none;">
-                            <table class="table table-separate table-head-custom table-checkable" id="tabledual">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Section Code</th>
-                                    <th>Description</th>
-                                    <th>Status</th>
-                                    <th>Sort Key</th>
-                                    <th>Task</th>
-                                    <th>Created Time</th>
-                                    <th>Last Updated Time</th>
-                                    <th>Last Updated User</th>
-                                    <th>Confirm</th>
-                                    <th>Reject</th>
-                                </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <!--end: Datatable-->
+                            <div id="tabledivdual">
+                                <table id="tabledual" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Section Code</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Sort Key</th>
+                                        <th>Task</th>
+                                        <th>Created Time</th>
+                                        <th>Last Updated Time</th>
+                                        <th>Last Updated User</th>
+                                        <th>Confirm</th>
+                                        <th>Reject</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <!--end::Card-->
-                    <!--end::Container-->
-                </div>
-            </c:if>
-            <!--end::Entry-->
+                </c:if>
+            </div>
         </div>
-        <!--end::Container-->
     </div>
-    <!--end::Entry-->
-</div>
+</section>
 <!-- start include jsp files -->
 <jsp:include page="section-mgt-add.jsp"/>
 <jsp:include page="section-mgt-update.jsp"/>
@@ -792,4 +673,5 @@
 <jsp:include page="../../common/confirm-modal.jsp"/>
 <jsp:include page="../../common/reject-modal.jsp"/>
 <!-- end include jsp files -->
+</body>
 </html>
