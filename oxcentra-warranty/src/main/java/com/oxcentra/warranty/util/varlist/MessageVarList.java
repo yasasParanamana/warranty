@@ -352,16 +352,16 @@ public class MessageVarList {
     //-------------------------- department mgt-----------------------------------------------------------------------//
 
     //-------------------------- supplier mgt-----------------------------------------------------------------------//
-    public static final String SUPPLIER_MGT_ADDED_SUCCESSFULLY = "section.added.success";
-    public static final String SUPPLIER_MGT_UPDATE_SUCCESSFULLY = "section.updated.success";
-    public static final String SUPPLIER_MGT_DELETE_SUCCESSFULLY = "section.deleted.success";
-    public static final String SUPPLIER_MGT_CONFIRM_SUCCESSFULLY = "section.confirm.success";
-    public static final String SUPPLIER_MGT_REJECT_SUCCESSFULLY = "section.reject.success";
-    public static final String SUPPLIER_MGT_ALREADY_EXISTS = "section.already.exists";
-    public static final String SUPPLIER_MGT_NORECORD_FOUND = "section.norecord.found";
-    public static final String SUPPLIER_MGT_EMPTY_SECTIONCODE = "section.empty.sectionCode";
-    public static final String SUPPLIER_MGT_EMPTY_DESCRIPTION = "section.empty.description";
-    public static final String SUPPLIER_MGT_EMPTY_STATUS = "section.empty.status";
-    public static final String SUPPLIER_MGT_EMPTY_SORTKEY = "section.empty.sortKey";
+    public static final String SUPPLIER_MGT_ADDED_SUCCESSFULLY = "supplier.added.success";
+    public static final String SUPPLIER_MGT_UPDATE_SUCCESSFULLY = "supplier.updated.success";
+    public static final String SUPPLIER_MGT_DELETE_SUCCESSFULLY = "supplier.deleted.success";
+    public static final String SUPPLIER_MGT_CONFIRM_SUCCESSFULLY = "supplier.confirm.success";
+    public static final String SUPPLIER_MGT_REJECT_SUCCESSFULLY = "supplier.reject.success";
+    public static final String SUPPLIER_MGT_ALREADY_EXISTS = "supplier.already.exists";
+    public static final String SUPPLIER_MGT_NORECORD_FOUND = "supplier.norecord.found";
+    public static final String SUPPLIER_MGT_EMPTY_SECTIONCODE = "supplier.empty.sectionCode";
+    public static final String SUPPLIER_MGT_EMPTY_DESCRIPTION = "supplier.empty.description";
+    public static final String SUPPLIER_MGT_EMPTY_STATUS = "supplier.empty.status";
+    public static final String SUPPLIER_MGT_EMPTY_SORTKEY = "supplier.empty.sortKey";
     //-------------------------- section mgt-----------------------------------------------------------------------//
 }

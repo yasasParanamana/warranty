@@ -25,21 +25,56 @@
                 <div class="modal-body">
                     <div class="form-group"><span id="responseMsgUpdate"></span></div>
 
-
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">
-                            supplier Code<span class="text-danger">*</span>
+                            Supplier Code<span class="text-danger">*</span>
                         </label>
                         <div class="col-sm-8">
                             <form:input path="supplierCode" name="supplierCode" type="text"
                                         class="form-control form-control-sm"
-                                        id="eSupplierCode" maxlength="8" placeholder="Supplier Code"
-                                        onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g, ''))"/>
+                                        id="eSupplierCode" maxlength="15" placeholder="Supplier Code" />
                         </div>
                     </div>
-
-
-
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Supplier Name<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <form:input path="supplierName" name="supplierName" type="text"
+                                        class="form-control form-control-sm"
+                                        id="eSupplierName" maxlength="50" placeholder="Supplier Name" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Supplier Phone<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <form:input path="supplierPhone" name="supplierPhone" type="text"
+                                        class="form-control form-control-sm"
+                                        id="eSupplierPhone" maxlength="50" placeholder="Supplier Phone" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Supplier Email<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <form:input path="supplierEmail" name="supplierEmail" type="text"
+                                        class="form-control form-control-sm"
+                                        id="eSupplierEmail" maxlength="50" placeholder="Supplier Email" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">
+                            Supplier Address<span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-8">
+                            <form:input path="supplierAddress" name="supplierAddress" type="text"
+                                        class="form-control form-control-sm"
+                                        id="eSupplierAddress" maxlength="50" placeholder="Supplier Address" />
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Status<span
                                 class="text-danger">*</span></label>
@@ -107,14 +142,19 @@
         $.ajax({
             url: "${pageContext.request.contextPath}/getSupplier.json",
             data: {
-                supplierCode: $('#esupplierCode').val()
+                supplierCode: $('#eSupplierCode').val()
             },
             dataType: "json",
             type: 'GET',
             contentType: "application/json",
             success: function (data) {
-                $('#esupplierCode').val(data.supplierCode);
-                $('#esupplierCode').attr('readOnly', true);
+                $('#eSupplierCode').val(data.supplierCode);
+                $('#eSupplierCode').attr('readOnly', true);
+
+                $('#eSupplierName').val(data.supplierName);
+                $('#eSupplierPhone').val(data.supplierPhone);
+                $('#eSupplierEmail').val(data.supplierEmail);
+                $('#eSupplierAddress').val(data.supplierAddress);
                 $('#eStatus').val(data.status);
             },
             error: function (data) {

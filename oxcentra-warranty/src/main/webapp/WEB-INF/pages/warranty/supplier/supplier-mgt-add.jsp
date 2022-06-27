@@ -14,7 +14,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="modalAddSupplierLabel">Insert supplier</h6>
+                <h6 class="modal-title" id="modalAddSupplierLabel">Add new supplier</h6>
                 <button type="button" id="addPopupClose" class="close" data-dismiss="modal" aria-label="Close"
                         onclick="resetAdd()">
                     <i aria-hidden="true" class="ki ki-close"></i>
@@ -32,7 +32,7 @@
                         <div class="col-sm-8">
                             <form:input path="supplierName" name="supplierName" type="text"
                                         class="form-control form-control-sm"
-                                        id="aSupplierName" maxlength="8" placeholder="Supplier Name"/>
+                                        id="aSupplierName" maxlength="50" placeholder="Supplier Name"/>
                         </div>
                     </div>
 
@@ -42,7 +42,7 @@
                         <div class="col-sm-8">
                             <form:input path="supplierPhone" name="supplierPhone" type="text"
                                         class="form-control form-control-sm"
-                                        id="aSupplierPhone" maxlength="8" placeholder="Supplier Phone"
+                                        id="aSupplierPhone" maxlength="15" placeholder="Supplier Phone"
                                         onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''))"/>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <div class="col-sm-8">
                             <form:input path="supplierEmail" name="supplierEmail" type="text"
                                         class="form-control form-control-sm"
-                                        id="aSupplierEmail" maxlength="8" placeholder="Supplier Email"/>
+                                        id="aSupplierEmail" maxlength="200" placeholder="Supplier Email"/>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@
                         <div class="col-sm-8">
                             <form:input path="supplierAddress" name="supplierAddress" type="text"
                                         class="form-control form-control-sm"
-                                        id="aSupplierAddress" maxlength="8" placeholder="Supplier Address"/>
+                                        id="aSupplierAddress" maxlength="200" placeholder="Supplier Address"/>
                         </div>
                     </div>
 

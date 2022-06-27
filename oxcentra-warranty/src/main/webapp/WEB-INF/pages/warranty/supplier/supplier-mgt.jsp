@@ -208,8 +208,13 @@
                 success: function (data) {
                     $('#responseMsgUpdate').hide();
 
-                    $('#esupplierCode').val(data.supplierCode);
-                    $('#esupplierCode').attr('readOnly', true);
+                    $('#eSupplierCode').val(data.supplierCode);
+                    $('#eSupplierCode').attr('readOnly', true);
+
+                    $('#eSupplierName').val(data.supplierName);
+                    $('#eSupplierPhone').val(data.supplierPhone);
+                    $('#eSupplierEmail').val(data.supplierEmail);
+                    $('#eSupplierAddress').val(data.supplierAddress);
 
                     $('#eStatus').val(data.status);
                     $('#modalUpdateSupplier').modal('toggle');

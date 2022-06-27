@@ -179,6 +179,7 @@ public class SupplierController implements RequestBeanValidation<Object> {
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
         }
+        logger.info(supplier);
         return supplier;
     }
 

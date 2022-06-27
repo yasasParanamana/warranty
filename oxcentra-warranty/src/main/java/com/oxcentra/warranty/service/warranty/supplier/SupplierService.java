@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.oxcentra.warranty.util.varlist.MessageVarList.*;
 import static com.oxcentra.warranty.util.varlist.PageVarList.SUPPLIER_MGT_PAGE;
 import static com.oxcentra.warranty.util.varlist.SectionVarList.SECTION_SYS_CONFIGURATION_MGT;
 import static com.oxcentra.warranty.util.varlist.TaskVarList.VIEW_TASK;
@@ -103,7 +104,7 @@ public class SupplierService {
         try {
             //set audit trace values
             audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
-            audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+            audittrace.setPage(SUPPLIER_MGT_PAGE);
             audittrace.setTask(VIEW_TASK);
             audittrace.setDescription("Get section dual authentication search list.");
             //Get section dual authentication search list
@@ -143,11 +144,11 @@ public class SupplierService {
                     message = sectionRepository.insertSupplier(SupplierInputBean);
                 }
             } else {
-                message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
-                auditDescription = messageSource.getMessage(MessageVarList.SECTION_MGT_ALREADY_EXISTS, null, locale);
+                message = SUPPLIER_MGT_ADDED_SUCCESSFULLY;
+                auditDescription = messageSource.getMessage(MessageVarList.SUPPLIER_MGT_ALREADY_EXISTS, null, locale);
             }
         } catch (DuplicateKeyException ex) {
-            message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
+            message = SUPPLIER_MGT_ALREADY_EXISTS;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception x) {
@@ -158,7 +159,7 @@ public class SupplierService {
             if (message.isEmpty()) {
                 //set the audit trace values
                 audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setPage(SUPPLIER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.ADD_TASK);
                 //set values to audit record
                 audittrace.setDescription(auditDescription);
@@ -204,7 +205,7 @@ public class SupplierService {
                     SupplierInputBean.setLastUpdatedUser(lastUpdatedUser);
 
                     //check the page dual auth enable or disable
-                    if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE)) {
+                    if (commonRepository.checkPageIsDualAuthenticate(SUPPLIER_MGT_PAGE)) {
                         auditDescription = "Requested to update section (code: " + SupplierInputBean.getSupplierCode() + ")";
 //                        message = this.insertDualAuthRecord(SupplierInputBean, TaskVarList.UPDATE_TASK);
                     } else {
@@ -213,11 +214,11 @@ public class SupplierService {
                     }
                 }
             } else {
-                message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
-                auditDescription = messageSource.getMessage(MessageVarList.SECTION_MGT_NORECORD_FOUND, null, locale);
+                message = MessageVarList.SUPPLIER_MGT_NORECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.SUPPLIER_MGT_NORECORD_FOUND, null, locale);
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = MessageVarList.SUPPLIER_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception e) {
@@ -228,7 +229,7 @@ public class SupplierService {
             if (message.isEmpty()) {
                 //set the audit trace values
                 audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setPage(SUPPLIER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.UPDATE_TASK);
                 audittrace.setDescription(auditDescription);
                 //create audit record
@@ -247,7 +248,7 @@ public class SupplierService {
         String auditDescription = "";
         try {
             //check the page dual auth enable or disable
-            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE)) {
+            if (commonRepository.checkPageIsDualAuthenticate(SUPPLIER_MGT_PAGE)) {
                 //get the existing section
                 Supplier section = sectionRepository.getSupplier(supplierCode);
                 if (section != null) {
@@ -264,14 +265,14 @@ public class SupplierService {
                     //insert the record to dual auth table
 //                    message = this.insertDualAuthRecord(SupplierInputBean, TaskVarList.DELETE_TASK);
                 } else {
-                    message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+                    message = SUPPLIER_MGT_NORECORD_FOUND;
                 }
             } else {
                 message = sectionRepository.deleteSupplier(supplierCode);
                 auditDescription = "Supplier (Code: " + supplierCode + ") deleted by " + sessionBean.getUsername();
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = SUPPLIER_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (DataIntegrityViolationException | ConstraintViolationException cve) {
@@ -279,14 +280,14 @@ public class SupplierService {
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception e) {
-            message = MessageVarList.COMMON_ERROR_PROCESS;
+            message = COMMON_ERROR_PROCESS;
             //skip audit trace
             audittrace.setSkip(true);
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-//                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+//                audittrace.setSection(SectionVarList.SUPPLIER_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(SUPPLIER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DELETE_TASK);
                 audittrace.setDescription(auditDescription);
             }
@@ -327,7 +328,7 @@ public class SupplierService {
                         SupplierInputBean.setCreatedTime(commonRepository.getCurrentDate());
                         message = sectionRepository.insertSupplier(SupplierInputBean);
                     } else {
-                        message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
+                        message = MessageVarList.SUPPLIER_MGT_ALREADY_EXISTS;
                     }
                 } else if (TaskVarList.UPDATE_TASK.equals(tempAuthRecBean.getTask())) {
                     if (existingSupplier != null) {
@@ -365,7 +366,7 @@ public class SupplierService {
                 message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = MessageVarList.SUPPLIER_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (DataIntegrityViolationException | ConstraintViolationException cve) {
@@ -381,7 +382,7 @@ public class SupplierService {
             if (message.isEmpty()) {
                 //set the audit trace values
                 audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setPage(SUPPLIER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
                 audittrace.setDescription(auditDescription);
                 audittrace.setField(fields);
@@ -421,7 +422,7 @@ public class SupplierService {
             if (message.isEmpty()) {
                 //set the audit trace values
                 audittrace.setSection(SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setPage(SUPPLIER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
                 audittrace.setDescription(auditDescription);
             }
@@ -434,12 +435,12 @@ public class SupplierService {
 //    private String insertDualAuthRecord(SupplierInputBean SupplierInputBean, String taskCode) throws Exception {
 //        String message = "";
 //        try {
-//            long count = commonRepository.getTempAuthRecordCount(SupplierInputBean.getId(), PageVarList.SECTION_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN);
+//            long count = commonRepository.getTempAuthRecordCount(SupplierInputBean.getId(), SUPPLIER_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN);
 //            if (count > 0) {
 //                message = MessageVarList.TMP_RECORD_ALREADY_EXISTS;
 //            } else {
 //                TempAuthRecBean tempAuthRecBean = new TempAuthRecBean();
-//                tempAuthRecBean.setPage(PageVarList.SECTION_MGT_PAGE);
+//                tempAuthRecBean.setPage(SUPPLIER_MGT_PAGE);
 //                tempAuthRecBean.setTask(taskCode);
 //                tempAuthRecBean.setKey1(SupplierInputBean.getSupplierCode());
 //                tempAuthRecBean.setKey2(SupplierInputBean.getDescription());
