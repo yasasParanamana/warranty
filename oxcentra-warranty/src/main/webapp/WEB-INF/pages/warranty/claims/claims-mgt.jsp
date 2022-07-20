@@ -522,6 +522,21 @@
                     <h5 class="text-dark font-weight-bold my-1 mr-5">Warranty Claim</h5>
                     <!--end::Page Title-->
                 </div>
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <button type="button" class="btn btn-danger">
+                    Admin Pending Approvals <span class="badge badge-light">150</span>
+                </button>
+                </div>
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <button type="button" class="btn btn-success">
+                    Pending Dispatch Orders <span class="badge badge-light">100</span>
+                </button>
+                </div>
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <button type="button" class="btn btn-warning">
+                    Suppliers Pending Approvels <span class="badge badge-light">98</span>
+                </button>
+                    </div>
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
