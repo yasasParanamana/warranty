@@ -1,20 +1,18 @@
-package com.oxcentra.warranty.bean.warranty.claim;
+package com.oxcentra.warranty.mapping.warranty;
 
-import com.oxcentra.warranty.bean.common.Status;
-import com.oxcentra.warranty.util.common.DataTablesRequest;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class ClaimInputBean extends DataTablesRequest {
+@Component
+@Scope("prototype")
+public class Claim {
     private String id;
     private String chassis;
     private String model;
@@ -27,9 +25,9 @@ public class ClaimInputBean extends DataTablesRequest {
     private String state;
     private String postcode;
     private String dealership;
-    private String claimType;
+    private String claimType; //
     private Date purchasingDate;
-    private String purchasingAttachmentId;
+    private String purchasingAttachmentId;//
     private String description;
     private String sparePartsId;
     private String failureType;
@@ -56,20 +54,4 @@ public class ClaimInputBean extends DataTablesRequest {
     private Date acknowledgedDate;
     private Date lastRemindedDate;
     private boolean isCritical;
-
-    /*-------for access control-----------*/
-    private boolean vadd;
-    private boolean vupdate;
-    private boolean vdelete;
-    private boolean vconfirm;
-    private boolean vreject;
-    private boolean vdualauth;
-
-    /*-------for access control-----------*/
-    private List<Status> statusList;
-    private List<Status> statusActList;
-
-
-    /* add getters setters */
-
 }

@@ -30,6 +30,7 @@
                 <%--                <a href="#" class="btn btn-light-warning font-weight-bolder btn-sm">Add New</a>--%>
                 <!--end::Actions-->
             </div>
+
             <!--end::Info-->
             <!--begin::Toolbar-->
             <%--            <div class="d-flex align-items-center">--%>

@@ -3,18 +3,23 @@ package com.oxcentra.warranty.controller.warrenty.claim;
 import com.oxcentra.warranty.annotation.accesscontrol.AccessControl;
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.usermgt.section.SectionInputBean;
+import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
-import com.oxcentra.warranty.mapping.usermgt.Section;
 import com.oxcentra.warranty.mapping.usermgt.Task;
+import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.repository.common.CommonRepository;
-import com.oxcentra.warranty.service.usermgt.section.SectionService;
+import com.oxcentra.warranty.service.common.CommonService;
+import com.oxcentra.warranty.service.warranty.claim.ClaimService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
 import com.oxcentra.warranty.util.common.ResponseBean;
-import com.oxcentra.warranty.util.varlist.*;
+import com.oxcentra.warranty.util.varlist.MessageVarList;
+import com.oxcentra.warranty.util.varlist.PageVarList;
+import com.oxcentra.warranty.util.varlist.StatusVarList;
+import com.oxcentra.warranty.util.varlist.TaskVarList;
 import com.oxcentra.warranty.validators.RequestBeanValidation;
-import com.oxcentra.warranty.validators.usermgt.section.SectionValidator;
+import com.oxcentra.warranty.validators.warranty.claim.ClaimValidator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +38,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 @Controller
 @Scope("request")
 public class ClaimController implements RequestBeanValidation<Object> {
     private final Log logger = LogFactory.getLog(getClass());
+
+    @Autowired
+    CommonService commonService;
+
+    @Autowired
+    ClaimService claimService;
 
     @Autowired
     CommonRepository commonRepository;
@@ -49,55 +59,49 @@ public class ClaimController implements RequestBeanValidation<Object> {
     SessionBean sessionBean;
 
     @Autowired
+    ClaimValidator claimValidator;
+
+    @Autowired
     Common common;
 
-    @Autowired
-    CommonVarList commonVarList;
-
-    @Autowired
-    SectionService sectionService;
-
-    @Autowired
-    SectionValidator sectionValidator;
-
-    @GetMapping(value = "/viewWarrantyClaims")
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
-    public ModelAndView getSytemUserPage(ModelMap modelMap, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "]  SECTION PAGE VIEW");
+    @GetMapping("/viewWarrantyClaims")
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
+    public ModelAndView getWarrantyClaims(ModelMap modelMap, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  WARRANTY CLAIMS PAGE VIEW");
         ModelAndView modelAndView = null;
         try {
-            //redirect to home page
-            modelAndView = new ModelAndView("warrantyclaimsview", "beanmap", new ModelMap());
+            modelAndView = new ModelAndView("claimview", "beanmap", new ModelMap());
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
             //set the error message to model map
             modelMap.put("msg", messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
-            modelAndView = new ModelAndView("warrantyclaimsview", modelMap);
+            modelAndView = new ModelAndView("claimview", modelMap);
         }
         return modelAndView;
     }
 
     @PostMapping(value = "/listWarrantyClaims", headers = {"content-type=application/json"})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
     public @ResponseBody
-    DataTablesResponse<Section> searchSection(@RequestBody SectionInputBean sectionInputBean) {
-        logger.info("[" + sessionBean.getSessionid() + "]  SECTION SEARCH");
-        DataTablesResponse<Section> responseBean = new DataTablesResponse<>();
+    DataTablesResponse<Claim> searchClaim(@RequestBody ClaimInputBean claimInputBean) {
+        logger.info("[" + sessionBean.getSessionid() + "]  WARRANTY CLAIMS SEARCH");
+        DataTablesResponse<Claim> responseBean = new DataTablesResponse<>();
         try {
-            long count = sectionService.getCount(sectionInputBean);
+            System.out.println("claimInputBean > " + claimInputBean);
+            long count = claimService.getDataCount(claimInputBean);
             if (count > 0) {
-                List<Section> list = sectionService.getSectionSearchResultList(sectionInputBean);
+                List<Claim> list = claimService.getClaimSearchResults(claimInputBean);
                 //set data set to response bean
                 responseBean.data.addAll(list);
-                responseBean.echo = sectionInputBean.echo;
-                responseBean.columns = sectionInputBean.columns;
+                responseBean.echo = claimInputBean.echo;
+                responseBean.columns = claimInputBean.columns;
                 responseBean.totalRecords = count;
                 responseBean.totalDisplayRecords = count;
             } else {
                 //set data set to response bean
                 responseBean.data.addAll(new ArrayList<>());
-                responseBean.echo = sectionInputBean.echo;
-                responseBean.columns = sectionInputBean.columns;
+                responseBean.echo = claimInputBean.echo;
+                responseBean.columns = claimInputBean.columns;
                 responseBean.totalRecords = count;
                 responseBean.totalDisplayRecords = count;
             }
@@ -107,26 +111,26 @@ public class ClaimController implements RequestBeanValidation<Object> {
         return responseBean;
     }
 
-    @PostMapping(value = "/listDualWarrantyClaims", headers = {"content-type=application/json"})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
+    @RequestMapping(value = "/listDualWarrantyClaims", headers = {"content-type=application/json"})
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
     public @ResponseBody
-    DataTablesResponse<TempAuthRec> searchDualSection(@RequestBody SectionInputBean sectionInputBean) {
-        logger.info("[" + sessionBean.getSessionid() + "]  SECTION SEARCH DUAL");
+    DataTablesResponse<TempAuthRec> searchDualClaim(@RequestBody ClaimInputBean claimInputBean) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM SEARCH DUAL");
         DataTablesResponse<TempAuthRec> responseBean = new DataTablesResponse<>();
         try {
-            long count = sectionService.getDataCountDual(sectionInputBean);
+            long count = claimService.getDataCountDual(claimInputBean);
             if (count > 0) {
-                List<TempAuthRec> dualList = sectionService.getSectionSearchResultsDual(sectionInputBean);
+                List<TempAuthRec> dualList = claimService.getClaimSearchResultsDual(claimInputBean);
                 //set values to response bean
                 responseBean.data.addAll(dualList);
-                responseBean.echo = sectionInputBean.echo;
-                responseBean.columns = sectionInputBean.columns;
+                responseBean.echo = claimInputBean.echo;
+                responseBean.columns = claimInputBean.columns;
                 responseBean.totalRecords = count;
                 responseBean.totalDisplayRecords = count;
             } else {
                 responseBean.data.addAll(new ArrayList<>());
-                responseBean.echo = sectionInputBean.echo;
-                responseBean.columns = sectionInputBean.columns;
+                responseBean.echo = claimInputBean.echo;
+                responseBean.columns = claimInputBean.columns;
                 responseBean.totalRecords = count;
                 responseBean.totalDisplayRecords = count;
             }
@@ -137,19 +141,19 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @PostMapping(value = "/addWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.ADD_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.ADD_TASK)
     public @ResponseBody
-    ResponseBean addSection(@ModelAttribute("section") SectionInputBean sectionInputBean, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "]  SECTION ADD");
+    ResponseBean addClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM ADD");
         ResponseBean responseBean = null;
         try {
-            BindingResult bindingResult = validateRequestBean(sectionInputBean);
+            BindingResult bindingResult = validateRequestBean(claimInputBean);
             if (bindingResult.hasErrors()) {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
-                String message = sectionService.insertSection(sectionInputBean, locale);
+                String message = claimService.insertClaim(claimInputBean, locale);
                 if (message.isEmpty()) {
-                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.SECTION_MGT_ADDED_SUCCESSFULLY, null, locale), null);
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_ADD, null, locale), null);
                 } else {
                     responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
                 }
@@ -162,35 +166,35 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @GetMapping(value = "/getWarrantyClaims")
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
     public @ResponseBody
-    Section getSection(@RequestParam String sectionCode) {
-        logger.info("[" + sessionBean.getSessionid() + "]  GET SECTION");
-        Section section = new Section();
+    Claim getClaim(@RequestParam String id) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM GET");
+        Claim claim= new Claim();
         try {
-            if (sectionCode != null && !sectionCode.isEmpty()) {
-                section = sectionService.getSection(sectionCode);
+            if (id != null && !id.trim().isEmpty()) {
+                claim = claimService.getClaim(id);
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
         }
-        return section;
+        return claim;
     }
 
     @PostMapping(value = "/updateWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
     public @ResponseBody
-    ResponseBean updateSection(@ModelAttribute("section") SectionInputBean sectionInputBean, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "] UPDATE SECTION");
-        ResponseBean responseBean = new ResponseBean();
+    ResponseBean updateClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM UPDATE");
+        ResponseBean responseBean = null;
         try {
-            BindingResult bindingResult = validateRequestBean(sectionInputBean);
+            BindingResult bindingResult = validateRequestBean(claimInputBean);
             if (bindingResult.hasErrors()) {
                 responseBean.setErrorMessage(messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
-                String message = sectionService.updateSection(sectionInputBean, locale);
+                String message = claimService.updateClaim(claimInputBean, locale);
                 if (message.isEmpty()) {
-                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.SECTION_MGT_UPDATE_SUCCESSFULLY, null, locale), null);
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_UPDATE, null, locale), null);
                 } else {
                     responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
                 }
@@ -203,15 +207,15 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @PostMapping(value = "/deleteWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.DELETE_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.DELETE_TASK)
     public @ResponseBody
-    ResponseBean deleteSection(@RequestParam String sectionCode, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "] DELETE SECTION");
-        ResponseBean responseBean;
+    ResponseBean deleteClaim(@RequestParam String id, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM DELETE");
+        ResponseBean responseBean = null;
         try {
-            String message = sectionService.deleteSection(sectionCode);
+            String message = claimService.deleteClaim(id);
             if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.SECTION_MGT_DELETE_SUCCESSFULLY, null, locale), null);
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_DELETE, null, locale), null);
             } else {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
             }
@@ -223,15 +227,15 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @PostMapping(value = "/confirmWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.DUAL_AUTH_CONFIRM_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.DUAL_AUTH_CONFIRM_TASK)
     public @ResponseBody
-    ResponseBean confirmSection(@RequestParam(value = "id") String id, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "]  SECTION CONFIRM");
-        ResponseBean responseBean;
+    ResponseBean confirmClaim(@RequestParam String id, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  TASK CONFIRM");
+        ResponseBean responseBean = null;
         try {
-            String message = sectionService.confirmSection(id);
+            String message = claimService.confirmClaim(id);
             if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.SECTION_MGT_CONFIRM_SUCCESSFULLY, null, locale), null);
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_CONFIRM, null, locale), null);
             } else {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
             }
@@ -243,15 +247,15 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @PostMapping(value = "/rejectWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.SECTION_MGT_PAGE, taskCode = TaskVarList.DUAL_AUTH_REJECT_TASK)
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.DUAL_AUTH_REJECT_TASK)
     public @ResponseBody
-    ResponseBean rejectSection(@RequestParam(value = "id") String id, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "]  REJECT SECTION");
-        ResponseBean responseBean;
+    ResponseBean rejectClaim(@RequestParam String id, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM REJECT");
+        ResponseBean responseBean = null;
         try {
-            String message = sectionService.rejectSection(id);
+            String message = claimService.rejectClaim(id);
             if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.SECTION_MGT_REJECT_SUCCESSFULLY, null, locale), null);
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_REJECT, null, locale), null);
             } else {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
             }
@@ -263,42 +267,42 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @ModelAttribute
-    public void getSectionBean(Model map) throws Exception {
-        SectionInputBean sectionInputBean = new SectionInputBean();
+    public void getClaimBean(Model map) throws Exception {
+        ClaimInputBean claimInputBean = new ClaimInputBean();
         //get status list
         List<Status> statusList = commonRepository.getStatusList(StatusVarList.STATUS_CATEGORY_DEFAULT);
         List<Status> statusActList = common.getActiveStatusList();
         //set values to task bean
-        sectionInputBean.setStatusList(statusList);
-        sectionInputBean.setStatusActList(statusActList);
-        //add privileges to input bean
-        this.applyUserPrivileges(sectionInputBean);
+        claimInputBean.setStatusList(statusList);
+        claimInputBean.setStatusActList(statusActList);
+        //set privileges
+        this.applyUserPrivileges(claimInputBean);
         //add values to model map
-        map.addAttribute("section", sectionInputBean);
+        map.addAttribute("claim", claimInputBean);
     }
 
-    private void applyUserPrivileges(SectionInputBean sectionInputBean) {
+    private void applyUserPrivileges(ClaimInputBean claimInputBean) {
         try {
-            List<Task> taskList = common.getUserTaskListByPage(PageVarList.SECTION_MGT_PAGE, sessionBean);
-            sectionInputBean.setVadd(false);
-            sectionInputBean.setVupdate(false);
-            sectionInputBean.setVdelete(false);
-            sectionInputBean.setVconfirm(false);
-            sectionInputBean.setVreject(false);
-            sectionInputBean.setVdualauth(commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE));
+            List<Task> taskList = common.getUserTaskListByPage(PageVarList.CLAIMS_MGT_PAGE, sessionBean);
+            claimInputBean.setVadd(false);
+            claimInputBean.setVupdate(false);
+            claimInputBean.setVdelete(false);
+            claimInputBean.setVconfirm(false);
+            claimInputBean.setVreject(false);
+            claimInputBean.setVdualauth(commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE));
             //check task list one by one
             if (taskList != null && !taskList.isEmpty()) {
                 taskList.forEach(task -> {
                     if (task.getTaskCode().equalsIgnoreCase(TaskVarList.ADD_TASK)) {
-                        sectionInputBean.setVadd(true);
+                        claimInputBean.setVadd(true);
                     } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.UPDATE_TASK)) {
-                        sectionInputBean.setVupdate(true);
+                        claimInputBean.setVupdate(true);
                     } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DELETE_TASK)) {
-                        sectionInputBean.setVdelete(true);
+                        claimInputBean.setVdelete(true);
                     } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DUAL_AUTH_CONFIRM_TASK)) {
-                        sectionInputBean.setVconfirm(true);
+                        claimInputBean.setVconfirm(true);
                     } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DUAL_AUTH_REJECT_TASK)) {
-                        sectionInputBean.setVreject(true);
+                        claimInputBean.setVreject(true);
                     }
                 });
             }
@@ -310,7 +314,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
     @Override
     public BindingResult validateRequestBean(Object object) {
         DataBinder dataBinder = new DataBinder(object);
-        dataBinder.setValidator(sectionValidator);
+        dataBinder.setValidator(claimValidator);
         dataBinder.validate();
         return dataBinder.getBindingResult();
     }

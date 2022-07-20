@@ -2,12 +2,14 @@ package com.oxcentra.warranty.service.warranty.claim;
 
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.usermgt.section.SectionInputBean;
+import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
-import com.oxcentra.warranty.mapping.usermgt.Section;
+import com.oxcentra.warranty.mapping.usermgt.Task;
+import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.repository.common.CommonRepository;
-import com.oxcentra.warranty.repository.usermgt.section.SectionRepository;
+import com.oxcentra.warranty.repository.warranty.claim.ClaimRepository;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.varlist.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +45,14 @@ public class ClaimService {
     MessageSource messageSource;
 
     @Autowired
-    SectionRepository sectionRepository;
+    ClaimRepository claimRepository;
 
-    private final String fields = "SectionInputBean Section Code|Description|Status|Sort Key|Created Time|Last Updated Time|Last Updated User";
+    private final String fields = "Task Code|Description|Status|Created Time|Last Updated Time|Last Updated User";
 
-    public long getCount(SectionInputBean sectionInputBean) {
+    public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
         long count = 0;
         try {
-            count = sectionRepository.getDataCount(sectionInputBean);
+            count = claimRepository.getDataCount(claimInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -59,16 +61,16 @@ public class ClaimService {
         return count;
     }
 
-    public List<Section> getSectionSearchResultList(SectionInputBean sectionInputBean) {
-        List<Section> sectionList;
+    public List<Claim> getClaimSearchResults(ClaimInputBean claimInputBean) throws Exception {
+        List<Claim> claimList;
         try {
             //set audit trace values
-            audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-            audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+            audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+            audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
             audittrace.setTask(TaskVarList.VIEW_TASK);
-            audittrace.setDescription("Get section search list.");
-            //Get section search list.
-            sectionList = sectionRepository.getSectionSearchList(sectionInputBean);
+            audittrace.setDescription("Get Claim search list.");
+            //Get Claim search list.
+            claimList = claimRepository.getClaimSearchResults(claimInputBean);
         } catch (EmptyResultDataAccessException ere) {
             audittrace.setSkip(true);
             throw ere;
@@ -79,13 +81,13 @@ public class ClaimService {
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
         }
-        return sectionList;
+        return claimList;
     }
 
-    public long getDataCountDual(SectionInputBean sectionInputBean) {
+    public long getDataCountDual(ClaimInputBean claimInputBean) throws Exception {
         long count = 0;
         try {
-            count = sectionRepository.getDataCountDual(sectionInputBean);
+            count = claimRepository.getDataCountDual(claimInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -94,16 +96,16 @@ public class ClaimService {
         return count;
     }
 
-    public List<TempAuthRec> getSectionSearchResultsDual(SectionInputBean sectionInputBean) {
-        List<TempAuthRec> sectionDualList;
+    public List<TempAuthRec> getClaimSearchResultsDual(ClaimInputBean claimInputBean) throws Exception {
+        List<TempAuthRec> taskDualList;
         try {
             //set audit trace values
-            audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-            audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+            audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+            audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
             audittrace.setTask(TaskVarList.VIEW_TASK);
-            audittrace.setDescription("Get section dual authentication search list.");
-            //Get section dual authentication search list
-            sectionDualList = sectionRepository.getSectionSearchResultsDual(sectionInputBean);
+            audittrace.setDescription("Get claim dual authentication search list.");
+            //Get task dual authentication search list
+            taskDualList = claimRepository.getClaimSearchResultsDual(claimInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -112,38 +114,39 @@ public class ClaimService {
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
         }
-        return sectionDualList;
+        return taskDualList;
     }
 
-    public String insertSection(SectionInputBean sectionInputBean, Locale locale) {
+    public String insertClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
         String message = "";
         String auditDescription = "";
         try {
-            Section section = sectionRepository.getSection(sectionInputBean.getSectionCode().trim());
-            if (section == null) {
+            //check task code is already exist or not
+            Claim existingClaim = claimRepository.getClaim(claimInputBean.getId().trim());
+            if (existingClaim == null) {
                 //set the other values to input bean
                 Date currentDate = commonRepository.getCurrentDate();
-                String lastUpdatedUser = sessionBean.getUsername();
+                String user = sessionBean.getUsername();
 
-                sectionInputBean.setCreatedTime(currentDate);
-                sectionInputBean.setLastUpdatedTime(currentDate);
-                sectionInputBean.setLastUpdatedUser(lastUpdatedUser);
-                sectionInputBean.setCreatedUser(lastUpdatedUser);
-
+//                /*claimInputBean.setCreatedTime(currentDate);
+//                claimInputBean.setLastUpdatedTime(currentDate);
+//                claimInputBean.setLastUpdatedUser(user);
+//                claimInputBean.setCreatedUser(user);
+//*/
                 //check the page dual auth enable or disable
-                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE)) {
-                    auditDescription = "Requested to add section (code: " + sectionInputBean.getSectionCode() + ")";
-                    message = this.insertDualAuthRecord(sectionInputBean, TaskVarList.ADD_TASK);
+                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE)) {
+                    auditDescription = "Requested to add task (task code: " + claimInputBean.getId() + ")";
+                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.ADD_TASK);
                 } else {
-                    auditDescription = "Section (code: " + sectionInputBean.getSectionCode() + ") added by " + sessionBean.getUsername();
-                    message = sectionRepository.insertSection(sectionInputBean);
+                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
+                    message = claimRepository.insertClaim(claimInputBean);
                 }
             } else {
-                message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
-                auditDescription = messageSource.getMessage(MessageVarList.SECTION_MGT_ALREADY_EXISTS, null, locale);
+                message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
+                auditDescription = messageSource.getMessage(MessageVarList.SMPP_CONFIGURATION_MGT_ALREADY_EXISTS, null, locale);
             }
         } catch (DuplicateKeyException ex) {
-            message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
+            message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception x) {
@@ -153,42 +156,40 @@ public class ClaimService {
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+                audittrace.setPage(PageVarList.USER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.ADD_TASK);
                 //set values to audit record
                 audittrace.setDescription(auditDescription);
                 audittrace.setField(fields);
-                audittrace.setNewvalue(this.getSectionAsString(sectionInputBean, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
             }
-            //set audit to session bean
-            sessionBean.setAudittrace(audittrace);
         }
         return message;
     }
 
-    public Section getSection(String sectionCode) {
-        Section section;
+    public Claim getClaim(String id) throws Exception {
+        Claim claim;
         try {
-            section = sectionRepository.getSection(sectionCode);
+            claim = claimRepository.getClaim(id);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
             throw e;
         }
-        return section;
+        return claim;
     }
 
-    public String updateSection(SectionInputBean sectionInputBean, Locale locale) {
+    public String updateClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
         String message = "";
         String auditDescription = "";
-        Section existingSection = null;
+        Claim existingClaim = null;
         try {
-            existingSection = sectionRepository.getSection(sectionInputBean.getSectionCode());
-            if (existingSection != null) {
+            existingClaim = claimRepository.getClaim(claimInputBean.getId());
+            if (existingClaim != null) {
                 //check changed values
-                String oldValueAsString = this.getSectionAsString(existingSection, true);
-                String newValueAsString = this.getSectionAsString(sectionInputBean, true);
+                String oldValueAsString = this.getClaimAsString(existingClaim, true);
+                String newValueAsString = this.getClaimAsString(claimInputBean, true);
                 //check the old value and new value
                 if (oldValueAsString.equals(newValueAsString)) {
                     message = MessageVarList.COMMON_ERROR_NO_VALUE_CHANGE;
@@ -196,24 +197,24 @@ public class ClaimService {
                     //set the other values to input bean
                     Date currentDate = commonRepository.getCurrentDate();
                     String lastUpdatedUser = sessionBean.getUsername();
-                    sectionInputBean.setLastUpdatedTime(currentDate);
-                    sectionInputBean.setLastUpdatedUser(lastUpdatedUser);
 
+                    /*claimInputBean.setLastUpdatedTime(currentDate);
+                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
                     //check the page dual auth enable or disable
-                    if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE)) {
-                        auditDescription = "Requested to update section (code: " + sectionInputBean.getSectionCode() + ")";
-                        message = this.insertDualAuthRecord(sectionInputBean, TaskVarList.UPDATE_TASK);
+                    if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
+                        auditDescription = "Requested to update task (Task code: " + claimInputBean.getId() + ")";
+                        message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
                     } else {
-                        auditDescription = "Section (code: " + sectionInputBean.getSectionCode() + ") updated by " + sessionBean.getUsername();
-                        message = sectionRepository.updateSection(sectionInputBean);
+                        auditDescription = "Task Mgt (Task code: " + claimInputBean.getId() + ") updated by " + sessionBean.getUsername();
+                        message = claimRepository.updateClaim(claimInputBean);
                     }
                 }
             } else {
-                message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
-                auditDescription = messageSource.getMessage(MessageVarList.SECTION_MGT_NORECORD_FOUND, null, locale);
+                message = MessageVarList.TASK_MGT_NORECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.TASK_MGT_NORECORD_FOUND, null, locale);
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception e) {
@@ -223,14 +224,14 @@ public class ClaimService {
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+                audittrace.setPage(PageVarList.USER_MGT_PAGE);
                 audittrace.setTask(TaskVarList.UPDATE_TASK);
                 audittrace.setDescription(auditDescription);
                 //create audit record
                 audittrace.setField(fields);
-                audittrace.setOldvalue(this.getSectionAsString(existingSection, false));
-                audittrace.setNewvalue(this.getSectionAsString(sectionInputBean, false));
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
             }
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
@@ -238,37 +239,37 @@ public class ClaimService {
         return message;
     }
 
-    public String deleteSection(String sectionCode) {
+    public String deleteClaim(String id) throws Exception {
         String message = "";
         String auditDescription = "";
         try {
             //check the page dual auth enable or disable
-            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SECTION_MGT_PAGE)) {
-                //get the existing section
-                Section section = sectionRepository.getSection(sectionCode);
-                if (section != null) {
-                    SectionInputBean sectionInputBean = new SectionInputBean();
+            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE)) {
+                //get the existing task
+                Claim claim = claimRepository.getClaim(id);
+                if (claim != null) {
+                    ClaimInputBean claimInputBean = new ClaimInputBean();
                     //set the values to input bean
-                    sectionInputBean.setSectionCode(section.getSectionCode());
-                    sectionInputBean.setDescription(section.getDescription());
-                    sectionInputBean.setStatus(section.getStatus());
-                    sectionInputBean.setSortKey(String.valueOf(section.getSortKey()));
-                    sectionInputBean.setCreatedTime(section.getCreatedTime());
-                    sectionInputBean.setLastUpdatedTime(section.getLastUpdatedTime());
-                    sectionInputBean.setLastUpdatedUser(section.getLastUpdatedUser());
+                    claimInputBean.setId(claim.getId());
+                    claimInputBean.setDescription(claim.getDescription());
+                    claimInputBean.setStatus(claim.getStatus());
+                    /*taskInputBean.setCreatedTime(claim.getCreatedTime());
+                    taskInputBean.setCreatedUser(claim.getCreatedUser());
+                    taskInputBean.setLastUpdatedTime(claim.getLastUpdatedTime());
+                    taskInputBean.setLastUpdatedUser(claim.getLastUpdatedUser());*/
                     //set audit description
-                    auditDescription = "Requested to deleted section (code: " + sectionCode + ")";
+                    auditDescription = "Requested to deleted Claim (ID: " + id + ")";
                     //insert the record to dual auth table
-                    message = this.insertDualAuthRecord(sectionInputBean, TaskVarList.DELETE_TASK);
+                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.DELETE_TASK);
                 } else {
-                    message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+                    message = MessageVarList.TASK_MGT_NORECORD_FOUND;
                 }
             } else {
-                message = sectionRepository.deleteSection(sectionCode);
-                auditDescription = "Section (Code: " + sectionCode + ") deleted by " + sessionBean.getUsername();
+                message = claimRepository.deleteClaim(id);
+                auditDescription = "Claim (ID: " + id + ") deleted by " + sessionBean.getUsername();
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (DataIntegrityViolationException | ConstraintViolationException cve) {
@@ -283,7 +284,7 @@ public class ClaimService {
             if (message.isEmpty()) {
                 //set the audit trace values
                 audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DELETE_TASK);
                 audittrace.setDescription(auditDescription);
             }
@@ -293,48 +294,47 @@ public class ClaimService {
         return message;
     }
 
-    public String confirmSection(String id) {
+    public String confirmClaim(String id) throws Exception {
         String message = "";
         String auditDescription = "";
-        SectionInputBean sectionInputBean = null;
-        Section existingSection = null;
+        ClaimInputBean claimInputBean = null;
+        Claim existingClaim = null;
         try {
             //get tmp auth record
             TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(id);
             if (tempAuthRecBean != null) {
-                sectionInputBean = new SectionInputBean();
-                sectionInputBean.setSectionCode(tempAuthRecBean.getKey1());
-                sectionInputBean.setDescription(tempAuthRecBean.getKey2());
-                sectionInputBean.setStatus(tempAuthRecBean.getKey3());
-                sectionInputBean.setSortKey(tempAuthRecBean.getKey4());
-                sectionInputBean.setLastUpdatedTime(commonRepository.getCurrentDate());
-                sectionInputBean.setLastUpdatedUser(sessionBean.getUsername());
+                claimInputBean = new ClaimInputBean();
+                claimInputBean.setId(tempAuthRecBean.getKey1());
+                claimInputBean.setDescription(tempAuthRecBean.getKey2());
+                claimInputBean.setStatus(tempAuthRecBean.getKey3());
+                /*claimInputBean.setLastUpdatedTime(commonRepository.getCurrentDate());
+                claimInputBean.setLastUpdatedUser(sessionBean.getUsername());*/
 
-                //get the existing session
+                //get the existing task
                 try {
-                    String code = sectionInputBean.getSectionCode();
-                    existingSection = sectionRepository.getSection(code);
+                    String code = claimInputBean.getId();
+                    existingClaim = claimRepository.getClaim(id);
                 } catch (EmptyResultDataAccessException e) {
-                    existingSection = null;
+                    existingClaim = null;
                 }
 
                 if (TaskVarList.ADD_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingSection == null) {
-                        sectionInputBean.setCreatedUser(sessionBean.getUsername());
-                        sectionInputBean.setCreatedTime(commonRepository.getCurrentDate());
-                        message = sectionRepository.insertSection(sectionInputBean);
+                    if (existingClaim == null) {
+                       /* claimInputBean.setCreatedTime(commonRepository.getCurrentDate());
+                        claimInputBean.setCreatedUser(sessionBean.getUsername());*/
+                        message = claimRepository.insertClaim(claimInputBean);
                     } else {
-                        message = MessageVarList.SECTION_MGT_ALREADY_EXISTS;
+                        message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
                     }
                 } else if (TaskVarList.UPDATE_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingSection != null) {
-                        message = sectionRepository.updateSection(sectionInputBean);
+                    if (existingClaim != null) {
+                        message = claimRepository.updateClaim(claimInputBean);
                     } else {
                         message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
                     }
                 } else if (TaskVarList.DELETE_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingSection != null) {
-                        message = sectionRepository.deleteSection(sectionInputBean.getSectionCode());
+                    if (existingClaim != null) {
+                        message = claimRepository.deleteClaim(claimInputBean.getId());
                     } else {
                         message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
                     }
@@ -347,7 +347,7 @@ public class ClaimService {
                     if (message.isEmpty()) {
                         StringBuilder auditDesBuilder = new StringBuilder();
                         auditDesBuilder.append("Approved performing  '").append(tempAuthRecBean.getTask())
-                                .append("' operation on task (task code: ").append(sectionInputBean.getSectionCode())
+                                .append("' operation on task (ID: ").append(claimInputBean.getId())
                                 .append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" approved by ")
                                 .append(sessionBean.getUsername());
 
@@ -362,12 +362,11 @@ public class ClaimService {
                 message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
             }
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.SECTION_MGT_NORECORD_FOUND;
+            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (DataIntegrityViolationException | ConstraintViolationException cve) {
             message = MessageVarList.COMMON_ERROR_ALRADY_USE;
-            System.out.println("service");
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception e) {
@@ -377,13 +376,13 @@ public class ClaimService {
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+                audittrace.setPage(PageVarList.TASK_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
                 audittrace.setDescription(auditDescription);
                 audittrace.setField(fields);
-                audittrace.setNewvalue(this.getSectionAsString(sectionInputBean, false));
-                audittrace.setOldvalue(this.getSectionAsString(existingSection, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
             }
             //set audit to session bean
             sessionBean.setAudittrace(audittrace);
@@ -391,18 +390,18 @@ public class ClaimService {
         return message;
     }
 
-    public String rejectSection(String sectionCode) {
+    public String rejectClaim(String code) throws Exception {
         String message = "";
         String auditDescription = "";
         try {
-            //get temp auth record
-            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(sectionCode);
+            //get tmp auth record
+            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(code);
             if (tempAuthRecBean != null) {
-                message = commonRepository.updateTempAuthRecord(sectionCode, StatusVarList.STATUS_AUTH_REJ);
+                message = commonRepository.updateTempAuthRecord(code, StatusVarList.STATUS_AUTH_REJ);
                 if (message.isEmpty()) {
                     //create audit description
                     StringBuilder auditDesBuilder = new StringBuilder();
-                    auditDesBuilder.append("Rejected performing  '").append(tempAuthRecBean.getTask()).append("' operation on section (code: ").append(tempAuthRecBean.getKey1()).append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" rejected by ").append(sessionBean.getUsername());
+                    auditDesBuilder.append("Rejected performing  '").append(tempAuthRecBean.getTask()).append("' operation on task mgt (code: ").append(tempAuthRecBean.getKey1()).append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" rejected by ").append(sessionBean.getUsername());
                     auditDescription = auditDesBuilder.toString();
                 } else {
                     message = MessageVarList.COMMON_ERROR_PROCESS;
@@ -411,14 +410,12 @@ public class ClaimService {
                 message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
             }
         } catch (Exception ex) {
-            message = MessageVarList.COMMON_ERROR_PROCESS;
-            //skip audit trace
-            audittrace.setSkip(true);
+            throw ex;
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
-                audittrace.setPage(PageVarList.SECTION_MGT_PAGE);
+                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
+                audittrace.setPage(PageVarList.TASK_MGT_PAGE);
                 audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
                 audittrace.setDescription(auditDescription);
             }
@@ -426,22 +423,22 @@ public class ClaimService {
             sessionBean.setAudittrace(audittrace);
         }
         return message;
+
     }
 
-    private String insertDualAuthRecord(SectionInputBean sectionInputBean, String taskCode) throws Exception {
+    public String insertDualAuthRecord(ClaimInputBean claimInputBean, String id) throws Exception {
         String message = "";
         try {
-            long count = commonRepository.getTempAuthRecordCount(sectionInputBean.getSectionCode(), PageVarList.SECTION_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN);
+            long count = commonRepository.getTempAuthRecordCount(claimInputBean.getId().trim(), PageVarList.CLAIMS_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN);
             if (count > 0) {
                 message = MessageVarList.TMP_RECORD_ALREADY_EXISTS;
             } else {
                 TempAuthRecBean tempAuthRecBean = new TempAuthRecBean();
-                tempAuthRecBean.setPage(PageVarList.SECTION_MGT_PAGE);
-                tempAuthRecBean.setTask(taskCode);
-                tempAuthRecBean.setKey1(sectionInputBean.getSectionCode());
-                tempAuthRecBean.setKey2(sectionInputBean.getDescription());
-                tempAuthRecBean.setKey3(sectionInputBean.getStatus());
-                tempAuthRecBean.setKey4(String.valueOf(sectionInputBean.getSortKey()));
+                tempAuthRecBean.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                tempAuthRecBean.setId(id);
+                tempAuthRecBean.setKey1(claimInputBean.getId().trim().toUpperCase());
+                tempAuthRecBean.setKey2(claimInputBean.getDescription().trim());
+                tempAuthRecBean.setKey3(claimInputBean.getStatus().trim());
                 //insert dual auth record
                 message = commonRepository.insertDualAuthRecordSQL(tempAuthRecBean);
             }
@@ -455,128 +452,123 @@ public class ClaimService {
         return message;
     }
 
-    private String getSectionAsString(SectionInputBean sectionInputBean, boolean checkChanges) {
-        StringBuilder sectionStringBuilder = new StringBuilder();
+    private String getClaimAsString(Claim claim, boolean checkChanges) {
+        StringBuilder claimStringBuilder = new StringBuilder();
         try {
-            if (sectionInputBean != null) {
-
-                if (sectionInputBean.getSectionCode() != null && !sectionInputBean.getSectionCode().isEmpty()) {
-                    sectionStringBuilder.append(sectionInputBean.getSectionCode());
+            if (claim != null) {
+                if (claim.getId() != null) {
+                    claimStringBuilder.append(claim.getId());
                 } else {
-                    sectionStringBuilder.append("error");
+                    claimStringBuilder.append("error");
                 }
 
-                sectionStringBuilder.append("|");
-                if (sectionInputBean.getDescription() != null && !sectionInputBean.getDescription().isEmpty()) {
-                    sectionStringBuilder.append(sectionInputBean.getDescription());
+                /*taskStringBuilder.append("|");
+                if (task.getDescription() != null) {
+                    taskStringBuilder.append(task.getDescription());
                 } else {
-                    sectionStringBuilder.append("--");
+                    taskStringBuilder.append("--");
                 }
 
-                sectionStringBuilder.append("|");
-                if (sectionInputBean.getStatus() != null && !sectionInputBean.getStatus().isEmpty()) {
-                    sectionStringBuilder.append(sectionInputBean.getStatus());
+                taskStringBuilder.append("|");
+                if (task.getStatus() != null) {
+                    taskStringBuilder.append(task.getStatus());
                 } else {
-                    sectionStringBuilder.append("--");
-                }
-
-                sectionStringBuilder.append("|");
-                if (String.valueOf(sectionInputBean.getSortKey()) != null) {
-                    sectionStringBuilder.append(sectionInputBean.getSortKey());
-                } else {
-                    sectionStringBuilder.append("--");
+                    taskStringBuilder.append("--");
                 }
 
                 if (!checkChanges) {
-                    sectionStringBuilder.append("|");
-                    if (sectionInputBean.getCreatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(sectionInputBean.getCreatedTime()));
+                    taskStringBuilder.append("|");
+                    if (task.getCreatedUser() != null) {
+                        taskStringBuilder.append(task.getCreatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
+                        taskStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (sectionInputBean.getLastUpdatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(sectionInputBean.getLastUpdatedTime()));
+                    taskStringBuilder.append("|");
+                    if (task.getCreatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(task.getCreatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        taskStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (sectionInputBean.getLastUpdatedUser() != null) {
-                        sectionStringBuilder.append(sectionInputBean.getLastUpdatedUser());
+                    taskStringBuilder.append("|");
+                    if (task.getLastUpdatedUser() != null) {
+                        taskStringBuilder.append(task.getLastUpdatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
-                    }
-                }
+                        taskStringBuilder.append("--");
+                    }*/
+
+                  /*  taskStringBuilder.append("|");
+                    if (task.getLastUpdatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(task.getLastUpdatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }*/
+            /*    }*/
             }
         } catch (Exception e) {
             throw e;
         }
-        return sectionStringBuilder.toString();
+        return claimStringBuilder.toString();
     }
 
-    private String getSectionAsString(Section section, boolean checkChanges) {
-        StringBuilder sectionStringBuilder = new StringBuilder();
+    private String getClaimAsString(ClaimInputBean claimInputBean, boolean checkChanges) {
+        StringBuilder claimStringBuilder = new StringBuilder();
         try {
-            if (section != null) {
-                if (section.getSectionCode() != null && !section.getSectionCode().isEmpty()) {
-                    sectionStringBuilder.append(section.getSectionCode());
+            if (claimInputBean != null) {
+                if (claimInputBean.getId() != null) {
+                    claimStringBuilder.append(claimInputBean.getId());
                 } else {
-                    sectionStringBuilder.append("error");
+                    claimStringBuilder.append("error");
                 }
 
-                sectionStringBuilder.append("|");
-                if (section.getDescription() != null && !section.getDescription().isEmpty()) {
-                    sectionStringBuilder.append(section.getDescription());
+               /* taskStringBuilder.append("|");
+                if (taskInputBean.getDescription() != null) {
+                    taskStringBuilder.append(taskInputBean.getDescription());
                 } else {
-                    sectionStringBuilder.append("--");
+                    taskStringBuilder.append("--");
                 }
 
-                sectionStringBuilder.append("|");
-                if (section.getStatus() != null && !section.getStatus().isEmpty()) {
-                    sectionStringBuilder.append(section.getStatus());
+                taskStringBuilder.append("|");
+                if (taskInputBean.getStatus() != null) {
+                    taskStringBuilder.append(taskInputBean.getStatus());
                 } else {
-                    sectionStringBuilder.append("--");
-                }
-
-                sectionStringBuilder.append("|");
-                if (String.valueOf(section.getSortKey()) != null && String.valueOf(section.getSortKey()).isEmpty()) {
-                    sectionStringBuilder.append(section.getStatus());
-                } else {
-                    sectionStringBuilder.append("--");
+                    taskStringBuilder.append("--");
                 }
 
                 if (!checkChanges) {
-                    sectionStringBuilder.append("|");
-                    if (section.getCreatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(section.getCreatedTime()));
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getCreatedUser() != null) {
+                        taskStringBuilder.append(taskInputBean.getCreatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
+                        taskStringBuilder.append("--");
                     }
 
-
-                    sectionStringBuilder.append("|");
-                    if (section.getLastUpdatedTime() != null) {
-                        sectionStringBuilder.append(common.formatDateToString(section.getLastUpdatedTime()));
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getCreatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(taskInputBean.getCreatedTime()));
                     } else {
-                        sectionStringBuilder.append("--");
+                        taskStringBuilder.append("--");
                     }
 
-                    sectionStringBuilder.append("|");
-                    if (section.getLastUpdatedUser() != null) {
-                        sectionStringBuilder.append(section.getLastUpdatedUser());
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getLastUpdatedUser() != null) {
+                        taskStringBuilder.append(taskInputBean.getLastUpdatedUser());
                     } else {
-                        sectionStringBuilder.append("--");
+                        taskStringBuilder.append("--");
                     }
-                }
+
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getLastUpdatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(taskInputBean.getLastUpdatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }*/
+               /* }*/
             }
         } catch (Exception e) {
             throw e;
         }
-        return sectionStringBuilder.toString();
+        return claimStringBuilder.toString();
     }
-
-
 }
-

@@ -130,6 +130,10 @@
         <put-attribute name="body" value="/WEB-INF/pages/sysconfigmgt/channel/channel-mgt.jsp"/>
     </definition>
 
+    <definition name="claimview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/claims/claims-mgt.jsp"/>
+    </definition>
+
     <definition name="404" extends="newuser-template">
         <put-attribute name="body" value="/errors/404.jsp"/>
     </definition>

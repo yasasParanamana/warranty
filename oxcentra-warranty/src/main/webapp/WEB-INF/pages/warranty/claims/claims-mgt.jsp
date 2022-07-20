@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maheshi_c
-  Date: 3/23/2021
-  Time: 10:39 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -12,16 +5,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<link rel="stylesheet" type="text/css"
-      href="${pageContext.request.contextPath}/resources/css/usermgt/usermgt.css?${initParam['version']}"/>
 <html>
+
 <head>
     <script type="text/javascript">
-        var oTable;
-        var oTableDual;
 
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+
+        var oTable;
+        var oTableDual;
 
         $(document).ready(function () {
             loadDataTable();
@@ -57,20 +50,19 @@
 
             oTable = $('#table').dataTable({
                 bServerSide: true,
-                sAjaxSource: "${pageContext.servletContext.contextPath}/listSection.json",
+                sAjaxSource: "${pageContext.servletContext.contextPath}/listWarrantyClaims.json",
                 fnServerData: function (sSource, aoData, fnCallback) {
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'sectionCode', 'value': $('#sectionCode').val()},
-                        {'name': 'description', 'value': $('#description').val()},
-                        {'name': 'status', 'value': $('#status').val()},
-                        {'name': 'sortKey', 'value': $('#sortKey').val()}
+                        {'name': 'id', 'value': $('#searchId').val()},
+                        {'name': 'description', 'value': $('#searchDescription').val()},
+                        {'name': 'status', 'value': $('#searchStatus').val()}
                     );
                     $.ajax({
                         dataType: 'json',
                         type: 'POST',
-                        url: "${pageContext.request.contextPath}/listSection.json",
+                        url: "${pageContext.request.contextPath}/listWarrantyClaims.json",
                         contentType: "application/json",
                         data: stringify_aoData(aoData),
                         success: fnCallback,
@@ -94,9 +86,9 @@
                 },
                 columnDefs: [
                     {
-                        title: "Section Code",
+                        title: "ID",
                         targets: 0,
-                        mDataProp: "sectionCode",
+                        mDataProp: "id",
                         defaultContent: "--"
                     },
                     {
@@ -140,35 +132,29 @@
                         },
                     },
                     {
-                        title: "Sort Key",
-                        targets: 3,
-                        mDataProp: "sortKey",
-                        defaultContent: "--"
-                    },
-                    {
                         title: "Created User",
-                        targets: 4,
+                        targets: 3,
                         mDataProp: "createdUser",
                         defaultContent: "--"
                     },
                     {
-                        label: 'Created Time',
-                        name: 'createdTime',
-                        targets: 5,
+                        title: "Created Time",
+                        targets: 4,
                         mDataProp: "createdTime",
+                        defaultContent: "--",
                         render: function (data) {
                             return moment(data).format("YYYY-MM-DD")
                         }
                     },
                     {
                         title: "Last Updated User",
-                        targets: 6,
+                        targets: 5,
                         mDataProp: "lastUpdatedUser",
                         defaultContent: "--"
                     },
                     {
                         title: "Last Updated Time",
-                        targets: 7,
+                        targets: 6,
                         mDataProp: "lastUpdatedTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -176,96 +162,38 @@
                         }
                     },
                     {
-                        visible: ${section.vupdate},
+                        visible: ${claim.vupdate},
                         title: "Update",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editTaskInit(\'' + full.sectionCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
-                        targets: 8,
+                        targets: 7,
                         defaultContent: "--"
                     },
                     {
-                        visible: ${section.vdelete},
+                        visible: ${claim.vdelete},
                         title: "Delete",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteTaskInit(\'' + full.sectionCode + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
+                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
-                        targets: 9,
+                        targets: 8,
                         defaultContent: "--"
                     }
-                    <%--        {--%>
-                    <%--            visible: ${section.vupdate},--%>
-                    <%--            title: "Update",--%>
-                    <%--            sortable: false,--%>
-                    <%--            className: "dt-center",--%>
-                    <%--            mRender: function (data, type, full) {--%>
-                    <%--                return '<div>\n\--%>
-                    <%--<c:if test="${section.vupdate}"><a href="javascript:;" class="btn btn-sm btn-clean btn-icon mr-2"  title="Update" id=' + full.sectionCode + ' onclick="editSection(\'' + full.sectionCode + '\')"><span class="svg-icon svg-icon-md"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fill-rule="nonzero"\ transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "/><rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"/></g></svg></span></a>\n\--%>
-                    <%--</c:if>\</div>';--%>
-                    <%--        },--%>
-                    <%--            targets: 7,--%>
-                    <%--            defaultContent: "--"--%>
-                    <%--        },--%>
-                    <%--        {--%>
-                    <%--            visible: ${section.vdelete},--%>
-                    <%--            title: "Delete",--%>
-                    <%--            sortable: false,--%>
-                    <%--            className: "dt-center",--%>
-                    <%--            mRender: function (data, type, full) {--%>
-                    <%--                return '<div>\n\--%>
-                    <%--<c:if test="${section.vdelete}"><a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Delete" id=' + full.sectionCode + ' onclick="deleteSection(\'' + full.sectionCode + '\')"><span class="svg-icon svg-icon-md"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/><path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/></g></svg></span></a>\n\--%>
-                    <%--</c:if>\</div>';--%>
-                    <%--        },--%>
-                    <%--            targets: 8,--%>
-                    <%--            defaultContent: "--"--%>
-                    <%--        }--%>
                 ]
             });
-        }
-
-        function editTaskInit(sectionCode) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/getSection.json",
-                data: {
-                    sectionCode: sectionCode
-                },
-                dataType: "json",
-                type: 'GET',
-                contentType: "application/json",
-                success: function (data) {
-                    $('#responseMsgUpdate').hide();
-
-                    $('#eSectionCode').val(data.sectionCode);
-                    $('#eSectionCode').attr('readOnly', true);
-
-                    $('#eDescription').val(data.description);
-                    $('#eStatus').val(data.status);
-                    $('#eSortKey').val(data.sortKey);
-                    $('#modalUpdateSection').modal('toggle');
-                    $('#modalUpdateSection').modal('show');
-                },
-                error: function (data) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-        }
-
-        function deleteTaskInit(keyval) {
-            $('#deleteCodeCommon').val(keyval);
-            $('#modalDeleteCommon').modal('toggle');
-            $('#modalDeleteCommon').modal('show');
         }
 
         function loadDataTableDual() {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
+
             var stringify_aoData = function (aoData) {
                 var o = {};
-                var modifiers = ['mDataProp_', 'sSearch_', 'iSortCol_', 'bSortable_', 'bRegex_', 'bSearchable_', 'sSortDir_'];
+                var modifiers = ['mDataProp_', 'sSearch_', 'iSortCol_', 'bSortable_', 'bRegex_', 'bSearchable_', 'c'];
                 jQuery.each(aoData, function (idx, obj) {
                     if (obj.name) {
                         for (var i = 0; i < modifiers.length; i++) {
@@ -289,20 +217,19 @@
 
             oTableDual = $('#tabledual').dataTable({
                 bServerSide: true,
-                sAjaxSource: "${pageContext.servletContext.contextPath}/listDualSection.json",
+                sAjaxSource: "${pageContext.servletContext.contextPath}/listDualWarrantyClaims.json",
                 fnServerData: function (sSource, aoData, fnCallback) {
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'sectionCode', 'value': $('#sectionCode').val()},
-                        {'name': 'description', 'value': $('#description').val()},
-                        {'name': 'status', 'value': $('#status').val()},
-                        {'name': 'sortKey', 'value': $('#sortKey').val()}
+                        {'name': 'id', 'value': $('#searchId').val()},
+                        {'name': 'description', 'value': $('#searchDescription').val()},
+                        {'name': 'status', 'value': $('#searchStatus').val()}
                     );
                     $.ajax({
                         dataType: 'json',
                         type: 'POST',
-                        url: "${pageContext.request.contextPath}/listDualSection.json",
+                        url: "${pageContext.request.contextPath}/listDualWarrantyClaims.json",
                         contentType: "application/json",
                         data: stringify_aoData(aoData),
                         beforeSend: function (xhr) {
@@ -319,9 +246,9 @@
                 bJQueryUI: true,
                 sPaginationType: "full_numbers",
                 bDeferRender: true,
-                responsive: true,
                 lengthMenu: [10, 20, 50, 100],
                 searching: false,
+                responsive: true,
                 initComplete: function (settings, json) {
                     document.getElementById('data-table-loading-dual').style.display = "none";
                     document.getElementById('data-table-wrapper-dual').style.display = "block";
@@ -331,11 +258,11 @@
                         title: "ID",
                         targets: 0,
                         visible: false,
-                        mDataProp: "id",
+                        mDataProp: "key1",
                         defaultContent: "--"
                     },
                     {
-                        title: "Section Code",
+                        title: "ID",
                         targets: 1,
                         mDataProp: "key1",
                         defaultContent: "--"
@@ -350,60 +277,27 @@
                         title: "Status",
                         targets: 3,
                         mDataProp: "key3",
-                        defaultContent: "--",
-                        render: function (data, type, full, meta) {
-                            var status = {
-                                'Active': {
-                                    'title': 'Active',
-                                    'class': ' label-light-info'
-                                },
-                                'Inactive': {
-                                    'title': 'Inactive',
-                                    'class': ' label-light-danger'
-                                },
-                                'New': {
-                                    'title': 'New',
-                                    'class': ' label-light-primary'
-                                },
-                                'Changed': {
-                                    'title': 'Changed',
-                                    'class': ' label-light-success'
-                                },
-                                'Reset': {
-                                    'title': 'Reset',
-                                    'class': ' label-light-warning'
-                                }
-                            };
-                            if (typeof status[data] === 'undefined') {
-                                return data;
-                            }
-                            return '<span class="label label-lg font-weight-bold' + status[data].class + ' label-inline">' + status[data].title + '</span>';
-                        },
-                    },
-                    {
-                        title: "Sort Key",
-                        targets: 4,
-                        mDataProp: "key4",
                         defaultContent: "--"
                     },
                     {
                         title: "Task",
-                        targets: 5,
+                        targets: 4,
                         mDataProp: "task",
                         defaultContent: "--"
                     },
                     {
                         title: "Created Time",
-                        targets: 6,
+                        targets: 5,
                         mDataProp: "createdTime",
                         defaultContent: "--",
                         render: function (data) {
                             return moment(data).format("YYYY-MM-DD hh:mm a")
                         }
+
                     },
                     {
                         title: "Last Updated Time",
-                        targets: 7,
+                        targets: 6,
                         mDataProp: "lastUpdatedTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -412,95 +306,130 @@
                     },
                     {
                         title: "Last Updated User",
-                        targets: 8,
+                        targets: 7,
                         mDataProp: "lastUpdatedUser",
                         defaultContent: "--"
                     },
                     {
-                        visible: ${section.vconfirm},
+                        visible: ${claim.vconfirm},
                         title: "Confirm",
                         sortable: false,
                         className: "dt-center",
-                        mRender: function (data, type, full, meta) {
-                            return '<button id="confirmBtn" class="btn btn-default btn-sm"  onclick="confirmSection(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-confirm.svg" alt=""></button>';
+                        mRender: function (data, type, full) {
+                            return '<button id="confirmBtn" class="btn btn-default btn-sm"  onclick="confirmTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-confirm.svg" alt=""></button>';
                         },
-                        targets: 9,
+                        targets: 8,
                         defaultContent: "--"
                     },
                     {
-                        visible: ${section.vreject},
+                        visible: ${claim.vreject},
                         title: "Reject",
                         sortable: false,
                         className: "dt-center",
-                        mRender: function (data, type, full, meta) {
-                            return '<button id="rejectBtn" class="btn btn-default btn-sm" onclick="rejectSection(\'' + full.id + '\');"><img src="${pageContext.request.contextPath}/resources/images/action-reject.svg" alt=""></button>';
+                        mRender: function (data, type, full) {
+                            return '<button id="rejectBtn" class="btn btn-default btn-sm" onclick="rejectTaskInit(\'' + full.id + '\');"><img src="${pageContext.request.contextPath}/resources/images/action-reject.svg" alt=""></button>';
                         },
-                        targets: 10,
+                        targets: 9,
                         defaultContent: "--"
                     }
-
                 ]
             });
         }
 
-        function confirmSection(keyval) {
+        function editClaimInit(id) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/getWarrantyClaims.json",
+                data: {
+                    id: id
+                },
+                dataType: "json",
+                type: 'GET',
+                contentType: "application/json",
+                success: function (data) {
+                    $('#responseMsgUpdate').hide();
+
+                    $('#editId').val(data.id);
+                    $('#editId').attr('readOnly', true);
+                    $('#editDescription').val(data.description);
+                    $('#editStatus').val(data.status);
+
+                    $('#modalUpdateClaim').modal('toggle');
+                    $('#modalUpdateClaim').modal('show');
+
+                },
+                error: function (data) {
+                    window.location = "${pageContext.request.contextPath}/logout.htm";
+                }
+            });
+        }
+
+        function deleteClaimInit(keyval) {
+            $('#deleteCodeCommon').val(keyval);
+            $('#modalDeleteCommon').modal('toggle');
+            $('#modalDeleteCommon').modal('show');
+        }
+
+        function confirmClaimInit(keyval) {
             $('#idConfirm').val(keyval);
             $('#modalConfirmCommon').modal('toggle');
             $('#modalConfirmCommon').modal('show');
         }
 
-        function rejectSection(keyval) {
+        function rejectClaimInit(keyval) {
             $('#idReject').val(keyval);
             $('#modalRejectCommon').modal('toggle');
             $('#modalRejectCommon').modal('show');
         }
 
-        function search() {
+
+        function searchStart() {
             oTable.fnDraw();
             oTableDual.fnDraw();
         }
 
         function resetSearch() {
-            $('#sectionCode').val("");
-            $('#description').val("");
-            $('#status').val("");
-            $('#sortKey').val("");
-
+            $('#searchId').val("");
+            $('#searchDescription').val("");
+            $('#searchStatus').val("");
             oTable.fnDraw();
             oTableDual.fnDraw();
         }
 
+
         function openAddModal() {
-            $('#modalAddSection').modal('toggle');
-            $('#modalAddSection').modal('show');
+            $('#modalAddClaim').modal('toggle');
+            $('#modalAddClaim').modal('show');
         }
 
         function deleteCommon() {
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/deleteSection.json',
-                data: {sectionCode: $('#deleteCodeCommon').val()},
+                url: '${pageContext.request.contextPath}/deleteWarrantyClaims.json',
+                data: {id: $('#deleteCodeCommon').val()},
                 beforeSend: function (xhr) {
                     if (header && token) {
                         xhr.setRequestHeader(header, token);
                     }
                 },
                 success: function (res) {
+
                     //close delete modal
                     $('#modalDeleteCommon').modal('toggle');
                     //open delete process modal
                     $('#modalDeleteProcessCommon').modal('toggle');
                     $('#modalDeleteProcessCommon').modal('show');
-                    if (res.flag) {
-                        //success
+
+                    if (res.flag) { //success
                         $('#responseMsgDelete').show();
                         $('#responseMsgDelete').addClass('success-response').text(res.successMessage);
-                        search();
+                        searchStart();
                     } else {
                         //Set error messages
                         $('#responseMsgDelete').show();
                         $('#responseMsgDelete').addClass('error-response').text(res.errorMessage);
                     }
+
+
                 },
                 error: function (jqXHR) {
                     window.location = "${pageContext.request.contextPath}/logout.htm";
@@ -511,7 +440,7 @@
         function confirmCommon() {
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/confirmSection.json',
+                url: '${pageContext.request.contextPath}/confirmWarrantyClaims.json',
                 data: {id: $('#idConfirm').val()},
                 beforeSend: function (xhr) {
                     if (header && token) {
@@ -519,22 +448,24 @@
                     }
                 },
                 success: function (res) {
+
                     //close delete modal
                     $('#modalConfirmCommon').modal('toggle');
                     //open delete process modal
                     $('#modalConfirmProcessCommon').modal('toggle');
                     $('#modalConfirmProcessCommon').modal('show');
 
-                    if (res.flag) {
-                        //success
+                    if (res.flag) { //success
                         $('#responseMsgConfirm').show();
                         $('#responseMsgConfirm').addClass('success-response').text(res.successMessage);
-                        $('form[name=addSectionForm]').trigger("reset");
-                        search();
+                        $('form[name=addTaskForm]').trigger("reset");
+                        searchStart();
                     } else {
                         $('#responseMsgConfirm').show();
                         $('#responseMsgConfirm').addClass('error-response').text(res.errorMessage);
                     }
+
+
                 },
                 error: function (jqXHR) {
                     window.location = "${pageContext.request.contextPath}/logout.htm";
@@ -542,15 +473,10 @@
             });
         }
 
-        function searchStart() {
-            oTable.fnDraw();
-            oTableDual.fnDraw();
-        }
-
         function rejectCommon() {
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/rejectSection.json',
+                url: '${pageContext.request.contextPath}/rejectWarrantyClaims.json',
                 data: {id: $('#idReject').val()},
                 beforeSend: function (xhr) {
                     if (header && token) {
@@ -558,18 +484,18 @@
                     }
                 },
                 success: function (res) {
+
                     //close delete modal
                     $('#modalRejectCommon').modal('toggle');
                     //open delete process modal
                     $('#modalRejectProcessCommon').modal('toggle');
                     $('#modalRejectProcessCommon').modal('show');
 
-                    if (res.flag) {
-                        //success
+                    if (res.flag) { //success
                         $('#responseMsgReject').show();
                         $('#responseMsgReject').addClass('success-response').text(res.successMessage);
-                        $('form[name=addSectionForm]').trigger("reset");
-                        search();
+                        $('form[name=addTaskForm]').trigger("reset");
+                        searchStart();
                     } else {
                         $('#responseMsgReject').show();
                         $('#responseMsgReject').addClass('error-response').text(res.errorMessage);
@@ -583,7 +509,6 @@
     </script>
 </head>
 
-
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -594,7 +519,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Section Management</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Warranty Claim</h5>
                     <!--end::Page Title-->
                 </div>
                 <!--end::Page Heading-->
@@ -612,63 +537,53 @@
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b">
                         <div class="card-header">
-                            <h3 class="card-title">Search Section</h3>
+                            <h3 class="card-title">Search Claims</h3>
                         </div>
                         <!--begin::Form-->
-                        <form:form class="form" id="sectionform" name="sectionform" action="addSection"
-                                   theme="simple" method="post" modelAttribute="section">
+                        <form:form class="form" id="claimviewform" name="claimsearch" action="addClaim" theme="simple"
+                                   method="post" modelAttribute="claim">
                             <%--                        <form class="form">--%>
                             <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-lg-3">
-                                        <label>Section Code:</label>
+                                        <label>ID:</label>
                                         <div class="input-group">
-                                            <input id="sectionCode" name="sectionCode" type="text"
+                                            <input id="searchId" type="text"
                                                    onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                                   maxlength="8" class="form-control"
-                                                   placeholder="Section Code">
+                                                   maxlength="16"
+                                                   class="form-control form-control" placeholder="Claim ID">
                                         </div>
-                                        <span class="form-text text-muted">Please enter section code</span>
+                                        <span class="form-text text-muted">Please enter Claim ID</span>
                                     </div>
                                     <div class="col-lg-3">
                                         <label>Description:</label>
-                                        <div class="input-group">
-                                            <input id="description" name="description" type="text"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                                   maxlength="128" class="form-control"
-                                                   placeholder="Description">
-                                        </div>
+                                        <input id="searchDescription" type="text"
+                                               onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
+                                               maxlength="64"
+                                               class="form-control form-control" placeholder="Description">
+                                            <%--                                        <input type="email" class="form-control" placeholder="Enter email" />--%>
                                         <span class="form-text text-muted">Please enter description</span>
                                     </div>
                                     <div class="col-lg-3">
                                         <label>Status:</label>
-                                        <select id="status" class="form-control">
+                                        <select id="searchStatus" class="form-control form-control">
                                             <option selected value="">Select Status</option>
-                                            <c:forEach items="${section.statusList}" var="status">
+                                            <c:forEach items="${claim.statusList}" var="status">
                                                 <option value="${status.statusCode}">${status.description}</option>
                                             </c:forEach>
                                         </select>
                                         <span class="form-text text-muted">Please select status</span>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label>Sort Key:</label>
-                                        <div class="input-group">
-                                            <input id="sortKey" name="sortKey" type="number"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^0-9 ]/g, ''))"
-                                                   maxlength="3" class="form-control"
-                                                   placeholder="Sort Key">
-                                        </div>
-                                        <span class="form-text text-muted">Please enter sort key</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
+                                        <button type="button" class="btn btn-primary mr-2 btn-sm"
+                                                onclick="searchStart()">
                                             Search
                                         </button>
-                                        <button type="reset" class="btn btn-sm btn-secondary" onclick="resetSearch()">
+                                        <button type="reset" class="btn btn-secondary btn-sm" onclick="resetSearch()">
                                             Reset
                                         </button>
                                     </div>
@@ -685,13 +600,14 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap border-0 pt-1 pb-0">
                     <div class="card-title">
-                        <h3 class="card-label">Section Management
-                            <span class="d-block text-muted pt-2 font-size-sm">Section list</span></h3>
+                        <h3 class="card-label">Warranty Claim
+                            <span class="d-block text-muted pt-2 font-size-sm">Claim list</span></h3>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <c:if test="${section.vadd}">
-                            <a href="#" onclick="openAddModal()" class="btn btn-sm btn-primary font-weight-bolder">
+                        <c:if test="${claim.vadd}">
+                            <a href="javascript:void(0)" onclick="openAddModal()"
+                               class="btn btn-sm btn-primary font-weight-bolder">
 											<span class="svg-icon svg-icon-md">
 												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
 												<svg xmlns="http://www.w3.org/2000/svg"
@@ -720,10 +636,9 @@
                         <table class="table table-separate table-head-custom table-checkable" id="table">
                             <thead>
                             <tr>
-                                <th>Section Code</th>
+                                <th>ID</th>
                                 <th>Description</th>
                                 <th>Status</th>
-                                <th>Sort Key</th>
                                 <th>Created User</th>
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
@@ -740,11 +655,11 @@
             </div>
             <!--end::Card-->
             <!--begin::Card-->
-            <c:if test="${section.vdualauth}">
+            <c:if test="${claim.vdualauth}">
                 <div class="card card-custom gutter-b">
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <div class="card-title">
-                            <h3 class="card-label">Sections to be confirmed</h3>
+                            <h3 class="card-label">Claim to be confirmed</h3>
                         </div>
                     </div>
                     <div class="card-body">
@@ -758,10 +673,9 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Section Code</th>
+                                    <th>Claim ID</th>
                                     <th>Description</th>
                                     <th>Status</th>
-                                    <th>Sort Key</th>
                                     <th>Task</th>
                                     <th>Created Time</th>
                                     <th>Last Updated Time</th>
@@ -776,20 +690,20 @@
                         </div>
                     </div>
                     <!--end::Card-->
+
                     <!--end::Container-->
                 </div>
             </c:if>
             <!--end::Entry-->
         </div>
-        <!--end::Container-->
     </div>
-    <!--end::Entry-->
 </div>
 <!-- start include jsp files -->
-<jsp:include page="section-mgt-add.jsp"/>
-<jsp:include page="section-mgt-update.jsp"/>
+<jsp:include page="claims-mgt-add.jsp"/>
+<jsp:include page="claims-mgt-update.jsp"/>
 <jsp:include page="../../common/delete-modal.jsp"/>
 <jsp:include page="../../common/confirm-modal.jsp"/>
 <jsp:include page="../../common/reject-modal.jsp"/>
 <!-- end include jsp files -->
+
 </html>
