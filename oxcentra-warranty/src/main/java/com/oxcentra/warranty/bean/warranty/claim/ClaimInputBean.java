@@ -28,7 +28,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private String postcode;
     private String dealership;
     private String claimType;
-    private Date purchasingDate;
+    private String purchasingDate;
     private String purchasingAttachmentId;
     private String description;
     private String sparePartsId;
@@ -40,7 +40,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private String costType;
     private String hours;
     private String labourRate;
-    private BigDecimal totalCost;
+    private String totalCost;
     private String costDescription;
     private String assignee;
     private String supplier;

@@ -121,7 +121,7 @@ public class ClaimService {
         String message = "";
         String auditDescription = "";
         try {
-            //check task code is already exist or not
+            //check claimid is already exist or not
             Claim existingClaim = claimRepository.getClaim(claimInputBean.getId().trim());
             if (existingClaim == null) {
                 //set the other values to input bean
@@ -142,11 +142,11 @@ public class ClaimService {
                     message = claimRepository.insertClaim(claimInputBean);
                 }
             } else {
-                message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
-                auditDescription = messageSource.getMessage(MessageVarList.SMPP_CONFIGURATION_MGT_ALREADY_EXISTS, null, locale);
+                message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);
             }
         } catch (DuplicateKeyException ex) {
-            message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
+            message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception x) {

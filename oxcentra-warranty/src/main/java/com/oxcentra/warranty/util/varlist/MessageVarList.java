@@ -378,4 +378,41 @@ public class MessageVarList {
     public static final String DEALERSHIP_MGT_EMPTY_STATUS = "dealership.empty.status";
     public static final String DEALERSHIP_MGT_EMPTY_SORTKEY = "dealership.empty.sortKey";
     //-------------------------- dealership mgt-----------------------------------------------------------------------//
+
+    //-------------------------- claim mgt-----------------------------------------------------------------------------//
+    public static final String CLAIM_MGT_EMPTY_CHASSIS = "claim.empty.chassis";
+    public static final String CLAIM_MGT_EMPTY_MODEL = "claim.empty.model";
+    public static final String CLAIM_MGT_EMPTY_FIRSTNAME = "claim.empty.firstName";
+    public static final String CLAIM_MGT_EMPTY_LASTNAME = "claim.empty.lastName";
+    public static final String CLAIM_MGT_EMPTY_PHONE = "claim.empty.phone";
+    public static final String CLAIM_MGT_EMPTY_EMAIL = "claim.empty.email";
+    public static final String CLAIM_MGT_EMPTY_ADDRESS = "claim.empty.address";
+    public static final String CLAIM_MGT_EMPTY_SURBURB = "claim.empty.surburb";
+    public static final String CLAIM_MGT_EMPTY_STATE = "claim.empty.state";
+    public static final String CLAIM_MGT_EMPTY_POSTCODE = "claim.empty.postcode";
+    public static final String CLAIM_MGT_EMPTY_DEALERSHIP = "claim.empty.dealership";
+    public static final String CLAIM_MGT_EMPTY_CLAIM_TYPE = "claim.empty.claimType";
+    public static final String CLAIM_MGT_EMPTY_PURCHASING_DATE = "claim.empty.purchasingDate";
+    public static final String CLAIM_MGT_EMPTY_DESCRIPTION = "claim.empty.description";
+    public static final String CLAIM_MGT_EMPTY_SPARE_PARTS_ID = "claim.empty.sparePartsId";
+    public static final String CLAIM_MGT_EMPTY_FAILURE_TYPE = "claim.empty.failureType";
+    public static final String CLAIM_MGT_EMPTY_FAILURE_AREA = "claim.empty.failureArea";
+    public static final String CLAIM_MGT_EMPTY_REPAIR_TYPE = "claim.empty.repairType";
+    public static final String CLAIM_MGT_EMPTY_REPAIR_DESCRIPTION = "claim.empty.repairDescription";
+    public static final String CLAIM_MGT_EMPTY_ATTACHMENTS_ID = "claim.empty.attachmentsId";
+    public static final String CLAIM_MGT_EMPTY_COST_TYPE = "claim.empty.costType";
+    public static final String CLAIM_MGT_EMPTY_HOURS = "claim.empty.hours";
+    public static final String CLAIM_MGT_EMPTY_LABOUR_RATE = "claim.empty.labourRate";
+    public static final String CLAIM_MGT_EMPTY_TOTAL_COST = "claim.empty.totalCost";
+    public static final String CLAIM_MGT_EMPTY_COST_DESCRIPTION = "claim.empty.costDescription";
+
+    public static final String CLAIM_MGT_SUCCESS_ADD = "claim.success.add";
+    public static final String CLAIM_MGT_SUCCESS_UPDATE = "claim.success.update";
+    public static final String CLAIM_MGT_SUCCESS_DELETE = "claim.success.delete";
+    public static final String CLAIM_MGT_SUCCESS_CONFIRM = "claim.success.confirm";
+    public static final String CLAIM_MGT_SUCCESS_REJECT = "claim.success.reject";
+    public static final String CLAIM_MGT_ALREADY_EXISTS = "claim.already.exists";
+    public static final String CLAIM_MGT_NO_RECORD_FOUND = "claim.no.record.found";
+    //-------------------------- claim mgt-----------------------------------------------------------------------------//
+
 }
