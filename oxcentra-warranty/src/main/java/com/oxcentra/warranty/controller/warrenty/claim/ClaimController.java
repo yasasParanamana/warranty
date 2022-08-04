@@ -147,13 +147,14 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM ADD");
         ResponseBean responseBean = null;
         try {
+            claimInputBean.setId("WDC-" + System.currentTimeMillis() / 100);
             BindingResult bindingResult = validateRequestBean(claimInputBean);
             if (bindingResult.hasErrors()) {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
                 String message = claimService.insertClaim(claimInputBean, locale);
                 if (message.isEmpty()) {
-                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_ADD, null, locale), null);
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_ADD, null, locale), null);
                 } else {
                     responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
                 }

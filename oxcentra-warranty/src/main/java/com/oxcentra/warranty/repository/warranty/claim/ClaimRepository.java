@@ -38,10 +38,10 @@ public class ClaimRepository {
 
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (taskcode,description,status,createdtime,createduser,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?)";
+    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set description=?,status=?,lastupdateduser=?,lastupdatedtime=? where taskcode=?";
-    private final String SQL_FIND_CLAIM = "select t.taskcode,t.description,t.status,t.createdtime,t.createduser,t.lastupdatedtime,t.lastupdateduser from reg_warranty_claim t where t.taskcode = ? ";
-    private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where taskcode=?";
+    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email from reg_warranty_claim t where t.id = ? ";
+    private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
 
     @Transactional(readOnly = true)
     public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
@@ -216,10 +216,29 @@ public class ClaimRepository {
         try {
             int value = 0;
             //insert query
-            value = jdbcTemplate.update(SQL_INSERT_CLAIM, claimInputBean.getId(),
+            value = jdbcTemplate.update(SQL_INSERT_CLAIM,claimInputBean.getId(),
+                    claimInputBean.getChassis(),
+                    claimInputBean.getModel(),
+                    claimInputBean.getFirstName(),
+                    claimInputBean.getLastName(),
+                    claimInputBean.getPhone(),
+                    claimInputBean.getEmail(),
+                    claimInputBean.getAddress(),
+                    claimInputBean.getSurburb(),
+                    claimInputBean.getState(),
+                    claimInputBean.getPostcode(),
+                    claimInputBean.getDealership(),
+                    //claimInputBean.getPurchasingDate(),
                     claimInputBean.getDescription(),
-                    claimInputBean.getStatus(),
-                    claimInputBean.getPurchasingDate()
+                    claimInputBean.getFailureType(),
+                    claimInputBean.getFailureArea(),
+                    claimInputBean.getRepairType(),
+                    claimInputBean.getRepairDescription(),
+                    claimInputBean.getCostType(),
+                    claimInputBean.getHours(),
+                    claimInputBean.getLabourRate(),
+                  //  claimInputBean.getTotalCost(),
+                    claimInputBean.getDescription()
                     );
 
             if (value != 1) {
@@ -247,7 +266,7 @@ public class ClaimRepository {
                     t.setId(null);
                 }
 
-                try {
+                /*try {
                     t.setDescription(rs.getString("description"));
                 } catch (Exception e) {
                     t.setDescription(null);
@@ -264,7 +283,7 @@ public class ClaimRepository {
                 } catch (Exception e) {
                     t.setPurchasingDate(null);
                 }
-
+*/
 
                 return t;
             });

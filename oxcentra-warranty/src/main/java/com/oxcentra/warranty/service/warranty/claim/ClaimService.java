@@ -135,7 +135,7 @@ public class ClaimService {
 //*/
                 //check the page dual auth enable or disable
                 if (commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE)) {
-                    auditDescription = "Requested to add task (task code: " + claimInputBean.getId() + ")";
+                    auditDescription = "Requested to add claim (claim ID: " + claimInputBean.getId() + ")";
                     message = this.insertDualAuthRecord(claimInputBean, TaskVarList.ADD_TASK);
                 } else {
                     auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
