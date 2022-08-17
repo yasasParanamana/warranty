@@ -2,6 +2,8 @@ package com.oxcentra.warranty.repository.common;
 
 import com.oxcentra.warranty.bean.common.*;
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
+import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.bean.usermgt.userrole.UserRoleBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.common.CommonPasswordParam;
@@ -83,6 +85,9 @@ public class CommonRepository {
     private final String SQL_FIND_STATUS = "select statuscode,description from STATUS s where s.statuscode = ?";
     private final String SQL_FIND_TXN_TYPE = "select txntype,description from txn_type tx where tx.txntype = ?";
     private final String SQL_FIND_TELCO = "select code,description from TELCO d where d.code = ?";
+    private final String SQL_GET_MODEL_LIST_BY_STATUS = "select id,model from reg_model where status = ?";
+    private final String SQL_GET_STATE_LIST_BY_STATUS = "select state_id,state_name from state where status = ?";
+
 
     /**
      * @Author shalika_w
@@ -921,5 +926,64 @@ public class CommonRepository {
         }
         return status;
     }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:18:05 AM
+     * @Version V1.00
+     * @MethodName getActiveModelList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the model list
+     */
+
+    @Transactional(readOnly = true)
+    public List<Model> getActiveModelList(String status) throws Exception {
+        List<Model> modelBeanList;
+        try {
+            List<Map<String, Object>> modelList = jdbcTemplate.queryForList(SQL_GET_MODEL_LIST_BY_STATUS, status);
+            modelBeanList = modelList.stream().map((record) -> {
+                Model modelBean = new Model();
+                modelBean.setId(record.get("id").toString());
+                modelBean.setModel(record.get("model").toString());
+                return modelBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            modelBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return modelBeanList;
+    }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:48:05 AM
+     * @Version V1.00
+     * @MethodName getActiveStateList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the state list
+     */
+
+    @Transactional(readOnly = true)
+    public List<State> getActiveStateList(String status) throws Exception {
+        List<State> stateBeanList;
+        try {
+            List<Map<String, Object>> stateList = jdbcTemplate.queryForList(SQL_GET_STATE_LIST_BY_STATUS, status);
+            stateBeanList = stateList.stream().map((record) -> {
+                State stateBean = new State();
+                stateBean.setState_id(record.get("state_id").toString());
+                stateBean.setState_name(record.get("state_name").toString());
+                return stateBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            stateBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return stateBeanList;
+    }
+
 
 }

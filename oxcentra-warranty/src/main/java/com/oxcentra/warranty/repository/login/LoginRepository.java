@@ -34,7 +34,7 @@ public class LoginRepository {
     @Autowired
     CommonVarList commonVarList;
 
-    private final String SQL_GET_USER_LOGIN = "select username,password,USERROLE,expirydate,fullname,email,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime from WEB_SYSTEMUSER where lower(username)=?";
+    private final String SQL_GET_USER_LOGIN = "select username,password,USERROLE,expirydate,fullname,email,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,dealership from WEB_SYSTEMUSER where lower(username)=?";
     private final String SQL_UPDATE_VALID_USER_LOGIN = "update WEB_SYSTEMUSER set noofinvlidattempt=? , loggeddate = ? , status = ? , lastupdatedtime = ? where lower(username) =?";
     private final String SQL_UPDATE_INVALID_USER_LOGIN = "update WEB_SYSTEMUSER set noofinvlidattempt=? , status = ? , lastupdatedtime = ? where lower(username) =?";
 
@@ -136,6 +136,12 @@ public class LoginRepository {
                     u.setMobile(rs.getString("mobile"));
                 } catch (Exception e) {
                     u.setMobile(null);
+                }
+
+                try {
+                    u.setDealership(rs.getString("dealership"));
+                } catch (Exception e) {
+                    u.setDealership(null);
                 }
 
                 return u;

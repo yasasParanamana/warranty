@@ -121,7 +121,7 @@ public class ClaimService {
         String message = "";
         String auditDescription = "";
         try {
-            //check claimid is already exist or not
+            //check claimId is already exist or not
             Claim existingClaim = claimRepository.getClaim(claimInputBean.getId().trim());
             if (existingClaim == null) {
                 //set the other values to input bean

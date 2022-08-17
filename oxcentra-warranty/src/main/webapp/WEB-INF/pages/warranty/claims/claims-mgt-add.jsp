@@ -42,10 +42,15 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="model">Model</label>
-                            <form:input path="model" name="model" type="text"
-                                        class="form-control form-control-sm" id="addmodel" maxlength="10"
-                                        placeholder="Model"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                            <form:select path="model" name="model"
+                                         class="form-control form-control-sm" id="addmodel">
+                                <option selected value="">Select Model</option>
+                                <c:forEach items="${claim.modelActList}" var="modelType">
+                                    <form:option
+                                            value="${modelType.id}">${modelType.model}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                     </div>
 
@@ -102,10 +107,15 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="state">State</label>
-                            <form:input path="state" name="state" type="text"
-                                        class="form-control form-control-sm" id="addphone" maxlength="20"
-                                        placeholder="State"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                            <form:select path="state" name="state"
+                                         class="form-control form-control-sm" id="addstate">
+                                <option selected value="">Select State</option>
+                                <c:forEach items="${claim.stateActList}" var="stateType">
+                                    <form:option
+                                            value="${stateType.state_id}">${stateType.state_name}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="postcode">Post Code</label>
@@ -125,8 +135,8 @@
 
                             <form:input path="dealership" name="dealership" type="text"
                                         class="form-control form-control-sm" id="adddealership" maxlength="10"
-                                        placeholder="Dealership"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        placeholder="Dealership" readonly="true" value="${claim.dealership}"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
                         </div>
 
                         <div class="col-lg-4">

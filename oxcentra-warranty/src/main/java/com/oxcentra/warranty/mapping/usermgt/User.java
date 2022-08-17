@@ -23,6 +23,8 @@ public class User {
     private String lastupdateduser;
     private Date lastupdatedtime;
     private Date createtime;
+    private String dealership;
+
 
     public String getUserName() {
         return userName;
@@ -142,5 +144,13 @@ public class User {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getDealership() {
+        return dealership;
+    }
+
+    public void setDealership(String dealership) {
+        this.dealership = dealership;
     }
 }

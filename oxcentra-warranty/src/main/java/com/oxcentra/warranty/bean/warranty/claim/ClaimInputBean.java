@@ -1,6 +1,8 @@
 package com.oxcentra.warranty.bean.warranty.claim;
 
 import com.oxcentra.warranty.bean.common.Status;
+import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
+import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.util.common.DataTablesRequest;
 import lombok.*;
 
@@ -68,6 +70,8 @@ public class ClaimInputBean extends DataTablesRequest {
     /*-------for access control-----------*/
     private List<Status> statusList;
     private List<Status> statusActList;
+    private List<Model> modelActList;
+    private List<State> stateActList;
 
 
     /* add getters setters */

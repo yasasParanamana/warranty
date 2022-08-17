@@ -3,7 +3,8 @@ package com.oxcentra.warranty.controller.warrenty.claim;
 import com.oxcentra.warranty.annotation.accesscontrol.AccessControl;
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
+import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
+import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.Task;
@@ -27,7 +28,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
@@ -268,14 +268,21 @@ public class ClaimController implements RequestBeanValidation<Object> {
     }
 
     @ModelAttribute
-    public void getClaimBean(Model map) throws Exception {
+    public void getClaimBean(org.springframework.ui.Model map) throws Exception {
         ClaimInputBean claimInputBean = new ClaimInputBean();
         //get status list
         List<Status> statusList = commonRepository.getStatusList(StatusVarList.STATUS_CATEGORY_DEFAULT);
         List<Status> statusActList = common.getActiveStatusList();
+        //get model
+        List<Model> modelActList = commonRepository.getActiveModelList(StatusVarList.STATUS_DFLT_ACT);
+        //get state
+        List<State> stateActList = commonRepository.getActiveStateList(StatusVarList.STATUS_DFLT_ACT);
         //set values to task bean
         claimInputBean.setStatusList(statusList);
         claimInputBean.setStatusActList(statusActList);
+        claimInputBean.setModelActList(modelActList);
+        claimInputBean.setStateActList(stateActList);
+        claimInputBean.setDealership(sessionBean.getUser().getDealership());
         //set privileges
         this.applyUserPrivileges(claimInputBean);
         //add values to model map
