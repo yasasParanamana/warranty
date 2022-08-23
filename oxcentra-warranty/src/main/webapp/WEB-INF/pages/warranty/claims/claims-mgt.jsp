@@ -167,7 +167,7 @@
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
                         targets: 7,
                         defaultContent: "--"
@@ -350,8 +350,30 @@
 
                     $('#editId').val(data.id);
                     $('#editId').attr('readOnly', true);
-                    $('#editDescription').val(data.description);
-                    $('#editStatus').val(data.status);
+
+                    $('#editModel').html(data.model);
+                    $('#editChassisNumber').html(data.chassis);
+                    $('#editFirstName').html(data.firstName);
+                    $('#editLastName').html(data.lastName);
+                    $('#editPhone').html(data.phone);
+                    $('#editEmail').html(data.email);
+                    $('#editAddress').html(data.address);
+                    $('#editSurburb').html(data.surburb);
+                    $('#editState').html(data.state);
+                    $('#editPostcode').html(data.postcode);
+                    $('#editDealership').html(data.dealership);
+                    $('#editClaimType').html(data.claimType);
+                    $('#editPurchasingDate').html(data.purchasingDate);
+                    $('#editDescription').html(data.description);
+                    $('#editFailureType').html(data.failureType);
+                    $('#editFailureArea').html(data.failureArea);
+                    $('#editRepairType').html(data.repairType);
+                    $('#editRepairDescription').html(data.repairDescription);
+                    $('#editCostType').html(data.costType);
+                    $('#editHours').html(data.hours);
+                    $('#editLabourRate').html(data.labourRate);
+                    $('#editTotalCost').html(data.totalCost);
+                    $('#editCostDescription').html(data.costDescription);
 
                     $('#modalUpdateClaim').modal('toggle');
                     $('#modalUpdateClaim').modal('show');

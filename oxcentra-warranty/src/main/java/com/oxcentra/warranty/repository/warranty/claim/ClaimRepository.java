@@ -21,6 +21,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Repository
@@ -40,7 +42,7 @@ public class ClaimRepository {
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
     private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set description=?,status=?,lastupdateduser=?,lastupdatedtime=? where taskcode=?";
-    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email from reg_warranty_claim t where t.id = ? ";
+    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description  from reg_warranty_claim t where t.id = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
 
     @Transactional(readOnly = true)
@@ -266,24 +268,144 @@ public class ClaimRepository {
                     t.setId(null);
                 }
 
-                /*try {
+                try {
+                    t.setChassis(rs.getString("chassis"));
+                } catch (Exception e) {
+                    t.setChassis(null);
+                }
+
+                try {
+                    t.setModel(rs.getString("model"));
+                } catch (Exception e) {
+                    t.setModel(null);
+                }
+
+                try {
+                    t.setFirstName(rs.getString("first_name"));
+                } catch (Exception e) {
+                    t.setFirstName(null);
+                }
+
+                try {
+                    t.setLastName(rs.getString("last_name"));
+                } catch (Exception e) {
+                    t.setLastName(null);
+                }
+
+                try {
+                    t.setPhone(rs.getString("phone"));
+                } catch (Exception e) {
+                    t.setPhone(null);
+                }
+
+                try {
+                    t.setEmail(rs.getString("email"));
+                } catch (Exception e) {
+                    t.setEmail(null);
+                }
+
+                try {
+                    t.setAddress(rs.getString("address"));
+                } catch (Exception e) {
+                    t.setAddress(null);
+                }
+
+                try {
+                    t.setSurburb(rs.getString("surburb"));
+                } catch (Exception e) {
+                    t.setSurburb(null);
+                }
+
+                try {
+                    t.setState(rs.getString("state"));
+                } catch (Exception e) {
+                    t.setState(null);
+                }
+
+                try {
+                    t.setPostcode(rs.getString("postcode"));
+                } catch (Exception e) {
+                    t.setPostcode(null);
+                }
+
+                try {
+                    t.setDealership(rs.getString("dealership"));
+                } catch (Exception e) {
+                    t.setDealership(null);
+                }
+
+                try {
+                    t.setClaimType(rs.getString("claim_type"));
+                } catch (Exception e) {
+                    t.setClaimType(null);
+                }
+
+                try {
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
+                } catch (Exception e) {
+                    t.setPurchasingDate(null);
+                }
+
+                try {
                     t.setDescription(rs.getString("description"));
                 } catch (Exception e) {
                     t.setDescription(null);
                 }
 
                 try {
-                    t.setStatus(rs.getString("status"));
+                    t.setFailureType(rs.getString("failiure_type"));
                 } catch (Exception e) {
-                    t.setStatus(null);
+                    t.setFailureType(null);
                 }
 
                 try {
-                    t.setPurchasingDate(rs.getDate("purchasingDate"));
+                    t.setFailureArea(rs.getString("failiure_area"));
                 } catch (Exception e) {
-                    t.setPurchasingDate(null);
+                    t.setFailureArea(null);
                 }
-*/
+
+                try {
+                    t.setRepairType(rs.getString("repair_type"));
+                } catch (Exception e) {
+                    t.setRepairType(null);
+                }
+
+                try {
+                    t.setRepairDescription(rs.getString("repair_description"));
+                } catch (Exception e) {
+                    t.setRepairDescription(null);
+                }
+
+                try {
+                    t.setCostType(rs.getString("cost_type"));
+                } catch (Exception e) {
+                    t.setCostType(null);
+                }
+
+                try {
+                    t.setHours(rs.getString("hours"));
+                } catch (Exception e) {
+                    t.setHours(null);
+                }
+
+                try {
+                    t.setLabourRate(rs.getString("labour_rate"));
+                } catch (Exception e) {
+                    t.setLabourRate(null);
+                }
+
+                try {
+                    t.setTotalCost(rs.getBigDecimal("total_cost"));
+                } catch (Exception e) {
+                    t.setTotalCost(null);
+                }
+
+                try {
+                    t.setCostDescription(rs.getString("cost_description"));
+                } catch (Exception e) {
+                    t.setCostDescription(null);
+                }
 
                 return t;
             });

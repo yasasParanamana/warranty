@@ -174,6 +174,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         Claim claim= new Claim();
         try {
             if (id != null && !id.trim().isEmpty()) {
+                System.out.println("ID  " +id);
                 claim = claimService.getClaim(id);
             }
         } catch (Exception e) {
