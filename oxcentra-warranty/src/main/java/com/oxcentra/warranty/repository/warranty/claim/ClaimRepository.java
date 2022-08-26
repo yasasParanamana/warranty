@@ -41,9 +41,11 @@ public class ClaimRepository {
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
     private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set description=?,status=?,lastupdateduser=?,lastupdatedtime=? where taskcode=?";
+    private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description  from reg_warranty_claim t where t.id = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
+    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
+
 
     @Transactional(readOnly = true)
     public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
@@ -422,9 +424,41 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, claimInputBean.getDescription(),
-                    claimInputBean.getStatus(),
-                    claimInputBean.getAddress());
+            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, "WAR_APPROVE",claimInputBean.getId());
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+        } catch (DuplicateKeyException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw e;
+        }
+        return message;
+    }
+
+    @Transactional
+    public String approveRequestClaim(ClaimInputBean claimInputBean) throws Exception {
+        String message = "";
+        try {
+            int value = 0;
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_APPROVE",claimInputBean.getId());
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+        } catch (DuplicateKeyException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw e;
+        }
+        return message;
+    }
+
+    @Transactional
+    public String rejectRequestClaim(ClaimInputBean claimInputBean) throws Exception {
+        String message = "";
+        try {
+            int value = 0;
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_REJECTED_HO",claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }

@@ -143,7 +143,7 @@ public class ClaimService {
                 }
             } else {
                 message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
-                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);
+                auditDescription  = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);
             }
         } catch (DuplicateKeyException ex) {
             message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
@@ -191,9 +191,10 @@ public class ClaimService {
                 String oldValueAsString = this.getClaimAsString(existingClaim, true);
                 String newValueAsString = this.getClaimAsString(claimInputBean, true);
                 //check the old value and new value
-                if (oldValueAsString.equals(newValueAsString)) {
+                /*if (oldValueAsString.equals(newValueAsString)) {
                     message = MessageVarList.COMMON_ERROR_NO_VALUE_CHANGE;
-                } else {
+                } else
+                {*/
                     //set the other values to input bean
                     Date currentDate = commonRepository.getCurrentDate();
                     String lastUpdatedUser = sessionBean.getUsername();
@@ -205,10 +206,10 @@ public class ClaimService {
                         auditDescription = "Requested to update task (Task code: " + claimInputBean.getId() + ")";
                         message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
                     } else {
-                        auditDescription = "Task Mgt (Task code: " + claimInputBean.getId() + ") updated by " + sessionBean.getUsername();
+                        auditDescription = "Task Mgt (Claim id: " + claimInputBean.getId() + ") updated by " + sessionBean.getUsername();
                         message = claimRepository.updateClaim(claimInputBean);
                     }
-                }
+//                }
             } else {
                 message = MessageVarList.TASK_MGT_NORECORD_FOUND;
                 auditDescription = messageSource.getMessage(MessageVarList.TASK_MGT_NORECORD_FOUND, null, locale);
@@ -570,5 +571,113 @@ public class ClaimService {
             throw e;
         }
         return claimStringBuilder.toString();
+    }
+
+    public String approveRequestClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
+        String message = "";
+        String auditDescription = "";
+        Claim existingClaim = null;
+        try {
+            existingClaim = claimRepository.getClaim(claimInputBean.getId());
+            if (existingClaim != null) {
+
+                //set the other values to input bean
+                Date currentDate = commonRepository.getCurrentDate();
+                String lastUpdatedUser = sessionBean.getUsername();
+
+                    /*claimInputBean.setLastUpdatedTime(currentDate);
+                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
+
+                //check the page dual auth enable or disable
+                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
+                    auditDescription = "Requested to approve claim (ID: " + claimInputBean.getId() + ")";
+                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
+                } else {
+                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") approved by " + sessionBean.getUsername();
+                    message = claimRepository.approveRequestClaim(claimInputBean);
+                }
+//                }
+            } else {
+                message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
+            }
+        } catch (EmptyResultDataAccessException ere) {
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } catch (Exception e) {
+            message = MessageVarList.COMMON_ERROR_PROCESS;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } finally {
+            if (message.isEmpty()) {
+                //set the audit trace values
+                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                audittrace.setTask(TaskVarList.UPDATE_TASK);
+                audittrace.setDescription(auditDescription);
+                //create audit record
+                audittrace.setField(fields);
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
+            }
+            //set audit to session bean
+            sessionBean.setAudittrace(audittrace);
+        }
+        return message;
+    }
+
+    public String rejectRequestClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
+        String message = "";
+        String auditDescription = "";
+        Claim existingClaim = null;
+        try {
+            existingClaim = claimRepository.getClaim(claimInputBean.getId());
+            if (existingClaim != null) {
+
+                //set the other values to input bean
+                Date currentDate = commonRepository.getCurrentDate();
+                String lastUpdatedUser = sessionBean.getUsername();
+
+                    /*claimInputBean.setLastUpdatedTime(currentDate);
+                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
+
+                //check the page dual auth enable or disable
+                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
+                    auditDescription = "Requested to reject claim (ID: " + claimInputBean.getId() + ")";
+                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
+                } else {
+                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") rejected by " + sessionBean.getUsername();
+                    message = claimRepository.rejectRequestClaim(claimInputBean);
+                }
+//                }
+            } else {
+                message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
+            }
+        } catch (EmptyResultDataAccessException ere) {
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } catch (Exception e) {
+            message = MessageVarList.COMMON_ERROR_PROCESS;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } finally {
+            if (message.isEmpty()) {
+                //set the audit trace values
+                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                audittrace.setTask(TaskVarList.UPDATE_TASK);
+                audittrace.setDescription(auditDescription);
+                //create audit record
+                audittrace.setField(fields);
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
+            }
+            //set audit to session bean
+            sessionBean.setAudittrace(audittrace);
+        }
+        return message;
     }
 }

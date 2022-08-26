@@ -19,12 +19,16 @@
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form:form class="form-horizontal sm" id="updateTaskForm" modelAttribute="claim" method="post"
-                       name="updateTaskForm">
+            <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
+                       name="updateClaimForm">
 
                 <div class="modal-body">
                     <div class="form-group"><span id="responseMsgUpdate"></span></div>
-
+                    <div class="form-group row" hidden="true">
+                        <div class="col-sm-8">
+                            <form:input path="id" name="id" type="text" id="editId" />
+                        </div>
+                    </div>
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -188,11 +192,14 @@
                     <!-- /.card-body -->
                 </div>
                 <div class="modal-footer justify-content-end">
-                    <button id="updateReset" type="button" class="btn btn-default" onclick="resetUpdate()">Reset
-                    </button>
                     <c:if test="${claim.vupdate}">
-                        <button id="updateBtn" type="button" onclick="update()" class="btn btn-primary">
-                            Submit
+                        <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
+                            Approve
+                        </button>
+                    </c:if>
+                    <c:if test="${claim.vupdate}">
+                        <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
+                            Reject
                         </button>
                     </c:if>
                 </div>
@@ -204,11 +211,10 @@
 </div>
 <script>
 
-    function update() {
-        resetUpdateClaimFormData();
+    function approve() {
         $.ajax({
             type: 'POST',
-            url: '${pageContext.request.contextPath}/updateTask.json',
+            url: '${pageContext.request.contextPath}/approveWarrantyClaims.json',
             data: $('form[name=updateClaimForm]').serialize(),
             beforeSend: function (xhr) {
                 if (header && token) {
@@ -231,47 +237,30 @@
         });
     }
 
-
-    function resetUpdate() {
+    function reject() {
         $.ajax({
-            url: "${pageContext.request.contextPath}/getTask.json",
-            data: {
-                id: $('#editid').val()
+            type: 'POST',
+            url: '${pageContext.request.contextPath}/rejectWarrantyClaims.json',
+            data: $('form[name=updateClaimForm]').serialize(),
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
             },
-            dataType: "json",
-            type: 'GET',
-            contentType: "application/json",
-
-            success: function (data) {
-
-                $('#editid').val(data.taskCode);
-                $('#editid').attr('readOnly', true);
-                $('#editDescription').val(data.description);
-                $('#editStatus').val(data.status);
-
+            success: function (res) {
+                if (res.flag) { //success
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
+                    searchStart();
+                } else {
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
+                }
             },
-            error: function (data) {
-                console.log(data);
-                <%--window.location = "${pageContext.request.contextPath}/logout.htm";--%>
+            error: function (jqXHR) {
+                window.location = "${pageContext.request.contextPath}/logout.htm";
             }
         });
-
-        resetUpdateClaimFormData();
-
-    }
-
-    function resetUpdateClaimFormData() {
-        $(".validation-err").remove();
-
-        if ($('#responseMsgUpdate').hasClass('success-response')) {
-            $('#responseMsgUpdate').removeClass('success-response');
-        }
-
-        if ($('#responseMsgUpdate').hasClass('error-response')) {
-            $('#responseMsgUpdate').removeClass('error-response');
-        }
-
-        $('#responseMsgUpdate').hide();
     }
 
 </script>

@@ -413,6 +413,7 @@ public class MessageVarList {
     public static final String CLAIM_MGT_SUCCESS_REJECT = "claim.success.reject";
     public static final String CLAIM_MGT_ALREADY_EXISTS = "claim.already.exists";
     public static final String CLAIM_MGT_NO_RECORD_FOUND = "claim.no.record.found";
+    public static final String CLAIM_MGT_SUCCESS_APPROVE = "claim.success.approve";
     //-------------------------- claim mgt-----------------------------------------------------------------------------//
 
 }
