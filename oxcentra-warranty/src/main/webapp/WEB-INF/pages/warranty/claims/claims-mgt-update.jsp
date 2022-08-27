@@ -22,7 +22,7 @@
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
                        name="updateClaimForm">
 
-                <div class="modal-body">
+                <div class="modal-body" id="firstTab">
                     <div class="form-group"><span id="responseMsgUpdate"></span></div>
                     <div class="form-group row" hidden="true">
                         <div class="col-sm-8">
@@ -112,6 +112,13 @@
                             <label  id="editPurchasingDate"></label>
                         </div>
 
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="isInHouse">
+                            <label class="form-check-label" for="isInHouse">
+                                Is In House
+                            </label>
+                        </div>
+
                     </div>
 
                     <div class="form-row">
@@ -190,19 +197,133 @@
                         <span class="text-danger">Required fields are marked by the '*'</span>
                     </div>
                     <!-- /.card-body -->
+                    <div class="modal-footer justify-content-end">
+                        <c:if test="${claim.vupdate}">
+                            <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
+                                Approve
+                            </button>
+                        </c:if>
+                        <c:if test="${claim.vupdate}">
+                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
+                                Reject
+                            </button>
+                        </c:if>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-end">
-                    <c:if test="${claim.vupdate}">
-                        <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
-                            Approve
-                        </button>
-                    </c:if>
-                    <c:if test="${claim.vupdate}">
-                        <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
-                            Reject
-                        </button>
-                    </c:if>
+
+                <div class="modal-body" id="secondTab">
+
+                    <h5>Contact Details</h5>
+                    <div class="card-deck">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <label for="editContactDelarship">Delarship</label>
+                                    <label  >:</label>
+                                    <label  id="editContactDelarship"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editDealershipName">Respective Contact</label>
+                                    <label  >:</label>
+                                    <label  id="editDealershipName"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editDealershipPhone">Contact Number</label>
+                                    <label  >:</label>
+                                    <label  id="editDealershipPhone"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editDealershipEmail">Email Address</label>
+                                    <label  >:</label>
+                                    <label  id="editDealershipEmail"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editChassisNumebr">Chassis Numebr</label>
+                                    <label  >:</label>
+                                    <label  id="editChassisNumebr"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editCaravanModel">Caravan Model</label>
+                                    <label  >:</label>
+                                    <label  id="editCaravanModel"></label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <label for="editCusFirstName">Customer Name</label>
+                                    <label  >:</label>
+                                    <label  id="editCusFirstName"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editCusContactNo">Contact Number</label>
+                                    <label  >:</label>
+                                    <label  id="editCusContactNo"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editCusEmail">Email Address</label>
+                                    <label  >:</label>
+                                    <label  id="editCusEmail"></label>
+                                </div>
+                                <div class="form-row">
+                                    <label for="editCusAddress">Address</label>
+                                    <label  >:</label>
+                                    <label  id="editCusAddress"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5>Spare Part Required</h5>
+
+                    <h5>Complete Supplier Details</h5>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="firstName">Supplier Name</label>
+
+                            <form:input path="firstName" name="firstName" type="text"
+                                        class="form-control form-control-sm" id="addfirstName" maxlength="20"
+                                        placeholder="First Name"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                        </div>
+                    </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="editSupContactNumber">Supplier Contact Number</label>
+                                <label  >:</label>
+                                <label  id="editSupContactNumber"></label>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="editSupEmail">Supplier Email</label>
+                                <label  >:</label>
+                                <label  id="editSupEmail"></label>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="editSupAddress">Supplier Address</label>
+                                <label  >:</label>
+                                <label  id="editSupAddress"></label>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer justify-content-end">
+                        <c:if test="${claim.vupdate}">
+                            <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
+                                Send E-mail to Supplier
+                            </button>
+                        </c:if>
+                        <c:if test="${claim.vupdate}">
+                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
+                                Cancel
+                            </button>
+                        </c:if>
+                    </div>
+
+
                 </div>
+
             </form:form>
         </div>
         <!-- /.modal-content -->
@@ -212,6 +333,21 @@
 <script>
 
     function approve() {
+
+        var isInHouse=$("#isInHouse").is(":checked");
+        alert(isInHouse);
+
+        if(isInHouse === true){
+
+            $('#secondTab').show();
+            $('#firstTab').hide();
+
+        }else{
+
+            $('#secondTab').hide();
+            $('#firstTab').show();
+        }
+
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/approveWarrantyClaims.json',
@@ -262,5 +398,10 @@
             }
         });
     }
+
+    $(function() {
+        $('#firstTab').show();
+        $('#secondTab').hide();
+    });
 
 </script>
