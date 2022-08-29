@@ -1,0 +1,231 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 31, 2018, 3:23:13 PM
+    Author     : prathibha_w
+*/
+
+.row > #subject_f1 {
+    float: left;
+    width: auto;
+    padding: 2px;
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.row > .icon_in {
+    float: left;
+    width: auto;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin: 10px;
+    font-size: 10px;
+    background: #e4e4e4;
+}
+.row > .icon_pin {
+    float: right;
+    width: auto;
+    padding: 0px 7px;
+    margin: 0px;
+    font-size: 13px;
+}
+.row > #createDate_f1 {
+    float: right;
+    width: auto;
+    padding: 0px;
+    margin: 0px 2px;
+    font-size: 11px;
+}
+.row > #userName_f1 {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 2px 6px;
+    font-family: sans-serif;
+}
+.row > #userName_f1 > span {
+    font-size: 11px;
+    font-weight: normal;
+    padding: 2px 6px;
+    font-family: cursive;
+}
+.row > .recipientName_f1 {
+    padding: 2px 6px;
+    font-size: 11px;
+    color: gray;
+}
+.row > .msg {
+    padding: 20px 6px;
+    font-size: 12px;
+    word-break: break-all;
+}
+.row > .line {
+    border-top: 1px dotted gray;
+}
+.row > .line2 {
+    border-top: 1px dotted #ececec;
+}
+.row > .count {
+    padding: 10px 6px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.row > .attchements {
+    padding: 6px 10px;
+    font-size: 12px;
+    float: left;
+}
+.row > .attchements > .file {
+    width: auto;
+    padding: 2px 8px;
+    float: left;
+    margin: 0 3px;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px 0px #bfbfbf;
+    cursor: pointer;
+    background: #4e4e4e;
+    color: white;
+}
+.row > .attchements > .fileBut {
+    width: auto;
+    padding: 2px 5px 1px 4px;
+    float: left;
+    margin: 0 3px;
+    border-radius: 3px;
+    box-shadow: 0 1px 18px 0px #b3b3b3;
+    cursor: pointer;
+    background: #ffffff;
+    color: black;
+    border: 0px solid;
+}
+.row > .attchements > .file:hover{
+    box-shadow:0 1px 14px 0px #bfbfbf;
+}
+.row > .attchements > .fileBut:hover{
+    box-shadow:0 1px 18px 0px #7b7b7b;
+}
+.row > .replybtn {
+    padding: 15px 12px 50px 12px; 
+}
+.row > .replybtn #repbtn {
+    box-shadow: 0 0 5px 2px #cacaca;
+    border: 0px solid;
+}
+.row > .replybox{
+    display: none;
+    padding: 15px 0px 0px 0px;
+    font-size: 12px;
+}
+.row > .replybox > .fileuploadBtn > label > input[type=file]{
+    display: none;
+}
+.row > .replybox > .fileuploadBtn{
+    position: absolute;
+    margin: -50px 0 0 100px;
+    border-radius: 25px;
+    padding: 0px;
+    box-shadow: 0 1px 2px 1px #a7a7a7;
+    line-height: 0px;
+    cursor: pointer;
+    background: #444444;
+    color: #ffffff;
+}
+.row > .replybox > .fileuploadBtn:hover{
+    background: #ffffff;
+    color: #444444;
+    box-shadow:0 1px 14px 0px #bfbfbf;
+}
+.row > .replybox > .fileuploadBtn > #filePin{
+    padding: 7px 8px 9px 8px;
+    cursor: pointer;
+    margin: 0;
+}
+.row > .replybox > .multiple-file > .fileuploadBtn > label > input[type=file]{
+    display: none;
+}
+.row > .replybox > .multiple-file > .fileuploadBtn{
+    position: absolute;
+    margin: -50px 0 0 100px;
+    border-radius: 25px;
+    padding: 0px;
+    box-shadow: 0 1px 2px 1px #a7a7a7;
+    line-height: 0px;
+    cursor: pointer;
+    background: #444444;
+    color: #ffffff;
+}
+.row > .replybox > .multiple-file > .fileuploadBtn:hover{
+    background: #ffffff;
+    color: #444444;
+    box-shadow:0 1px 14px 0px #bfbfbf;
+}
+.row > .replybox > .multiple-file > .fileuploadBtn > #filePin{
+    padding: 7px 8px 9px 8px;
+    cursor: pointer;
+    margin: 0;
+}
+
+
+.row > .replybox > .replymsg label{
+    font-size: 12px;
+}
+
+.btn:hover {
+    margin-top: 0px;
+    border-bottom-width: 1px; 
+}
+
+.sendbtn{
+    display: inline-block;
+    padding: 5px 20px !important;
+    margin-bottom: 0;
+    font-size: 14px !important;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px 1px #a7a7a7;
+    background: #f6f6f6 !important;
+    color: #0073ea;
+}
+.sendbtn:hover{
+    background: #0073ea !important;
+    color: #ffffff;
+}
+.sendbtn:focus{
+    background: #0073ea !important;
+    color: #ffffff;
+}
+.ui-widget .ui-widget{
+   /* border: 1px solid; */
+}
+.container{
+    margin: 5px;
+    padding: 0 40px;
+}
+
+.row >.uploadFileNameList{
+    /*display: none;*/
+    padding: 0px 10px 20px 10px;
+    margin-bottom: 40px;
+}
+.row >.uploadFileNameList > .ufileName{
+    width: auto;
+    padding: 2px 7px 1px 7px;
+    float: left;
+    margin: 0 3px;
+    border-radius: 15px;
+    cursor: pointer;
+    background: #607D8B;
+    color: white;
+    border: 0px solid white;
+}
+.row >.uploadFileNameList > .ufileName >span{
+    margin-right: 6px;
+    padding-top: 1px;
+    color: black;
+}

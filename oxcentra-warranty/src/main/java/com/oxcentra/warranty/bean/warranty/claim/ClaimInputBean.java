@@ -58,6 +58,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private Date acknowledgedDate;
     private Date lastRemindedDate;
     private boolean isCritical;
+    private String filesUpload;
 
     /*-------for access control-----------*/
     private boolean vadd;

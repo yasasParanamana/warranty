@@ -11,6 +11,10 @@
 
 <!-- add section modal popup start -->
 
+
+<link href="<c:url value="/resources/css/warrenty/emailcss.css" />" rel="stylesheet">
+
+
 <div class="modal fade " id="modalAddClaim" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modalAddClaimLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -57,6 +61,7 @@
                     <hr>
                     <h5>Customer Details</h5>
 
+
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="firstName">First Name</label>
@@ -88,7 +93,6 @@
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="address">Address</label>
@@ -200,6 +204,19 @@
                             </div>
                     </div>
 
+                    <div  class="multiple-file" id="multiple_file_div">
+                        <div class="fileuploadBtn" id="file_hide_1">
+                            <label id="filePin">
+                                <span class="glyphicon glyphicon-paperclip"></span>
+                                <form:input path="filesUpload" type = "file"   name="filesUpload" multiple="multiple" id="file-upload-1" accept="jpg" onchange="getNewFileInput(this)"/>
+                            </label>
+                        </div>
+                    </div>
+                    <button id="Attachment_Reset_f3" type="button" class="btn btn-default" onclick="resetReplyDataAttach()" cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset</button>
+
+                    <div class="uploadFileNameList">
+                    </div>
+
                     <hr>
                     <h5>Cost Of Estimation</h5>
 
@@ -266,6 +283,7 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
 <script>
 
     $(document).ready(function () {
@@ -341,4 +359,53 @@
         $('#responseMsgAdd').hide();
     }
 
+    var file_Location_count = 1;
+
+    function getNewFileInput(fileUpload){
+        var file = fileUpload.files;
+        if (file.length > 0) {
+//                    $('.uploadFileNameList').empty();
+//                        $('.uploadFileNameList').show();
+            for (var i = 0; i < file.length; i++) {
+                $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;" href="'+URL.createObjectURL(file[i])+'" download="'+ file[i].name +'" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+            }
+        }
+        $('#file_hide_'+file_Location_count).hide();
+
+        file_Location_count++;//increament file location
+
+        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_"+file_Location_count+"'>"
+            +"<label id='filePin'>"
+            +"<span class='glyphicon glyphicon-paperclip'></span>"
+            +"<input type='file' name='filesUpload'  accept='jpg' id='file-upload-"+file_Location_count+"' multiple='multiple' onchange='getNewFileInput(this)' >"
+            +"</label>"
+            +"</div>");
+    }
+
+    $(document).ready(function () {
+
+        $('#file-upload').change(function () {
+            var file = $('#file-upload')[0].files;
+            if (file.length > 0) {
+                $('.uploadFileNameList').empty();
+//                        $('.uploadFileNameList').show();
+                for (var i = 0; i < file.length; i++) {
+                    $('.uploadFileNameList').append('<div class="ufileName"><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+                }
+            }
+        });
+    });
+
+    function resetReplyDataAttach() {
+        file_Location_count = 1;
+        $('#multiple_file_div').html("");
+        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_"+file_Location_count+"'>"
+            +"<label id='filePin'>"
+            +"<span class='glyphicon glyphicon-paperclip'></span>"
+            +"<input type='file' name='filesUpload'  accept='jpg' id='file-upload-"+file_Location_count+"' multiple='multiple' onchange='getNewFileInput(this)' >"
+            +"</label>"
+            +"</div>");
+        $('.uploadFileNameList').empty();
+        $("#messageError").empty();
+    }
 </script>
