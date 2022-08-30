@@ -15,6 +15,7 @@ import com.oxcentra.warranty.service.warranty.claim.ClaimService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
 import com.oxcentra.warranty.util.common.ResponseBean;
+import com.oxcentra.warranty.util.common.UploadedFile;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
 import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
@@ -26,12 +27,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -148,6 +151,13 @@ public class ClaimController implements RequestBeanValidation<Object> {
         ResponseBean responseBean = null;
         try {
             claimInputBean.setId("WDC-" + System.currentTimeMillis() / 100);
+
+//            for (String file: claimInputBean.getFile()) {
+//                System.out.println("File >>>>>>>>>>>>" +file);
+//            }
+
+            System.out.println("File >>>> " + claimInputBean.getFile().size() );
+
             BindingResult bindingResult = validateRequestBean(claimInputBean);
             if (bindingResult.hasErrors()) {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
@@ -160,6 +170,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("Exception  :  ", e);
             responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
         }

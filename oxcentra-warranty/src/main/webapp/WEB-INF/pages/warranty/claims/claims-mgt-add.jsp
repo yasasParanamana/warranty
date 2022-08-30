@@ -27,13 +27,12 @@
                 </button>
             </div>
             <form:form class="form-horizontal sm" id="addClaimForm" modelAttribute="claim" method="post"
-                       name="addClaimForm">
+                       name="addClaimForm" enctype="multipart/form-data" >
 
                 <div class="modal-body">
                     <div class="form-group"><span id="responseMsgAdd"></span>
 
                     </div>
-
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -209,9 +208,15 @@
                             <label id="filePin">
                                 <span class="glyphicon glyphicon-paperclip"></span>
                                 <form:input path="filesUpload" type = "file"   name="filesUpload" multiple="multiple" id="file-upload-1" accept="jpg" onchange="getNewFileInput(this)"/>
+
                             </label>
                         </div>
                     </div>
+
+                    <div  style="display: none"  id="file-upload-hide">
+                    </div>
+
+
                     <button id="Attachment_Reset_f3" type="button" class="btn btn-default" onclick="resetReplyDataAttach()" cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset</button>
 
                     <div class="uploadFileNameList">
@@ -317,6 +322,7 @@
     }
 
     function add() {
+
         resetAddClaimFormData();
         $.ajax({
             type: 'POST',
@@ -363,10 +369,19 @@
 
     function getNewFileInput(fileUpload){
         var file = fileUpload.files;
+
         if (file.length > 0) {
 //                    $('.uploadFileNameList').empty();
 //                        $('.uploadFileNameList').show();
+
+            $('#file-upload-hide').empty();
+
             for (var i = 0; i < file.length; i++) {
+
+                Base64Convert(file[i]);
+
+                // console.log(file[i].toBase64)
+
                 $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;" href="'+URL.createObjectURL(file[i])+'" download="'+ file[i].name +'" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
             }
         }
@@ -408,4 +423,31 @@
         $('.uploadFileNameList').empty();
         $("#messageError").empty();
     }
+
+    function Base64Convert(file) {
+
+       /* var fileInput = document.getElementById('myfile');
+        console.log(fileInput);*/
+
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+
+            console.log(reader.result);//base64encoded string
+            // document.getElementById('myfilehidden').value= reader.result;
+            var readerResult = reader.result;
+            var resultSplit = readerResult.substring(readerResult.indexOf(',')+1);
+
+            console.log('split Data',resultSplit)
+
+            $('#file-upload-hide').append('<input type="hidden" name="file" value="'+resultSplit+'"/>')
+
+
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    };
+
 </script>

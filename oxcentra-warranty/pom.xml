@@ -260,6 +260,13 @@
             <version>2.1.7</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -284,7 +291,6 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.3</version>
                 </plugin>
-
             </plugins>
 
         </pluginManagement>

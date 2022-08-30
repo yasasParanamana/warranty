@@ -141,4 +141,5 @@
     <definition name="error" extends="newuser-template">
         <put-attribute name="body" value="/errors/error.jsp"/>
     </definition>
+
 </tiles-definitions>

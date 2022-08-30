@@ -5,8 +5,11 @@ import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
 import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.util.common.DataTablesRequest;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +61,6 @@ public class ClaimInputBean extends DataTablesRequest {
     private Date acknowledgedDate;
     private Date lastRemindedDate;
     private boolean isCritical;
-    private String filesUpload;
 
     /*-------for access control-----------*/
     private boolean vadd;
@@ -73,6 +75,16 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<Status> statusActList;
     private List<Model> modelActList;
     private List<State> stateActList;
+
+    /*-------file upload-----------*/
+    private MultipartFile[] filesUploads;
+    private List<File> filesUpload = new ArrayList<File>();
+    private List<String> filesUploadContentType = new ArrayList<String>();
+    private List<String> filesUploadFileName = new ArrayList<String>();
+
+    private List<String> file = new ArrayList<>();
+//    private List<String> file = new ArrayList<String>();
+
 
 
     /* add getters setters */
