@@ -64,6 +64,13 @@ public class ClaimInputBean extends DataTablesRequest {
     private String createdUser;
     private Date createdTime;
 
+    private String sparePartRequired1;
+    private String sparePartRequired2;
+    private String quantity1;
+    private String quantity2;
+    private String[] sparePartRequired;
+    private String[] quantityRequired;
+
     /*-------for access control-----------*/
     private boolean vadd;
     private boolean vupdate;

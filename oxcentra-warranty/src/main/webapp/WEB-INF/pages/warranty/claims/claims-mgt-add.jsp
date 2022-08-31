@@ -164,6 +164,51 @@
                         </div>
                     </div>
 
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="sparePartRequired1">Spare Part Required</label>
+
+                            <form:input path="sparePartRequired1" name="sparePartRequired1" type="text"
+                                        class="form-control form-control-sm" id="addsparePartRequired1" maxlength="10"
+                                        placeholder="Spare Part Required"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="quantity1">Quantity</label>
+
+                            <form:input path="quantity1" name="quantity1" type="text"
+                                        class="form-control form-control-sm" id="addquantity1" maxlength="10"
+                                        placeholder="Quantity"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="sparePartRequired2">Spare Part Required</label>
+
+                            <form:input path="sparePartRequired2" name="sparePartRequired2" type="text"
+                                        class="form-control form-control-sm" id="addsparePartRequired2" maxlength="10"
+                                        placeholder="Spare Part Required"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="quantity2">Quantity</label>
+
+                            <form:input path="quantity2" name="quantity2" type="text"
+                                        class="form-control form-control-sm" id="addquantity2" maxlength="10"
+                                        placeholder="Quantity"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                        </div>
+                    </div>
+                    <%--Auto Increment--%>
+                    <div id="newSparePart">
+
+                    </div>
+
+                    <div class="form-row">
+                        <button id="addNewSparePart" type="button" class="btn btn-default"  cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Click Here to Add New Spare Part</button>
+                    </div>
+
                     <hr>
                     <h5>Repair Deatils</h5>
 
@@ -279,6 +324,15 @@
                         </button>
                     </c:if>
                 </div>
+
+                <div class="container1" id="SampleConatiner">
+                    <button class="add_form_field">Add New Field &nbsp;
+                        <span style="font-size:16px; font-weight:bold;">+ </span>
+                    </button>
+                    <div><input type="text" name="mytext[]"></div>
+                </div>
+
+
             </form:form>
         </div>
         <!-- /.modal-content -->
@@ -287,6 +341,29 @@
 </div>
 
 <script>
+
+    $(document).ready(function() {
+        var max_fields = 10;
+        var wrapper = $("#newSparePart");
+        var add_button = $("#addNewSparePart");
+
+        var x = 1;
+        $(add_button).click(function(e) {
+            e.preventDefault();
+            if (x < max_fields) {
+                x++;
+                $(wrapper).append('<div class="form-row" ><div class="form-group col-md-6"> <label>Spare Part Required</label><input type="text" class="form-control form-control-sm" maxlength="10" name="sparePartRequired[${x}]"  placeholder="Spare Part Required"/> </div> <div class="form-group col-md-1">     <label>Quantity</label><input type="text" name="quantityRequired[${x}]"" class="form-control form-control-sm" maxlength="10" placeholder="Quantity"/></div><a href="#" class="delete">Delete</a></div>');
+            } else {
+                alert('You Reached the limits')
+            }
+        });
+
+        $(wrapper).on("click", ".delete", function(e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+            x--;
+        })
+    });
 
     $(document).ready(function () {
         $('#addpurchasingDate').datepicker({
@@ -317,6 +394,12 @@
         $('form[name=addClaimForm]').trigger("reset");
         $('#responseMsgAdd').hide();
     }
+
+    function addNewSparePart(){
+
+
+    }
+
 
     function add() {
 
