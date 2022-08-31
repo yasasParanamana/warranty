@@ -59,7 +59,6 @@
                     <hr>
                     <h5>Customer Details</h5>
 
-
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="firstName">First Name</label>
@@ -215,25 +214,41 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="failureType">Type Of Failure</label>
+                            <form:select path="failureType" name="failureType"
+                                         class="form-control form-control-sm" id="addfailureType">
+                                <option selected value="">Select Failure Type</option>
+                                <c:forEach items="${claim.failureTypeActList}" var="failureType">
+                                    <form:option
+                                            value="${failureType.code}">${failureType.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
 
-                            <form:input path="failureType" name="failureType" type="text"
-                                        class="form-control form-control-sm" id="addfailureType" maxlength="10"
-                                        placeholder="Failure Type"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
-                        </div>
                         <div class="form-group col-md-3">
-                            <label for="failureArea">Area Of Failure</label>
-                            <form:input path="failureArea" name="failureArea" type="text"
-                                        class="form-control form-control-sm" id="addfailureArea" maxlength="10"
-                                        placeholder="Failure Area"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                            <label for="failureArea">Area Of Failuree</label>
+                            <form:select path="failureArea" name="failureArea"
+                                         class="form-control form-control-sm" id="addfailureArea">
+                                <option selected value="">Select Failure Area</option>
+                                <c:forEach items="${claim.failureAreaActList}" var="failureArea">
+                                    <form:option
+                                            value="${failureArea.code}">${failureArea.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
+
                         <div class="form-group col-md-3">
-                            <label for="repairType">Type Of Repair</label>
-                            <form:input path="repairType" name="repairType" type="text"
-                                        class="form-control form-control-sm" id="addrepairType" maxlength="10"
-                                        placeholder="Repair Type"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                            <label for="repairType">Type of Repair</label>
+                            <form:select path="repairType" name="repairType"
+                                         class="form-control form-control-sm" id="addrepairType">
+                                <option selected value="">Select Type of Repair</option>
+                                <c:forEach items="${claim.repairTypeActList}" var="repairType">
+                                    <form:option
+                                            value="${repairType.code}">${repairType.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                     </div>
                     <div class="form-row">
@@ -246,7 +261,7 @@
                                                onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                             </div>
                     </div>
-
+                    <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
                             <div  class="multiple-file" id="multiple_file_div">
@@ -324,15 +339,6 @@
                         </button>
                     </c:if>
                 </div>
-
-                <div class="container1" id="SampleConatiner">
-                    <button class="add_form_field">Add New Field &nbsp;
-                        <span style="font-size:16px; font-weight:bold;">+ </span>
-                    </button>
-                    <div><input type="text" name="mytext[]"></div>
-                </div>
-
-
             </form:form>
         </div>
         <!-- /.modal-content -->

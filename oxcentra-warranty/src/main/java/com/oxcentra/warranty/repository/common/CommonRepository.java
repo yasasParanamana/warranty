@@ -2,7 +2,10 @@ package com.oxcentra.warranty.repository.common;
 
 import com.oxcentra.warranty.bean.common.*;
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.sysconfigmgt.failurearea.FailureArea;
+import com.oxcentra.warranty.bean.sysconfigmgt.failuretype.FailureType;
 import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
+import com.oxcentra.warranty.bean.sysconfigmgt.repairtype.RepairType;
 import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.bean.usermgt.userrole.UserRoleBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
@@ -87,6 +90,9 @@ public class CommonRepository {
     private final String SQL_FIND_TELCO = "select code,description from TELCO d where d.code = ?";
     private final String SQL_GET_MODEL_LIST_BY_STATUS = "select id,model from reg_model where status = ?";
     private final String SQL_GET_STATE_LIST_BY_STATUS = "select state_id,state_name from state where status = ?";
+    private final String SQL_GET_FAILURE_TYPE_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_type where status = ?";
+    private final String SQL_GET_FAILURE_AREA_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_area where status = ?";
+    private final String SQL_GET_REPAIR_TYPE_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_type_repair where status = ?";
 
 
     /**
@@ -984,6 +990,94 @@ public class CommonRepository {
         }
         return stateBeanList;
     }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:48:05 AM
+     * @Version V1.00
+     * @MethodName getActiveStateList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the state list
+     */
+
+    @Transactional(readOnly = true)
+    public List<FailureType> getActiveFailureTypeList(String status) throws Exception {
+        List<FailureType> failureTypeBeanList;
+        try {
+            List<Map<String, Object>> failureTypeList = jdbcTemplate.queryForList(SQL_GET_FAILURE_TYPE_LIST_BY_STATUS, status);
+            failureTypeBeanList = failureTypeList.stream().map((record) -> {
+                FailureType failureTypeBean = new FailureType();
+                failureTypeBean.setCode(record.get("CODE").toString());
+                failureTypeBean.setDescription(record.get("DESCRIPTION").toString());
+                return failureTypeBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            failureTypeBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return failureTypeBeanList;
+    }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:48:05 AM
+     * @Version V1.00
+     * @MethodName getActiveStateList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the state list
+     */
+
+    @Transactional(readOnly = true)
+    public List<FailureArea> getActiveFailureAreaList(String status) throws Exception {
+        List<FailureArea> failureAreaBeanList;
+        try {
+            List<Map<String, Object>> failureAreaList = jdbcTemplate.queryForList(SQL_GET_FAILURE_AREA_LIST_BY_STATUS, status);
+            failureAreaBeanList = failureAreaList.stream().map((record) -> {
+                FailureArea failureAreaBean = new FailureArea();
+                failureAreaBean.setCode(record.get("CODE").toString());
+                failureAreaBean.setDescription(record.get("DESCRIPTION").toString());
+                return failureAreaBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            failureAreaBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return failureAreaBeanList;
+    }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:48:05 AM
+     * @Version V1.00
+     * @MethodName getActiveStateList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the state list
+     */
+
+    @Transactional(readOnly = true)
+    public List<RepairType> getActiveRepairTypeList(String status) throws Exception {
+        List<RepairType> repairTypeBeanList;
+        try {
+            List<Map<String, Object>> failureTypeList = jdbcTemplate.queryForList(SQL_GET_REPAIR_TYPE_LIST_BY_STATUS, status);
+            repairTypeBeanList = failureTypeList.stream().map((record) -> {
+                RepairType repairTypeBean = new RepairType();
+                repairTypeBean.setCode(record.get("CODE").toString());
+                repairTypeBean.setDescription(record.get("DESCRIPTION").toString());
+                return repairTypeBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            repairTypeBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return repairTypeBeanList;
+    }
+
 
 
 }

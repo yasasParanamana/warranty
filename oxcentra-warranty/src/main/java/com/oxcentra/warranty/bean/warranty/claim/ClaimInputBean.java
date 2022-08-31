@@ -1,7 +1,10 @@
 package com.oxcentra.warranty.bean.warranty.claim;
 
 import com.oxcentra.warranty.bean.common.Status;
+import com.oxcentra.warranty.bean.sysconfigmgt.failurearea.FailureArea;
+import com.oxcentra.warranty.bean.sysconfigmgt.failuretype.FailureType;
 import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
+import com.oxcentra.warranty.bean.sysconfigmgt.repairtype.RepairType;
 import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
 import com.oxcentra.warranty.util.common.DataTablesRequest;
 import lombok.*;
@@ -84,6 +87,10 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<Status> statusActList;
     private List<Model> modelActList;
     private List<State> stateActList;
+    private List<FailureType> failureTypeActList;
+    private List<FailureArea> failureAreaActList;
+    private List<RepairType> repairTypeActList;
+
 
     /*-------file upload-----------*/
     private MultipartFile[] filesUploads;

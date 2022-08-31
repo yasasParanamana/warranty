@@ -1,6 +1,5 @@
 package com.oxcentra.warranty.validators.warranty.claim;
 
-import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.util.validation.Validation;
 import com.oxcentra.warranty.util.varlist.CommonVarList;
@@ -193,6 +192,10 @@ public class ClaimValidator implements Validator {
     }
 
     private Field[] getRequiredFields(SortedMap<String, Field> allFields, ClaimInputBean o) {
-        return new Field[]{allFields.get("id"), allFields.get("description"), allFields.get("status")};
+        return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
+                allFields.get("phone"), allFields.get("email"), allFields.get("address"), allFields.get("surburb")
+                , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"), allFields.get("purchasingDate"), allFields.get("description")
+                , allFields.get("failureType"), allFields.get("failureArea"), allFields.get("repairType"), allFields.get("repairDescription")
+                , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription")};
     }
 }
