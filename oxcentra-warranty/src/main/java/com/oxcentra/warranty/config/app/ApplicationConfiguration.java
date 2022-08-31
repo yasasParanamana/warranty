@@ -16,6 +16,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
+import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 import java.util.Locale;
 
@@ -109,5 +110,6 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     public SessionBean getSessionBean() {
         return new SessionBean();
     }
+
 
 }

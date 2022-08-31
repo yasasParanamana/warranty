@@ -47,7 +47,7 @@ public class ClaimRepository {
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
     private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file) values (?,?,?,?)";
+    private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description  from reg_warranty_claim t where t.id = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
@@ -228,7 +228,7 @@ public class ClaimRepository {
 
         try {
             int value = 0;
-            //insert query
+            //insert in to reg_warranty_claim
             value = jdbcTemplate.update(SQL_INSERT_CLAIM,claimInputBean.getId(),
                     claimInputBean.getChassis(),
                     claimInputBean.getModel(),
@@ -254,15 +254,13 @@ public class ClaimRepository {
                     claimInputBean.getDescription()
                     );
 
-            System.out.println("Value + " + value);
-
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
 
 
-            //insert Attachments
-
+            /*insert Attachments
+            insert in to reg_warranty_attachments*/
 
             if (claimInputBean.getFile().size() > 0) {
                 int i = 0;
@@ -270,39 +268,38 @@ public class ClaimRepository {
                 for (String file : claimInputBean.getFile()) {
 
                     try {
-                        RegWarrantyAttachments newattach = new RegWarrantyAttachments();
+                        RegWarrantyAttachments newAttachments = new RegWarrantyAttachments();
 
-                        /*System.out.println("Index>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.indexOf(',')));
-
-                        System.out.println("File>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+file);
-                        System.out.println("Substring>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.substring(file.indexOf(',')+1,file.length())));
+                        /*System.out.println("File Index>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.indexOf(',')));
+                        System.out.println("File Base64 String>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+file);
+                        System.out.println("Substring Result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.substring(file.indexOf(',')+1,file.length())));
 
 */
-//                        newattach.setAttachmentFile(file.substring(file.indexOf(',')+1,file.length()));
+//                      newAttachments.setAttachmentFile(file.substring(file.indexOf(',')+1,file.length()));
 
                         String values = (file);
                         byte[] buff = values.getBytes();
                         Blob blob = new SerialBlob(buff);
 
-
-                        newattach.setAttachmentFile(blob);
-                        newattach.setWarrantyId(claimInputBean.getId());
-
+                        newAttachments.setAttachmentFile(blob);
+                        newAttachments.setWarrantyId(claimInputBean.getId());
 
 //                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+newattach.getAttachmentFile());
 
-//                        newattach.setCreatedDate(sysDate);
-                        newattach.setFileFormat("jpg");
-                        newattach.setFileName("Sample");
+                        System.out.println(claimInputBean.getCreatedTime());
+
+                        newAttachments.setCreatedDate(claimInputBean.getCreatedTime());
+                        newAttachments.setFileFormat("jpg");
+                        newAttachments.setFileName("Sample");
 
 
                         int valueA = 0;
-                        //insert query
                         valueA = jdbcTemplate.update(SQL_INSERT_CLAIM_ATTACHMENT,
-                                newattach.getWarrantyId(),
-                                newattach.getFileName(),
-                                newattach.getFileFormat(),
-                                newattach.getAttachmentFile()
+                                newAttachments.getWarrantyId(),
+                                newAttachments.getFileName(),
+                                newAttachments.getFileFormat(),
+                                newAttachments.getAttachmentFile(),
+                                newAttachments.getCreatedDate()
 
                         );
 
@@ -310,19 +307,13 @@ public class ClaimRepository {
                             message = MessageVarList.COMMON_ERROR_PROCESS;
                         }
 
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw ex;
-                    } finally {
-                        if (fileInputStream != null) {
-                            fileInputStream.close();
-                        }
                     }
                     i++;
                 }
             }
-
 
         } catch (DuplicateKeyException ex) {
             throw ex;
@@ -334,7 +325,6 @@ public class ClaimRepository {
 
     @Transactional(readOnly = true)
     public Claim getClaim(String id) throws Exception {
-        System.out.println("Hi");
         Claim claim;
         try {
             claim = jdbcTemplate.queryForObject(SQL_FIND_CLAIM, new Object[]{id}, (rs, rowNum) -> {

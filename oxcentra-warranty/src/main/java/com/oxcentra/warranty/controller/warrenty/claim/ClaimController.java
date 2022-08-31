@@ -152,11 +152,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         try {
             claimInputBean.setId("WDC-" + System.currentTimeMillis() / 100);
 
-//            for (String file: claimInputBean.getFile()) {
-//                System.out.println("File >>>>>>>>>>>>" +file);
-//            }
-
-            System.out.println("File >>>> " + claimInputBean.getFile().size() );
+            System.out.println("No of Files >>>> " + claimInputBean.getFile().size() );
 
             BindingResult bindingResult = validateRequestBean(claimInputBean);
             if (bindingResult.hasErrors()) {

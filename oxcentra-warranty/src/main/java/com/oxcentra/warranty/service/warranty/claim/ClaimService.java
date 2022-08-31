@@ -125,22 +125,19 @@ public class ClaimService {
             Claim existingClaim = claimRepository.getClaim(claimInputBean.getId().trim());
             if (existingClaim == null) {
                 //set the other values to input bean
+
                 Date currentDate = commonRepository.getCurrentDate();
                 String user = sessionBean.getUsername();
 
-//                /*claimInputBean.setCreatedTime(currentDate);
-//                claimInputBean.setLastUpdatedTime(currentDate);
-//                claimInputBean.setLastUpdatedUser(user);
-//                claimInputBean.setCreatedUser(user);
-//*/
-                //check the page dual auth enable or disable
-                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE)) {
-                    auditDescription = "Requested to add claim (claim ID: " + claimInputBean.getId() + ")";
-                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.ADD_TASK);
-                } else {
-                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
-                    message = claimRepository.insertClaim(claimInputBean);
-                }
+                claimInputBean.setCreatedTime(currentDate);
+/*                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(user);*/
+                claimInputBean.setCreatedUser(user);
+
+
+                auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
+                message = claimRepository.insertClaim(claimInputBean);
+
             } else {
                 message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
                 auditDescription  = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);

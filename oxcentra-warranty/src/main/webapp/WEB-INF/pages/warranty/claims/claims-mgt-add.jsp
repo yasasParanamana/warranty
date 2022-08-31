@@ -11,9 +11,8 @@
 
 <!-- add section modal popup start -->
 
-
-<link href="<c:url value="/resources/css/warrenty/emailcss.css" />" rel="stylesheet">
-
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath}/resources/css/warrenty/emailcss.css?${initParam['version']}"/>
 
 <div class="modal fade " id="modalAddClaim" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modalAddClaimLabel" aria-hidden="true">
@@ -203,23 +202,21 @@
                             </div>
                     </div>
 
-                    <div  class="multiple-file" id="multiple_file_div">
-                        <div class="fileuploadBtn" id="file_hide_1">
-                            <label id="filePin">
-                                <span class="glyphicon glyphicon-paperclip"></span>
-                                <form:input path="filesUpload" type = "file"   name="filesUpload" multiple="multiple" id="file-upload-1" accept="jpg" onchange="getNewFileInput(this)"/>
+                    <div class="card">
+                        <div class="card-body">
+                            <div  class="multiple-file" id="multiple_file_div">
+                                <div class="fileuploadBtn" id="file_hide_1">
+                                    <label id="filePin">
+                                        <span class="glyphicon glyphicon-paperclip"></span>
+                                        <form:input path="filesUpload" type = "file"   name="filesUpload" multiple="multiple" id="file-upload-1" accept="jpg" onchange="getNewFileInput(this)"/>
+                                    </label>
+                                </div>
+                            </div>
 
-                            </label>
+                            <div  style="display: none"  id="file-upload-hide"></div>
+                            <button id="Attachment_Reset_f3" type="button" class="btn btn-default" onclick="resetReplyDataAttach()" cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset</button>
+                            <div class="uploadFileNameList"></div>
                         </div>
-                    </div>
-
-                    <div  style="display: none"  id="file-upload-hide">
-                    </div>
-
-
-                    <button id="Attachment_Reset_f3" type="button" class="btn btn-default" onclick="resetReplyDataAttach()" cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset</button>
-
-                    <div class="uploadFileNameList">
                     </div>
 
                     <hr>
@@ -382,7 +379,7 @@
 
                 // console.log(file[i].toBase64)
 
-                $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;" href="'+URL.createObjectURL(file[i])+'" download="'+ file[i].name +'" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+                $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;width: auto;padding: 2px 7px 1px 7px;float: left;margin: 0 3px;border-radius: 15px;cursor: pointer;background: #607D8B;color: white;border: 0px solid white;" href="'+URL.createObjectURL(file[i])+'" download="'+ file[i].name +'" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
             }
         }
         $('#file_hide_'+file_Location_count).hide();
@@ -426,23 +423,19 @@
 
     function Base64Convert(file) {
 
-       /* var fileInput = document.getElementById('myfile');
-        console.log(fileInput);*/
-
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsDataURL(file);
 
         reader.onload = function () {
 
             console.log(reader.result);//base64encoded string
-            // document.getElementById('myfilehidden').value= reader.result;
-            var readerResult = reader.result;
-            var resultSplit = readerResult.substring(readerResult.indexOf(',')+1);
 
-            console.log('split Data',resultSplit)
+            const readerResult = reader.result;
+            const resultSplit = readerResult.substring(readerResult.indexOf(',') + 1);
+
+            console.log('Sub String Data',resultSplit)
 
             $('#file-upload-hide').append('<input type="hidden" name="file" value="'+resultSplit+'"/>')
-
 
         };
         reader.onerror = function (error) {
