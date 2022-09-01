@@ -264,6 +264,17 @@
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
+
+<%--                            <div class="input-group mb-3">--%>
+<%--                                <div class="input-group-prepend">--%>
+<%--                                    <span class="input-group-text">Upload</span>--%>
+<%--                                </div>--%>
+<%--                                <div class="custom-file">--%>
+<%--                                    <input path="filesUpload" type="file" class="custom-file-input" id="inputGroupFile01" accept="jpg" multiple="multiple" onchange="getNewFileInput(this)">--%>
+<%--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+    
                             <div  class="multiple-file" id="multiple_file_div">
                                 <div class="fileuploadBtn" id="file_hide_1">
                                     <label id="filePin">

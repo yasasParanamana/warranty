@@ -54,4 +54,8 @@ public class Claim {
     private Date acknowledgedDate;
     private Date lastRemindedDate;
     private boolean isCritical;
+    private Date createdTime;
+    private String createdUser;
+    private Date lastUpdatedTime;
+    private String lastUpdatedUser;
 }

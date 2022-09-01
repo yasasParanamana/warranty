@@ -85,42 +85,66 @@
                 },
                 columnDefs: [
                     {
-                        title: "ID",
+                        title: "Warrenty ID",
                         targets: 0,
                         mDataProp: "id",
                         defaultContent: "--"
                     },
                     {
-                        title: "Description",
+                        title: "First Name",
                         targets: 1,
-                        mDataProp: "description",
+                        mDataProp: "firstName",
+                        defaultContent: "--"
+                    },
+                    {
+                        title: "Last Name",
+                        targets: 2,
+                        mDataProp: "lastName",
+                        defaultContent: "--"
+                    },
+                    {
+                        title: "Phone Number",
+                        targets: 3,
+                        mDataProp: "phone",
+                        defaultContent: "--"
+                    },
+                    {
+                        title: "Email",
+                        targets: 4,
+                        mDataProp: "email",
+                        defaultContent: "--"
+                    },
+                    {
+                        title: "Delarship",
+                        targets: 5,
+                        mDataProp: "dealership",
                         defaultContent: "--"
                     },
                     {
                         title: "Status",
-                        targets: 2,
+                        targets: 6,
                         mDataProp: "status",
                         defaultContent: "--",
                         render: function (data, type, full, meta) {
                             var status = {
-                                'Active': {
-                                    'title': 'Active',
+                                'Approved': {
+                                    'title': 'Approved',
                                     'class': ' label-light-info'
                                 },
-                                'Inactive': {
-                                    'title': 'Inactive',
+                                'Supplier Rejected': {
+                                    'title': 'Supplier Rejected',
                                     'class': ' label-light-danger'
                                 },
-                                'New': {
-                                    'title': 'New',
+                                'Pending': {
+                                    'title': 'Pending',
                                     'class': ' label-light-primary'
                                 },
-                                'Changed': {
-                                    'title': 'Changed',
+                                'Ackonwledged': {
+                                    'title': 'Ackonwledged',
                                     'class': ' label-light-success'
                                 },
-                                'Reset': {
-                                    'title': 'Reset',
+                                'Head Office Rejected': {
+                                    'title': 'Head Office Rejected',
                                     'class': ' label-light-warning'
                                 }
                             };
@@ -132,13 +156,13 @@
                     },
                     {
                         title: "Created User",
-                        targets: 3,
+                        targets: 7,
                         mDataProp: "createdUser",
                         defaultContent: "--"
                     },
                     {
                         title: "Created Time",
-                        targets: 4,
+                        targets: 8,
                         mDataProp: "createdTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -147,13 +171,13 @@
                     },
                     {
                         title: "Last Updated User",
-                        targets: 5,
+                        targets: 9,
                         mDataProp: "lastUpdatedUser",
                         defaultContent: "--"
                     },
                     {
                         title: "Last Updated Time",
-                        targets: 6,
+                        targets: 10,
                         mDataProp: "lastUpdatedTime",
                         defaultContent: "--",
                         render: function (data) {
@@ -168,7 +192,7 @@
                         mRender: function (data, type, full) {
                             return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
-                        targets: 7,
+                        targets: 11,
                         defaultContent: "--"
                     },
                     {
@@ -179,156 +203,7 @@
                         mRender: function (data, type, full) {
                             return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
-                        targets: 8,
-                        defaultContent: "--"
-                    }
-                ]
-            });
-        }
-
-        function loadDataTableDual() {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            var stringify_aoData = function (aoData) {
-                var o = {};
-                var modifiers = ['mDataProp_', 'sSearch_', 'iSortCol_', 'bSortable_', 'bRegex_', 'bSearchable_', 'c'];
-                jQuery.each(aoData, function (idx, obj) {
-                    if (obj.name) {
-                        for (var i = 0; i < modifiers.length; i++) {
-                            if (obj.name.substring(0, modifiers[i].length) == modifiers[i]) {
-                                var index = parseInt(obj.name.substring(modifiers[i].length));
-                                var key = 'a' + modifiers[i].substring(0, modifiers[i].length - 1);
-                                if (!o[key]) {
-                                    o[key] = [];
-                                }
-                                o[key][index] = obj.value;
-                                return;
-                            }
-                        }
-                        o[obj.name] = obj.value;
-                    } else {
-                        o[idx] = obj;
-                    }
-                });
-                return JSON.stringify(o);
-            };
-
-            oTableDual = $('#tabledual').dataTable({
-                bServerSide: true,
-                sAjaxSource: "${pageContext.servletContext.contextPath}/listDualWarrantyClaims.json",
-                fnServerData: function (sSource, aoData, fnCallback) {
-                    aoData.push(
-                        {'name': 'csrf_token', 'value': token},
-                        {'name': 'header', 'value': header},
-                        {'name': 'id', 'value': $('#searchId').val()},
-                        {'name': 'description', 'value': $('#searchDescription').val()},
-                        {'name': 'status', 'value': $('#searchStatus').val()}
-                    );
-                    $.ajax({
-                        dataType: 'json',
-                        type: 'POST',
-                        url: "${pageContext.request.contextPath}/listDualWarrantyClaims.json",
-                        contentType: "application/json",
-                        data: stringify_aoData(aoData),
-                        beforeSend: function (xhr) {
-                            if (header && token) {
-                                xhr.setRequestHeader(header, token);
-                            }
-                        },
-                        success: fnCallback,
-                        error: function (e) {
-                            window.location = "${pageContext.request.contextPath}/logout.htm";
-                        }
-                    });
-                },
-                bJQueryUI: true,
-                sPaginationType: "full_numbers",
-                bDeferRender: true,
-                lengthMenu: [10, 20, 50, 100],
-                searching: false,
-                responsive: true,
-                initComplete: function (settings, json) {
-                    document.getElementById('data-table-loading-dual').style.display = "none";
-                    document.getElementById('data-table-wrapper-dual').style.display = "block";
-                },
-                columnDefs: [
-                    {
-                        title: "ID",
-                        targets: 0,
-                        visible: false,
-                        mDataProp: "key1",
-                        defaultContent: "--"
-                    },
-                    {
-                        title: "ID",
-                        targets: 1,
-                        mDataProp: "key1",
-                        defaultContent: "--"
-                    },
-                    {
-                        title: "Description",
-                        targets: 2,
-                        mDataProp: "key2",
-                        defaultContent: "--"
-                    },
-                    {
-                        title: "Status",
-                        targets: 3,
-                        mDataProp: "key3",
-                        defaultContent: "--"
-                    },
-                    {
-                        title: "Task",
-                        targets: 4,
-                        mDataProp: "task",
-                        defaultContent: "--"
-                    },
-                    {
-                        title: "Created Time",
-                        targets: 5,
-                        mDataProp: "createdTime",
-                        defaultContent: "--",
-                        render: function (data) {
-                            return moment(data).format("YYYY-MM-DD hh:mm a")
-                        }
-
-                    },
-                    {
-                        title: "Last Updated Time",
-                        targets: 6,
-                        mDataProp: "lastUpdatedTime",
-                        defaultContent: "--",
-                        render: function (data) {
-                            return moment(data).format("YYYY-MM-DD hh:mm a")
-                        }
-                    },
-                    {
-                        title: "Last Updated User",
-                        targets: 7,
-                        mDataProp: "lastUpdatedUser",
-                        defaultContent: "--"
-                    },
-                    {
-                        visible: ${claim.vconfirm},
-                        title: "Confirm",
-                        sortable: false,
-                        className: "dt-center",
-                        mRender: function (data, type, full) {
-                            return '<button id="confirmBtn" class="btn btn-default btn-sm"  onclick="confirmTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-confirm.svg" alt=""></button>';
-                        },
-                        targets: 8,
-                        defaultContent: "--"
-                    },
-                    {
-                        visible: ${claim.vreject},
-                        title: "Reject",
-                        sortable: false,
-                        className: "dt-center",
-                        mRender: function (data, type, full) {
-                            return '<button id="rejectBtn" class="btn btn-default btn-sm" onclick="rejectTaskInit(\'' + full.id + '\');"><img src="${pageContext.request.contextPath}/resources/images/action-reject.svg" alt=""></button>';
-                        },
-                        targets: 9,
+                        targets: 12,
                         defaultContent: "--"
                     }
                 ]
@@ -672,8 +547,12 @@
                         <table class="table table-separate table-head-custom table-checkable" id="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Description</th>
+                                <th>Warrenty ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Delarship</th>
                                 <th>Status</th>
                                 <th>Created User</th>
                                 <th>Created Time</th>
@@ -690,47 +569,6 @@
                 </div>
             </div>
             <!--end::Card-->
-            <!--begin::Card-->
-            <c:if test="${claim.vdualauth}">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                        <div class="card-title">
-                            <h3 class="card-label">Claim to be confirmed</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!--begin: Datatable-->
-                        <div id="data-table-loading-dual" style="display: block;">
-                            <div class="loader"></div>
-                            <div class="loading-text">Loading..</div>
-                        </div>
-                        <div id="data-table-wrapper-dual" style="display: none;">
-                            <table class="table table-separate table-head-custom table-checkable" id="tabledual">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Claim ID</th>
-                                    <th>Description</th>
-                                    <th>Status</th>
-                                    <th>Task</th>
-                                    <th>Created Time</th>
-                                    <th>Last Updated Time</th>
-                                    <th>Last Updated User</th>
-                                    <th>Confirm</th>
-                                    <th>Reject</th>
-                                </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <!--end: Datatable-->
-                        </div>
-                    </div>
-                    <!--end::Card-->
-
-                    <!--end::Container-->
-                </div>
-            </c:if>
-            <!--end::Entry-->
         </div>
     </div>
 </div>

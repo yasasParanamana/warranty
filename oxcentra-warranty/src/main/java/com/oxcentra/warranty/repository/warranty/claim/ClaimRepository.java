@@ -87,7 +87,7 @@ public class ClaimRepository {
 
             String sql = "" +
                     " select " +
-                    " t.id, t.description, s.description as statusdes,t.chassis,t.model,t.first_name,t.phone from reg_warranty_claim t " +
+                    " t.id,t.first_name,t.last_name,t.phone,t.email,t.dealership,s.description as statusdes,t.createdtime,t.createduser,t.lastupdatedtime,t.lastupdateduser from reg_warranty_claim t " +
                     " left outer join status s on s.statuscode=t.status " +
                     " where " + dynamicClause.toString() + sortingStr +
                     " limit " + claimInputBean.displayLength + " offset " + claimInputBean.displayStart;
@@ -102,15 +102,60 @@ public class ClaimRepository {
                 }
 
                 try {
-                    claim.setDescription(rs.getString("description"));
+                    claim.setFirstName(rs.getString("first_name"));
                 } catch (Exception e) {
-                    claim.setDescription(null);
+                    claim.setFirstName(null);
+                }
+
+                try {
+                    claim.setLastName(rs.getString("last_name"));
+                } catch (Exception e) {
+                    claim.setLastName(null);
+                }
+
+                try {
+                    claim.setPhone(rs.getString("phone"));
+                } catch (Exception e) {
+                    claim.setPhone(null);
+                }
+
+                try {
+                    claim.setEmail(rs.getString("email"));
+                } catch (Exception e) {
+                    claim.setEmail(null);
+                }
+
+                try {
+                    claim.setDealership(rs.getString("dealership"));
+                } catch (Exception e) {
+                    claim.setDealership(null);
                 }
 
                 try {
                     claim.setStatus(rs.getString("statusdes"));
                 } catch (Exception e) {
                     claim.setStatus(null);
+                }
+
+                try {
+                    claim.setCreatedTime(rs.getDate("createdtime"));
+                } catch (Exception e) {
+                    claim.setCreatedTime(null);
+                }
+                try {
+                    claim.setCreatedUser(rs.getString("createduser"));
+                } catch (Exception e) {
+                    claim.setCreatedUser(null);
+                }
+                try {
+                    claim.setLastUpdatedTime(rs.getDate("lastupdatedtime"));
+                } catch (Exception e) {
+                    claim.setLastUpdatedTime(null);
+                }
+                try {
+                    claim.setLastUpdatedUser(rs.getString("lastupdateduser"));
+                } catch (Exception e) {
+                    claim.setLastUpdatedUser(null);
                 }
 
                 return claim;

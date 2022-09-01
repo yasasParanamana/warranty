@@ -65,7 +65,10 @@ public class ClaimInputBean extends DataTablesRequest {
     private Date lastRemindedDate;
     private boolean isCritical;
     private String createdUser;
+    private String lastUpdatedUser;
     private Date createdTime;
+    private Date lastUpdatedTime;
+
 
     private String sparePartRequired1;
     private String sparePartRequired2;
