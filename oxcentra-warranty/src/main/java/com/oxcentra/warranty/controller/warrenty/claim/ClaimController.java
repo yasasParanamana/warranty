@@ -287,7 +287,9 @@ public class ClaimController implements RequestBeanValidation<Object> {
         //Supplier List
         List<Supplier> SupplierActList = commonRepository.getActiveSupplierList(StatusVarList.STATUS_DFLT_ACT);
 
-        //set values to task bean
+        //status Count
+
+        //set values to claimInputBean bean
         claimInputBean.setStatusList(statusList);
         claimInputBean.setStatusActList(statusActList);
         claimInputBean.setModelActList(modelActList);

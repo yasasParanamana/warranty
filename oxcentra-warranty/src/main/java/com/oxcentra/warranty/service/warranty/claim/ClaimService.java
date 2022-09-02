@@ -8,6 +8,7 @@ import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
+import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.repository.warranty.claim.ClaimRepository;
@@ -22,6 +23,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -98,10 +100,25 @@ public class ClaimService {
                 String user = sessionBean.getUsername();
 
                 claimInputBean.setCreatedTime(currentDate);
-/*                claimInputBean.setLastUpdatedTime(currentDate);
-                claimInputBean.setLastUpdatedUser(user);*/
                 claimInputBean.setCreatedUser(user);
+                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(user);
 
+                ArrayList<SpareParts> sparePartsList = new ArrayList<SpareParts>();
+                SpareParts spareParts1 = new SpareParts();
+                SpareParts spareParts2 = new SpareParts();
+
+                if(claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()){
+                    spareParts1.setSparePartType(claimInputBean.getSparePartRequired1());
+                    spareParts1.setQty(claimInputBean.getQuantity1());
+                    sparePartsList.add(spareParts1);
+                }
+                if(claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()){
+                    spareParts2.setSparePartType(claimInputBean.getSparePartRequired2());
+                    spareParts2.setQty(claimInputBean.getQuantity2());
+                    sparePartsList.add(spareParts2);
+                }
+                claimInputBean.setSpareParts(sparePartsList);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
                 message = claimRepository.insertClaim(claimInputBean);

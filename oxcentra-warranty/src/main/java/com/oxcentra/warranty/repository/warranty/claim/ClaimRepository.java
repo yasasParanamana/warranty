@@ -7,6 +7,7 @@ import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.RegWarrantyAttachments;
+import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
@@ -47,8 +48,9 @@ public class ClaimRepository {
 
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description,status,createdtime,createduser,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
+    private final String SQL_INSERT_SPARE_PART = "insert into reg_spare_part (warranty_id,spare_part_type,qty) values (?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description,r.dealership_name,r.dealership_phone,r.dealership_email,r.dealership_address  from reg_warranty_claim t LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership  where t.id = ? ";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
@@ -199,7 +201,6 @@ public class ClaimRepository {
     @Transactional
     public String insertClaim(ClaimInputBean claimInputBean) throws Exception {
         String message = "";
-        FileInputStream fileInputStream = null;
 
         try {
             int value = 0;
@@ -226,15 +227,46 @@ public class ClaimRepository {
                     claimInputBean.getHours(),
                     claimInputBean.getLabourRate(),
                   //  claimInputBean.getTotalCost(),
-                    claimInputBean.getDescription()
+                    claimInputBean.getDescription(),
+                    "WAR_PEND",
+                    claimInputBean.getCreatedTime(),
+                    claimInputBean.getCreatedUser(),
+                    claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getLastUpdatedUser()
                     );
 
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
 
+            /*insert Spare Parts*/
 
-            /*insert Attachments
+            int valueParts = 0;
+            //insert in to reg_spare_part
+
+            if(claimInputBean.getSpareParts().size() > 0){
+                for(SpareParts spareParts : claimInputBean.getSpareParts()){
+
+                    valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
+                            claimInputBean.getId(),
+                            spareParts.getSparePartType(),
+                            spareParts.getQty()
+                    );
+
+                }
+            }
+
+            if (valueParts != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
+
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
+
+           /* insert Attachments
             insert in to reg_warranty_attachments*/
 
             if (claimInputBean.getFile().size() > 0) {

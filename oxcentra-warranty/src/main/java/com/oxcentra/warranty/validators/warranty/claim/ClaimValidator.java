@@ -192,10 +192,14 @@ public class ClaimValidator implements Validator {
     }
 
     private Field[] getRequiredFields(SortedMap<String, Field> allFields, ClaimInputBean o) {
-        return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
+
+        /*return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
                 allFields.get("phone"), allFields.get("email"), allFields.get("address"), allFields.get("surburb")
                 , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"), allFields.get("purchasingDate"), allFields.get("description")
                 , allFields.get("failureType"), allFields.get("failureArea"), allFields.get("repairType"), allFields.get("repairDescription")
                 , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription")};
+*/
+        return new Field[]{};
+
     }
 }
