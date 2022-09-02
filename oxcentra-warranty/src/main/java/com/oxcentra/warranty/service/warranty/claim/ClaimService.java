@@ -222,33 +222,11 @@ public class ClaimService {
         String message = "";
         String auditDescription = "";
         try {
-            //check the page dual auth enable or disable
-            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE)) {
-                //get the existing task
-                Claim claim = claimRepository.getClaim(id);
-                if (claim != null) {
-                    ClaimInputBean claimInputBean = new ClaimInputBean();
-                    //set the values to input bean
-                    claimInputBean.setId(claim.getId());
-                    claimInputBean.setDescription(claim.getDescription());
-                    claimInputBean.setStatus(claim.getStatus());
-                    /*taskInputBean.setCreatedTime(claim.getCreatedTime());
-                    taskInputBean.setCreatedUser(claim.getCreatedUser());
-                    taskInputBean.setLastUpdatedTime(claim.getLastUpdatedTime());
-                    taskInputBean.setLastUpdatedUser(claim.getLastUpdatedUser());*/
-                    //set audit description
-                    auditDescription = "Requested to deleted Claim (ID: " + id + ")";
-                    //insert the record to dual auth table
-                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.DELETE_TASK);
-                } else {
-                    message = MessageVarList.TASK_MGT_NORECORD_FOUND;
-                }
-            } else {
                 message = claimRepository.deleteClaim(id);
-                auditDescription = "Claim (ID: " + id + ") deleted by " + sessionBean.getUsername();
-            }
+                auditDescription = "Claim (WARRANTY ID: " + id + ") deleted by " + sessionBean.getUsername();
+
         } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
         } catch (DataIntegrityViolationException | ConstraintViolationException cve) {

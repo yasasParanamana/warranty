@@ -82,15 +82,26 @@ public class ClaimRepository {
             //create sorting order
             String sortingStr = "";
             if (claimInputBean.sortedColumns.get(0) == 0) {
-                sortingStr = " order by t.purchasing_date desc ";
+                sortingStr = " order by t.createdtime desc ";
             } else {
-                sortingStr = " order by t.purchasing_date " + claimInputBean.sortDirections.get(0);
+                sortingStr = " order by t.createdtime " + claimInputBean.sortDirections.get(0);
             }
 
             String sql = "" +
                     " select " +
-                    " t.id,t.first_name,t.last_name,t.phone,t.email,t.dealership,s.description as statusdes,t.createdtime,t.createduser,t.lastupdatedtime,t.lastupdateduser from reg_warranty_claim t " +
-                    " left outer join status s on s.statuscode=t.status " +
+                    "t.id," +
+                    "t.first_name," +
+                    "t.last_name," +
+                    "t.phone," +
+                    "t.email," +
+                    "t.dealership," +
+                    "s.description as statusdes," +
+                    "t.createdtime," +
+                    "t.createduser," +
+                    "t.lastupdatedtime," +
+                    "t.lastupdateduser " +
+                    "from reg_warranty_claim t " +
+                    "left outer join status s on s.statuscode=t.status " +
                     " where " + dynamicClause.toString() + sortingStr +
                     " limit " + claimInputBean.displayLength + " offset " + claimInputBean.displayStart;
 
@@ -594,18 +605,18 @@ public class ClaimRepository {
     }
 
     private StringBuilder setDynamicClause(ClaimInputBean claimInputBean , StringBuilder dynamicClause) {
-        dynamicClause.append(" 1=1 ");
         try {
             if (claimInputBean.getId() != null && !claimInputBean.getId().isEmpty()) {
-                dynamicClause.append("and lower(t.taskcode) like lower('%").append(claimInputBean.getId()).append("%')");
-            }
-
-            if (claimInputBean.getDescription() != null && !claimInputBean.getDescription().isEmpty()) {
-                dynamicClause.append("and lower(t.description) like lower('%").append(claimInputBean.getDescription()).append("%')");
-            }
-
-            if (claimInputBean.getStatus() != null && !claimInputBean.getStatus().isEmpty()) {
-                dynamicClause.append("and t.status = '").append(claimInputBean.getStatus()).append("'");
+                dynamicClause.append(" 1=0 ");
+                dynamicClause.append("or lower(t.id) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or lower(t.first_name) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or lower(t.last_name) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or lower(t.phone) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or lower(t.email) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or lower(t.dealership) like lower('%").append(claimInputBean.getId()).append("%')");
+                dynamicClause.append("or t.status = '").append(claimInputBean.getStatus()).append("'");
+            }else{
+                dynamicClause.append(" 1=1 ");
             }
         } catch (Exception e) {
             throw e;

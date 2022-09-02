@@ -217,7 +217,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         try {
             String message = claimService.deleteClaim(id);
             if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_DELETE, null, locale), null);
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_DELETE, null, locale), null);
             } else {
                 responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
             }

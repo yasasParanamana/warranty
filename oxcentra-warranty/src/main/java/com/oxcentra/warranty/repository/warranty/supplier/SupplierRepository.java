@@ -425,7 +425,7 @@ public class SupplierRepository {
                 dynamicClause.append("or lower(rs.supplier_phone) like lower('%").append(SupplierInputBean.getSupplierCode()).append("%')");
                 dynamicClause.append("or lower(rs.supplier_email) like lower('%").append(SupplierInputBean.getSupplierCode()).append("%')");
                 dynamicClause.append("or lower(rs.supplier_address) like lower('%").append(SupplierInputBean.getSupplierCode()).append("%')");
-                dynamicClause.append("or rs.status = '").append(SupplierInputBean.getStatus()).append("'");
+
             }else{
                 dynamicClause.append(" 1=1 ");
             }

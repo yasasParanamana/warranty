@@ -52,9 +52,7 @@
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'id', 'value': $('#searchId').val()},
-                        {'name': 'description', 'value': $('#searchDescription').val()},
-                        {'name': 'status', 'value': $('#searchStatus').val()}
+                        {'name': 'id', 'value': $('#searchId').val()}
                     );
                     $.ajax({
                         dataType: 'json',
@@ -199,7 +197,7 @@
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteTaskInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
+                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
                         targets: 12,
                         defaultContent: "--"
@@ -259,6 +257,9 @@
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
 
+                    $('#firstTab').show();
+                    $('#secondTab').hide();
+
                     $('#modalUpdateClaim').modal('toggle');
                     $('#modalUpdateClaim').modal('show');
 
@@ -299,6 +300,9 @@
             oTable.fnDraw();
         }
 
+        function search() {
+            oTable.fnDraw();
+        }
 
         function openAddModal() {
             $('#modalAddClaim').modal('toggle');
@@ -383,76 +387,20 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!--begin::Card-->
-                    <div class="card card-custom gutter-b">
-                        <div class="card-header">
-                            <h3 class="card-title">Search Claims</h3>
-                        </div>
-                        <!--begin::Form-->
-                        <form:form class="form" id="claimviewform" name="claimsearch" action="addClaim" theme="simple"
-                                   method="post" modelAttribute="claim">
-                            <%--                        <form class="form">--%>
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-lg-3">
-                                        <label>ID:</label>
-                                        <div class="input-group">
-                                            <input id="searchId" type="text"
-                                                   onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                                   maxlength="16"
-                                                   class="form-control form-control" placeholder="Claim ID">
-                                        </div>
-                                        <span class="form-text text-muted">Please enter Claim ID</span>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label>Description:</label>
-                                        <input id="searchDescription" type="text"
-                                               onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 ]/g, ''))"
-                                               maxlength="64"
-                                               class="form-control form-control" placeholder="Description">
-                                            <%--                                        <input type="email" class="form-control" placeholder="Enter email" />--%>
-                                        <span class="form-text text-muted">Please enter description</span>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label>Status:</label>
-                                        <select id="searchStatus" class="form-control form-control">
-                                            <option selected value="">Select Status</option>
-                                            <c:forEach items="${claim.statusList}" var="status">
-                                                <option value="${status.statusCode}">${status.description}</option>
-                                            </c:forEach>
-                                        </select>
-                                        <span class="form-text text-muted">Please select status</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <button type="button" class="btn btn-primary mr-2 btn-sm"
-                                                onclick="searchStart()">
-                                            Search
-                                        </button>
-                                        <button type="reset" class="btn btn-secondary btn-sm" onclick="resetSearch()">
-                                            Reset
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!--end::Form-->
-                            </div>
-                        </form:form>
-                        <!--end::Card-->
-                    </div>
-                </div>
-            </div>
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap border-0 pt-1 pb-0">
                     <div class="card-title">
-                        <h3 class="card-label">Warranty Claim
-                            <span class="d-block text-muted pt-2 font-size-sm">Claim list</span></h3>
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <input id="searchId" name="searchId" type="text"  maxlength="50" class="form-control" >
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
