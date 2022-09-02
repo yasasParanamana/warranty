@@ -58,4 +58,7 @@ public class Claim {
     private String createdUser;
     private Date lastUpdatedTime;
     private String lastUpdatedUser;
+    private String dealershipName;
+    private String dealershipPhone;
+    private String dealershipEmail;
 }

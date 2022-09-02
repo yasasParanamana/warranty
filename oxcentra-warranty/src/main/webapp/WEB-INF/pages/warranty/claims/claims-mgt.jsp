@@ -13,11 +13,9 @@
         var header = $("meta[name='_csrf_header']").attr("content");
 
         var oTable;
-        var oTableDual;
 
         $(document).ready(function () {
             loadDataTable();
-            loadDataTableDual();
         });
 
         function loadDataTable() {
@@ -249,6 +247,18 @@
                     $('#editTotalCost').html(data.totalCost);
                     $('#editCostDescription').html(data.costDescription);
 
+                    $('#editCusFirstName').html(data.firstName);
+                    $('#editCusContactNo').html(data.phone);
+                    $('#editCusEmail').html(data.email);
+                    $('#editCusAddress').html(data.address);
+
+                    $('#editContactDelarship').html(data.dealership);
+                    $('#editDealershipName').html(data.dealershipName);
+                    $('#editDealershipPhone').html(data.dealershipPhone);
+                    $('#editDealershipEmail').html(data.dealershipEmail);
+                    $('#editDealershipChassisNumber').html(data.chassis);
+                    $('#editDealershipCaravanModel').html(data.model);
+
                     $('#modalUpdateClaim').modal('toggle');
                     $('#modalUpdateClaim').modal('show');
 
@@ -280,7 +290,6 @@
 
         function searchStart() {
             oTable.fnDraw();
-            oTableDual.fnDraw();
         }
 
         function resetSearch() {
@@ -288,7 +297,6 @@
             $('#searchDescription').val("");
             $('#searchStatus').val("");
             oTable.fnDraw();
-            oTableDual.fnDraw();
         }
 
 
@@ -333,75 +341,7 @@
             });
         }
 
-        function confirmCommon() {
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath}/confirmWarrantyClaims.json',
-                data: {id: $('#idConfirm').val()},
-                beforeSend: function (xhr) {
-                    if (header && token) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                },
-                success: function (res) {
 
-                    //close delete modal
-                    $('#modalConfirmCommon').modal('toggle');
-                    //open delete process modal
-                    $('#modalConfirmProcessCommon').modal('toggle');
-                    $('#modalConfirmProcessCommon').modal('show');
-
-                    if (res.flag) { //success
-                        $('#responseMsgConfirm').show();
-                        $('#responseMsgConfirm').addClass('success-response').text(res.successMessage);
-                        $('form[name=addTaskForm]').trigger("reset");
-                        searchStart();
-                    } else {
-                        $('#responseMsgConfirm').show();
-                        $('#responseMsgConfirm').addClass('error-response').text(res.errorMessage);
-                    }
-
-
-                },
-                error: function (jqXHR) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-        }
-
-        function rejectCommon() {
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath}/rejectWarrantyClaims.json',
-                data: {id: $('#idReject').val()},
-                beforeSend: function (xhr) {
-                    if (header && token) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                },
-                success: function (res) {
-
-                    //close delete modal
-                    $('#modalRejectCommon').modal('toggle');
-                    //open delete process modal
-                    $('#modalRejectProcessCommon').modal('toggle');
-                    $('#modalRejectProcessCommon').modal('show');
-
-                    if (res.flag) { //success
-                        $('#responseMsgReject').show();
-                        $('#responseMsgReject').addClass('success-response').text(res.successMessage);
-                        $('form[name=addTaskForm]').trigger("reset");
-                        searchStart();
-                    } else {
-                        $('#responseMsgReject').show();
-                        $('#responseMsgReject').addClass('error-response').text(res.errorMessage);
-                    }
-                },
-                error: function (jqXHR) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-        }
     </script>
 </head>
 

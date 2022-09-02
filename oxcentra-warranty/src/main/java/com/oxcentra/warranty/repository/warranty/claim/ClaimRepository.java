@@ -7,6 +7,7 @@ import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.RegWarrantyAttachments;
+import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
 import com.oxcentra.warranty.util.varlist.PageVarList;
@@ -49,7 +50,8 @@ public class ClaimRepository {
     private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
-    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description  from reg_warranty_claim t where t.id = ? ";
+    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description,r.dealership_name,r.dealership_phone,r.dealership_email,r.dealership_address  from reg_warranty_claim t LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership  where t.id = ? ";
+    private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
     private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
 
@@ -182,89 +184,6 @@ public class ClaimRepository {
         }
         return count;
     }
-
-    @Transactional(readOnly = true)
-    public List<TempAuthRec> getClaimSearchResultsDual(ClaimInputBean claimInputBean) throws Exception {
-        List<TempAuthRec> claimDualList = null;
-        try {
-            StringBuilder dynamicClause = this.setDynamicClauseDual(claimInputBean, new StringBuilder());
-            //create sorting order
-            String sortingStr = "";
-            if (claimInputBean.sortedColumns.get(0) == 0) {
-                sortingStr = " order by wta.lastupdatedtime desc ";
-            } else {
-                sortingStr = " order by wta.lastupdatedtime " + claimInputBean.sortDirections.get(0);
-            }
-
-            String sql =
-                    " select wta.id, wta.key1, wta.key2, s.description key3, t.description task, wta.createdtime, wta.lastupdatedtime, wta.lastupdateduser " +
-                            " from web_tmpauthrec wta" +
-                            " left outer join status s on s.statuscode = wta.key3 " +
-                            " left outer join web_task t on t.taskcode = wta.task " +
-                            " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
-                            " limit " + claimInputBean.displayLength + " offset " + claimInputBean.displayStart;
-
-            claimDualList = jdbcTemplate.query(sql, new Object[]{PageVarList.CLAIMS_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN, sessionBean.getUsername()}, (rs, rowNum) -> {
-                TempAuthRec tempAuthRec = new TempAuthRec();
-
-                try {
-                    tempAuthRec.setId(rs.getString("id"));
-                } catch (Exception e) {
-                    tempAuthRec.setId(null);
-                }
-
-                try {
-                    tempAuthRec.setTask(rs.getString("task"));
-                } catch (Exception e) {
-                    tempAuthRec.setTask(null);
-                }
-
-                try {
-                    //task code
-                    tempAuthRec.setKey1(rs.getString("key1"));
-                } catch (Exception e) {
-                    tempAuthRec.setKey1(null);
-                }
-
-                try {
-                    //description
-                    tempAuthRec.setKey2(rs.getString("key2"));
-                } catch (Exception e) {
-                    tempAuthRec.setKey2(null);
-                }
-
-                try {
-                    //status
-                    tempAuthRec.setKey3(rs.getString("key3"));
-                } catch (Exception e) {
-                    tempAuthRec.setKey3(null);
-                }
-
-                try {
-                    tempAuthRec.setLastUpdatedTime(rs.getString("lastupdatedtime"));
-                } catch (Exception e) {
-                    tempAuthRec.setLastUpdatedTime(null);
-                }
-
-                try {
-                    tempAuthRec.setLastUpdatedUser(rs.getString("lastupdateduser"));
-                } catch (Exception e) {
-                    tempAuthRec.setLastUpdatedUser(null);
-                }
-
-                try {
-                    tempAuthRec.setCreatedTime(rs.getString("createdtime"));
-                } catch (Exception e) {
-                    tempAuthRec.setCreatedTime(null);
-                }
-                return tempAuthRec;
-            });
-        } catch (Exception ex) {
-            throw ex;
-        }
-        return claimDualList;
-    }
-
 
     @Transactional
     public String insertClaim(ClaimInputBean claimInputBean) throws Exception {
@@ -454,8 +373,13 @@ public class ClaimRepository {
                 }
 
                 try {
+
                     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
+                    System.out.println("Purchasing Date :"+rs.getDate("purchasing_date").toString());
+//                    System.out.println("Format Purchasing Date :"+formatter.parse(rs.getDate("purchasing_date").toString()));
+//                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
+
+                    t.setPurchasingDate(rs.getDate("purchasing_date"));
                 } catch (Exception e) {
                     t.setPurchasingDate(null);
                 }
@@ -520,6 +444,24 @@ public class ClaimRepository {
                     t.setCostDescription(null);
                 }
 
+                try {
+                    t.setDealershipName(rs.getString("dealership_name"));
+                } catch (Exception e) {
+                    t.setDealershipName(null);
+                }
+
+                try {
+                    t.setDealershipPhone(rs.getString("dealership_phone"));
+                } catch (Exception e) {
+                    t.setDealershipPhone(null);
+                }
+
+                try {
+                    t.setDealershipEmail(rs.getString("dealership_email"));
+                } catch (Exception e) {
+                    t.setDealershipEmail(null);
+                }
+
                 return t;
             });
         } catch (EmptyResultDataAccessException erse) {
@@ -528,6 +470,58 @@ public class ClaimRepository {
             throw e;
         }
         return claim;
+    }
+
+    @Transactional(readOnly = true)
+    public Supplier getSupplierDetails(String supplierCode) throws Exception {
+        Supplier supplier;
+        try {
+            supplier = jdbcTemplate.queryForObject(SQL_FIND_SUPPLIER, new Object[]{supplierCode}, (rs, rowNum) -> {
+                Supplier t = new Supplier();
+
+                try {
+                    t.setSupplierCode(rs.getString("supplier_code"));
+                } catch (Exception e) {
+                    t.setSupplierCode(null);
+                }
+
+                try {
+                    t.setSupplierName(rs.getString("supplier_name"));
+                } catch (Exception e) {
+                    t.setSupplierName(null);
+                }
+
+                try {
+                    t.setSupplierPhone(rs.getString("supplier_phone"));
+                } catch (Exception e) {
+                    t.setSupplierPhone(null);
+                }
+
+                try {
+                    t.setSupplierEmail(rs.getString("supplier_email"));
+                } catch (Exception e) {
+                    t.setSupplierEmail(null);
+                }
+
+                try {
+                    t.setSupplierAddress(rs.getString("supplier_address"));
+                } catch (Exception e) {
+                    t.setSupplierAddress(null);
+                }
+                try {
+                    t.setStatus(rs.getString("status"));
+                } catch (Exception e) {
+                    t.setStatus(null);
+                }
+
+                return t;
+            });
+        } catch (EmptyResultDataAccessException erse) {
+            supplier = null;
+        } catch (Exception e) {
+            throw e;
+        }
+        return supplier;
     }
 
     @Transactional

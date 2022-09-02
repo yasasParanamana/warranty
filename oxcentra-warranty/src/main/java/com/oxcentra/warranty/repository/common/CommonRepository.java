@@ -12,6 +12,7 @@ import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.common.CommonPasswordParam;
 import com.oxcentra.warranty.mapping.usermgt.UserRole;
 import com.oxcentra.warranty.mapping.usermgt.UserRoleType;
+import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.util.varlist.CommonVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
 import org.apache.commons.logging.Log;
@@ -93,6 +94,7 @@ public class CommonRepository {
     private final String SQL_GET_FAILURE_TYPE_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_type where status = ?";
     private final String SQL_GET_FAILURE_AREA_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_area where status = ?";
     private final String SQL_GET_REPAIR_TYPE_LIST_BY_STATUS = "select CODE,DESCRIPTION from reg_failure_type_repair where status = ?";
+    private final String SQL_GET_SUPPLIER_LIST_BY_STATUS = "select supplier_code,supplier_name from reg_supplier where status = ?";
 
 
     /**
@@ -1076,6 +1078,35 @@ public class CommonRepository {
             throw e;
         }
         return repairTypeBeanList;
+    }
+
+    /**
+     * @Author Yasas
+     * @CreatedTime 2022-08-17 10:48:05 AM
+     * @Version V1.00
+     * @MethodName getActiveStateList
+     * @MethodParams [status]
+     * @MethodDescription - This method return the state list
+     */
+
+    @Transactional(readOnly = true)
+    public List<Supplier> getActiveSupplierList(String status) throws Exception {
+        List<Supplier> supplierBeanList;
+        try {
+            List<Map<String, Object>> supplierList = jdbcTemplate.queryForList(SQL_GET_SUPPLIER_LIST_BY_STATUS, status);
+            supplierBeanList = supplierList.stream().map((record) -> {
+                Supplier supplierBean = new Supplier();
+                supplierBean.setSupplierCode(record.get("supplier_code").toString());
+                supplierBean.setSupplierName(record.get("supplier_name").toString());
+                return supplierBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            supplierBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return supplierBeanList;
     }
 
 

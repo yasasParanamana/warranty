@@ -6,6 +6,7 @@ import com.oxcentra.warranty.bean.sysconfigmgt.failuretype.FailureType;
 import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
 import com.oxcentra.warranty.bean.sysconfigmgt.repairtype.RepairType;
 import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
+import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.util.common.DataTablesRequest;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,6 +69,9 @@ public class ClaimInputBean extends DataTablesRequest {
     private String lastUpdatedUser;
     private Date createdTime;
     private Date lastUpdatedTime;
+    private String dealershipName;
+    private String dealershipPhone;
+    private String dealershipEmail;
 
 
     private String sparePartRequired1;
@@ -93,6 +97,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<FailureType> failureTypeActList;
     private List<FailureArea> failureAreaActList;
     private List<RepairType> repairTypeActList;
+    private List<Supplier> supplierActList;
 
 
     /*-------file upload-----------*/
