@@ -12,6 +12,7 @@ import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
+import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.service.common.CommonService;
@@ -155,10 +156,15 @@ public class ClaimController implements RequestBeanValidation<Object> {
     Claim getClaim(@RequestParam String id) {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM GET");
         Claim claim= new Claim();
+        SpareParts spareParts = new SpareParts();
         try {
             if (id != null && !id.trim().isEmpty()) {
                 System.out.println("WARRANTY ID : " +id);
                 claim = claimService.getClaim(id);
+
+                //get model
+                List<SpareParts> sparePartsList = claimService.getSpareParts(id);
+                claim.setSparePartList(sparePartsList);
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);

@@ -129,6 +129,12 @@
                         </div>
                     </div>
 
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="sparePartList" id ="updateSparePartList"></div>
+                        </div>
+                    </div>
+
                     <hr>
                     <h5>Repair Deatils</h5>
 

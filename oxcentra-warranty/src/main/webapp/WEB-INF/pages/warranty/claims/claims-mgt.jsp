@@ -257,6 +257,19 @@
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
 
+                    $("#updateSparePartList").empty();
+
+                    let sparePartLIst = data.sparePartList ;
+
+                    let table = $('<table/>').appendTo($('.sparePartList'));
+
+                    $(sparePartLIst).each(function(i, sparePartLIst) {
+                        $('<tr/>').appendTo(table)
+                            .append($('<td/>').text("Spare Part Required   "+ sparePartLIst.sparePartType))
+                            .append($('<td/>').text("                          "))
+                            .append($('<td/>').text("Quantity     "+sparePartLIst.qty));
+                    });
+
                     $('#firstTab').show();
                     $('#secondTab').hide();
 

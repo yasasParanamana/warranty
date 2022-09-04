@@ -1,6 +1,7 @@
 package com.oxcentra.warranty.repository.warranty.claim;
 
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
 import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
@@ -31,7 +32,10 @@ import java.io.FileInputStream;
 import java.sql.Blob;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @Scope("prototype")
@@ -52,11 +56,43 @@ public class ClaimRepository {
     private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
     private final String SQL_INSERT_SPARE_PART = "insert into reg_spare_part (warranty_id,spare_part_type,qty) values (?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
-    private final String SQL_FIND_CLAIM = "select t.id,t.chassis,t.model,t.first_name,t.last_name,t.phone,t.email,t.address,t.surburb,t.state,t.postcode,t.dealership,t.purchasing_date,t.description,t.failiure_type,t.failiure_area,t.repair_type,t.repair_description,t.cost_type,t.hours,t.labour_rate,t.total_cost,t.cost_description,r.dealership_name,r.dealership_phone,r.dealership_email,r.dealership_address  from reg_warranty_claim t LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership  where t.id = ? ";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
     private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
+    private final String SQL_FIND_CLAIM = "select " +
+            "t.id," +
+            "t.chassis," +
+            "t.model," +
+            "t.first_name," +
+            "t.last_name," +
+            "t.phone," +
+            "t.email," +
+            "t.address," +
+            "t.surburb," +
+            "t.state," +
+            "t.postcode," +
+            "t.dealership," +
+            "t.purchasing_date," +
+            "t.description," +
+            "t.failiure_type," +
+            "t.failiure_area," +
+            "t.repair_type," +
+            "t.repair_description," +
+            "t.cost_type," +
+            "t.hours," +
+            "t.labour_rate," +
+            "t.total_cost," +
+            "t.cost_description," +
+            "r.dealership_name," +
+            "r.dealership_phone," +
+            "r.dealership_email," +
+            "r.dealership_address  " +
+            "from reg_warranty_claim t " +
+            "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
+            "where t.id = ? ";
 
+    private final String SQL_GET_LIST_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.warranty_id = ? ";
+    private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
 
     @Transactional(readOnly = true)
     public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
@@ -205,7 +241,7 @@ public class ClaimRepository {
         try {
             int value = 0;
             //insert in to reg_warranty_claim
-            value = jdbcTemplate.update(SQL_INSERT_CLAIM,claimInputBean.getId(),
+            value = jdbcTemplate.update(SQL_INSERT_CLAIM, claimInputBean.getId(),
                     claimInputBean.getChassis(),
                     claimInputBean.getModel(),
                     claimInputBean.getFirstName(),
@@ -226,14 +262,14 @@ public class ClaimRepository {
                     claimInputBean.getCostType(),
                     claimInputBean.getHours(),
                     claimInputBean.getLabourRate(),
-                  //  claimInputBean.getTotalCost(),
+                    //  claimInputBean.getTotalCost(),
                     claimInputBean.getDescription(),
                     "WAR_PEND",
                     claimInputBean.getCreatedTime(),
                     claimInputBean.getCreatedUser(),
                     claimInputBean.getLastUpdatedTime(),
                     claimInputBean.getLastUpdatedUser()
-                    );
+            );
 
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
@@ -244,8 +280,8 @@ public class ClaimRepository {
             int valueParts = 0;
             //insert in to reg_spare_part
 
-            if(claimInputBean.getSpareParts().size() > 0){
-                for(SpareParts spareParts : claimInputBean.getSpareParts()){
+            if (claimInputBean.getSpareParts().size() > 0) {
+                for (SpareParts spareParts : claimInputBean.getSpareParts()) {
 
                     valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
                             claimInputBean.getId(),
@@ -257,11 +293,6 @@ public class ClaimRepository {
             }
 
             if (valueParts != 1) {
-                message = MessageVarList.COMMON_ERROR_PROCESS;
-            }
-
-
-            if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
 
@@ -418,7 +449,7 @@ public class ClaimRepository {
                 try {
 
                     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println("Purchasing Date :"+rs.getDate("purchasing_date").toString());
+                    System.out.println("Purchasing Date :" + rs.getDate("purchasing_date").toString());
 //                    System.out.println("Format Purchasing Date :"+formatter.parse(rs.getDate("purchasing_date").toString()));
 //                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
 
@@ -516,6 +547,41 @@ public class ClaimRepository {
     }
 
     @Transactional(readOnly = true)
+    public SpareParts getSparePart(String id) throws Exception {
+        SpareParts spareParts;
+        try {
+            spareParts = jdbcTemplate.queryForObject(SQL_GET_SPARE_PARTS, new Object[]{id}, (rs, rowNum) -> {
+                SpareParts t = new SpareParts();
+
+                try {
+                    t.setId(rs.getString("id"));
+                } catch (Exception e) {
+                    t.setId(null);
+                }
+
+                try {
+                    t.setSparePartType(rs.getString("chassis"));
+                } catch (Exception e) {
+                    t.setSparePartType(null);
+                }
+
+                try {
+                    t.setQty(rs.getString("model"));
+                } catch (Exception e) {
+                    t.setQty(null);
+                }
+
+                return t;
+            });
+        } catch (EmptyResultDataAccessException erse) {
+            spareParts = null;
+        } catch (Exception e) {
+            throw e;
+        }
+        return spareParts;
+    }
+
+    @Transactional(readOnly = true)
     public Supplier getSupplierDetails(String supplierCode) throws Exception {
         Supplier supplier;
         try {
@@ -572,7 +638,7 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, "WAR_APPROVE",claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, "WAR_APPROVE", claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -589,7 +655,7 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_APPROVE",claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_APPROVE", claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -606,7 +672,7 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_REJECTED_HO",claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_REJECTED_HO", claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -636,7 +702,7 @@ public class ClaimRepository {
         return message;
     }
 
-    private StringBuilder setDynamicClause(ClaimInputBean claimInputBean , StringBuilder dynamicClause) {
+    private StringBuilder setDynamicClause(ClaimInputBean claimInputBean, StringBuilder dynamicClause) {
         try {
             if (claimInputBean.getId() != null && !claimInputBean.getId().isEmpty()) {
                 dynamicClause.append(" 1=0 ");
@@ -647,7 +713,7 @@ public class ClaimRepository {
                 dynamicClause.append("or lower(t.email) like lower('%").append(claimInputBean.getId()).append("%')");
                 dynamicClause.append("or lower(t.dealership) like lower('%").append(claimInputBean.getId()).append("%')");
                 dynamicClause.append("or t.status = '").append(claimInputBean.getStatus()).append("'");
-            }else{
+            } else {
                 dynamicClause.append(" 1=1 ");
             }
         } catch (Exception e) {
@@ -674,5 +740,27 @@ public class ClaimRepository {
             throw e;
         }
         return dynamicClause;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SpareParts> getSparePartList(String warrantyId) throws Exception {
+        List<SpareParts> sparePartsBeanList;
+        try {
+            List<Map<String, Object>> sparePartList = jdbcTemplate.queryForList(SQL_GET_LIST_SPARE_PARTS, warrantyId);
+            sparePartsBeanList = sparePartList.stream().map((record) -> {
+                SpareParts sparePartBean = new SpareParts();
+                sparePartBean.setId(record.get("id").toString());
+                sparePartBean.setWarrantyId(record.get("warranty_id").toString());
+                sparePartBean.setSparePartType(record.get("spare_part_type").toString());
+                sparePartBean.setQty(record.get("qty").toString());
+                return sparePartBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            sparePartsBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return sparePartsBeanList;
     }
 }

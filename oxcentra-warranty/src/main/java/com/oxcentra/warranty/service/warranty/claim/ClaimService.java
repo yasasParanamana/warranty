@@ -2,6 +2,7 @@ package com.oxcentra.warranty.service.warranty.claim;
 
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
 import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
@@ -160,6 +161,30 @@ public class ClaimService {
             throw e;
         }
         return claim;
+    }
+
+//    public SpareParts getSpareParts(String id) throws Exception {
+//        SpareParts spareParts;
+//        try {
+//            spareParts = claimRepository.getSparePart(id);
+//        } catch (EmptyResultDataAccessException ere) {
+//            throw ere;
+//        } catch (Exception e) {
+//            throw e;
+//        }
+//        return spareParts;
+//    }
+
+    public List<SpareParts> getSpareParts(String id) throws Exception {
+        List<SpareParts> sparePartBeanList;
+        try {
+            sparePartBeanList = claimRepository.getSparePartList(id);
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return sparePartBeanList;
     }
 
     public Supplier getSupplierDetails(String supplierId) throws Exception {

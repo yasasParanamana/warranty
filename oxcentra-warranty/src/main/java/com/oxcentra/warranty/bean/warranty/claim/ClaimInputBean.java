@@ -99,6 +99,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<FailureArea> failureAreaActList;
     private List<RepairType> repairTypeActList;
     private List<Supplier> supplierActList;
+    private List<SpareParts> sparePartList;
 
 
     /*-------file upload-----------*/
