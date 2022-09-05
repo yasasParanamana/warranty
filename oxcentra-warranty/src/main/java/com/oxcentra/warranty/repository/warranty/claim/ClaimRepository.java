@@ -309,28 +309,35 @@ public class ClaimRepository {
                     try {
                         RegWarrantyAttachments newAttachments = new RegWarrantyAttachments();
 
-                        /*System.out.println("File Index>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.indexOf(',')));
-                        System.out.println("File Base64 String>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+file);
-                        System.out.println("Substring Result>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(file.substring(file.indexOf(',')+1,file.length())));
+                        String fileName = "";
+                        String fileSize = "";
+                        String fileType = "";
 
-*/
-//                      newAttachments.setAttachmentFile(file.substring(file.indexOf(',')+1,file.length()));
+                        String[] parts = file.split("FileDetails");
+                        System.out.println(parts.toString());
+                        String imageFile = parts[0];
+                        System.out.println(imageFile);
+                        String othersDetails = parts[1];
+                        System.out.println(othersDetails);
 
-                        String values = (file);
+                        String[] imageOtherDetails = othersDetails.split("\\|");
+
+                        fileName = imageOtherDetails[0];
+                        fileSize = imageOtherDetails[1];
+                        fileType = imageOtherDetails[2];
+
+                        String values = (imageFile);
                         byte[] buff = values.getBytes();
                         Blob blob = new SerialBlob(buff);
 
                         newAttachments.setAttachmentFile(blob);
                         newAttachments.setWarrantyId(claimInputBean.getId());
 
-//                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+newattach.getAttachmentFile());
-
                         System.out.println(claimInputBean.getCreatedTime());
 
                         newAttachments.setCreatedDate(claimInputBean.getCreatedTime());
-                        newAttachments.setFileFormat("jpg");
-                        newAttachments.setFileName("Sample");
-
+                        newAttachments.setFileFormat(fileType);
+                        newAttachments.setFileName(fileName);
 
                         int valueA = 0;
                         valueA = jdbcTemplate.update(SQL_INSERT_CLAIM_ATTACHMENT,

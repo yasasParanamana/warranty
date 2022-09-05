@@ -26,7 +26,7 @@
                 </button>
             </div>
             <form:form class="form-horizontal sm" id="addClaimForm" modelAttribute="claim" method="post"
-                       name="addClaimForm" enctype="multipart/form-data" >
+                       name="addClaimForm" enctype="multipart/form-data">
 
                 <div class="modal-body">
                     <div class="form-group"><span id="responseMsgAdd"></span>
@@ -137,7 +137,7 @@
                             <form:input path="dealership" name="dealership" type="text"
                                         class="form-control form-control-sm" id="adddealership" maxlength="10"
                                         placeholder="Dealership" readonly="true" value="${claim.dealership}"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
 
                         <div class="col-lg-4">
@@ -157,9 +157,9 @@
                             <label for="description">Description</label>
 
                             <form:textarea path="description" name="description" type="text"
-                                        class="form-control form-control-sm" id="adddescription" maxlength="50"
-                                        placeholder="Description"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                           class="form-control form-control-sm" id="adddescription" maxlength="50"
+                                           placeholder="Description"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                     </div>
 
@@ -170,7 +170,7 @@
                             <form:input path="sparePartRequired1" name="sparePartRequired1" type="text"
                                         class="form-control form-control-sm" id="addsparePartRequired1" maxlength="10"
                                         placeholder="Spare Part Required"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                         <div class="form-group col-md-1">
                             <label for="quantity1">Quantity</label>
@@ -178,7 +178,7 @@
                             <form:input path="quantity1" name="quantity1" type="text"
                                         class="form-control form-control-sm" id="addquantity1" maxlength="10"
                                         placeholder="Quantity"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                     </div>
                     <div class="form-row">
@@ -188,7 +188,7 @@
                             <form:input path="sparePartRequired2" name="sparePartRequired2" type="text"
                                         class="form-control form-control-sm" id="addsparePartRequired2" maxlength="10"
                                         placeholder="Spare Part Required"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                         <div class="form-group col-md-1">
                             <label for="quantity2">Quantity</label>
@@ -196,16 +196,19 @@
                             <form:input path="quantity2" name="quantity2" type="text"
                                         class="form-control form-control-sm" id="addquantity2" maxlength="10"
                                         placeholder="Quantity"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"  />
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                     </div>
-                    <%--Auto Increment--%>
+                        <%--Auto Increment--%>
                     <div id="newSparePart">
 
                     </div>
 
                     <div class="form-row">
-                        <button id="addNewSparePart" type="button" class="btn btn-default"  cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Click Here to Add New Spare Part</button>
+                        <button id="addNewSparePart" type="button" class="btn btn-default" cssClass="sendbtn"
+                                cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Click Here to Add
+                            New Spare Part
+                        </button>
                     </div>
 
                     <hr>
@@ -252,40 +255,45 @@
                         </div>
                     </div>
                     <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label for="repairDescription">Description Of Repair</label>
+                        <div class="form-group col-md-12">
+                            <label for="repairDescription">Description Of Repair</label>
 
-                                <form:textarea path="repairDescription" name="repairDescription" type="text"
-                                               class="form-control form-control-sm" id="addrepairDescription" maxlength="50"
-                                               placeholder="Description Of Repair"
-                                               onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
-                            </div>
+                            <form:textarea path="repairDescription" name="repairDescription" type="text"
+                                           class="form-control form-control-sm" id="addrepairDescription" maxlength="50"
+                                           placeholder="Description Of Repair"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                        </div>
                     </div>
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
 
-<%--                            <div class="input-group mb-3">--%>
-<%--                                <div class="input-group-prepend">--%>
-<%--                                    <span class="input-group-text">Upload</span>--%>
-<%--                                </div>--%>
-<%--                                <div class="custom-file">--%>
-<%--                                    <input path="filesUpload" type="file" class="custom-file-input" id="inputGroupFile01" accept="jpg" multiple="multiple" onchange="getNewFileInput(this)">--%>
-<%--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-    
-                            <div  class="multiple-file" id="multiple_file_div">
+                                <%--                            <div class="input-group mb-3">--%>
+                                <%--                                <div class="input-group-prepend">--%>
+                                <%--                                    <span class="input-group-text">Upload</span>--%>
+                                <%--                                </div>--%>
+                                <%--                                <div class="custom-file">--%>
+                                <%--                                    <input path="filesUpload" type="file" class="custom-file-input" id="inputGroupFile01" accept="jpg" multiple="multiple" onchange="getNewFileInput(this)">--%>
+                                <%--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--%>
+                                <%--                                </div>--%>
+                                <%--                            </div>--%>
+
+                            <div class="multiple-file" id="multiple_file_div">
                                 <div class="fileuploadBtn" id="file_hide_1">
                                     <label id="filePin">
                                         <span class="glyphicon glyphicon-paperclip"></span>
-                                        <form:input path="filesUpload" type = "file"   name="filesUpload" multiple="multiple" id="file-upload-1" accept="jpg" onchange="getNewFileInput(this)"/>
+                                        <form:input path="filesUpload" type="file" name="filesUpload"
+                                                    multiple="multiple" id="file-upload-1" accept="jpg"
+                                                    onchange="getNewFileInput(this)"/>
                                     </label>
                                 </div>
                             </div>
 
-                            <div  style="display: none"  id="file-upload-hide"></div>
-                            <button id="Attachment_Reset_f3" type="button" class="btn btn-default" onclick="resetReplyDataAttach()" cssClass="sendbtn" cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset</button>
+                            <div style="display: none" id="file-upload-hide"></div>
+                            <button id="Attachment_Reset_f3" type="button" class="btn btn-default"
+                                    onclick="resetReplyDataAttach()" cssClass="sendbtn"
+                                    cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset
+                            </button>
                             <div class="uploadFileNameList"></div>
                         </div>
                     </div>
@@ -359,23 +367,23 @@
 
 <script>
 
-    $(document).ready(function() {
-        var max_fields = 10;
-        var wrapper = $("#newSparePart");
-        var add_button = $("#addNewSparePart");
+    $(document).ready(function () {
+        let max_fields = 10;
+        let wrapper = $("#newSparePart");
+        let add_button = $("#addNewSparePart");
 
-        var x = 1;
-        $(add_button).click(function(e) {
+        let x = 1;
+        $(add_button).click(function (e) {
             e.preventDefault();
             if (x < max_fields) {
                 x++;
-                $(wrapper).append('<div class="form-row" ><div class="form-group col-md-6"> <label>Spare Part Required</label><input type="text" class="form-control form-control-sm" maxlength="10" name="sparePartRequired[${x}]"  placeholder="Spare Part Required"/> </div> <div class="form-group col-md-1">     <label>Quantity</label><input type="text" name="quantityRequired[${x}]"" class="form-control form-control-sm" maxlength="10" placeholder="Quantity"/></div><a href="#" class="delete">Delete</a></div>');
+                $(wrapper).append('<div class="form-row" ><div class="form-group col-md-6"> <label>Spare Part Required</label><input type="text" class="form-control form-control-sm" maxlength="10" name="sparePartRequired[]"  placeholder="Spare Part Required"/> </div> <div class="form-group col-md-1"><label>Quantity</label><input type="text" name="quantityRequired[]"" class="form-control form-control-sm" maxlength="10" placeholder="Quantity"/></div><a href="#" class="delete">Delete</a></div>');
             } else {
                 alert('You Reached the limits')
             }
         });
 
-        $(wrapper).on("click", ".delete", function(e) {
+        $(wrapper).on("click", ".delete", function (e) {
             e.preventDefault();
             $(this).parent('div').remove();
             x--;
@@ -394,16 +402,16 @@
     });
 
     function setPurchasingDate() {
-        var date = new Date();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
+        let date = new Date();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
         if (day < 10) {
             day = '0' + day;
         }
         if (month < 10) {
             month = '0' + month;
         }
-        var today = (date.getFullYear() + "-" + month + "-" + day);
+        let today = (date.getFullYear() + "-" + month + "-" + day);
         $('#addpurchasingDate').val(today);
     }
 
@@ -412,7 +420,7 @@
         $('#responseMsgAdd').hide();
     }
 
-    function addNewSparePart(){
+    function addNewSparePart() {
 
 
     }
@@ -462,42 +470,42 @@
         $('#responseMsgAdd').hide();
     }
 
-    var file_Location_count = 1;
+    let file_Location_count = 1;
 
-    function getNewFileInput(fileUpload){
-        var file = fileUpload.files;
+    function getNewFileInput(fileUpload) {
+        let file = fileUpload.files;
 
         if (file.length > 0) {
-//                    $('.uploadFileNameList').empty();
-//                        $('.uploadFileNameList').show();
+
+            /* $('.uploadFileNameList').empty();
+            $('.uploadFileNameList').show();*/
 
             $('#file-upload-hide').empty();
 
-            for (var i = 0; i < file.length; i++) {
+            for (let i = 0; i < file.length; i++) {
 
                 Base64Convert(file[i]);
 
-                // console.log(file[i].toBase64)
-
-                $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;width: auto;padding: 2px 7px 1px 7px;float: left;margin: 0 3px;border-radius: 15px;cursor: pointer;background: #607D8B;color: white;border: 0px solid white;" href="'+URL.createObjectURL(file[i])+'" download="'+ file[i].name +'" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+                $('.uploadFileNameList').append('<a class="ufileName" style="text-decoration: none;width: auto;padding: 2px 7px 1px 7px;float: left;margin: 0 3px;border-radius: 15px;cursor: pointer;background: #607D8B;color: white;border: 0px solid white;" href="' + URL.createObjectURL(file[i]) + '" download="' + file[i].name + '" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
             }
         }
-        $('#file_hide_'+file_Location_count).hide();
+        $('#file_hide_' + file_Location_count).hide();
 
-        file_Location_count++;//increament file location
+        /*increment file location*/
+        file_Location_count++;
 
-        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_"+file_Location_count+"'>"
-            +"<label id='filePin'>"
-            +"<span class='glyphicon glyphicon-paperclip'></span>"
-            +"<input type='file' name='filesUpload'  accept='jpg' id='file-upload-"+file_Location_count+"' multiple='multiple' onchange='getNewFileInput(this)' >"
-            +"</label>"
-            +"</div>");
+        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_" + file_Location_count + "'>"
+            + "<label id='filePin'>"
+            + "<span class='glyphicon glyphicon-paperclip'></span>"
+            + "<input type='file' name='filesUpload'  accept='jpg' id='file-upload-" + file_Location_count + "' multiple='multiple' onchange='getNewFileInput(this)' >"
+            + "</label>"
+            + "</div>");
     }
 
     $(document).ready(function () {
 
         $('#file-upload').change(function () {
-            var file = $('#file-upload')[0].files;
+            let file = $('#file-upload')[0].files;
             if (file.length > 0) {
                 $('.uploadFileNameList').empty();
 //                        $('.uploadFileNameList').show();
@@ -511,12 +519,12 @@
     function resetReplyDataAttach() {
         file_Location_count = 1;
         $('#multiple_file_div').html("");
-        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_"+file_Location_count+"'>"
-            +"<label id='filePin'>"
-            +"<span class='glyphicon glyphicon-paperclip'></span>"
-            +"<input type='file' name='filesUpload'  accept='jpg' id='file-upload-"+file_Location_count+"' multiple='multiple' onchange='getNewFileInput(this)' >"
-            +"</label>"
-            +"</div>");
+        $('#multiple_file_div').append("<div class='fileuploadBtn' id='file_hide_" + file_Location_count + "'>"
+            + "<label id='filePin'>"
+            + "<span class='glyphicon glyphicon-paperclip'></span>"
+            + "<input type='file' name='filesUpload'  accept='jpg' id='file-upload-" + file_Location_count + "' multiple='multiple' onchange='getNewFileInput(this)' >"
+            + "</label>"
+            + "</div>");
         $('.uploadFileNameList').empty();
         $("#messageError").empty();
     }
@@ -528,14 +536,16 @@
 
         reader.onload = function () {
 
-            console.log(reader.result);//base64encoded string
+            /*base64encoded string*/
+            console.log(reader.result);
 
             const readerResult = reader.result;
             const resultSplit = readerResult.substring(readerResult.indexOf(',') + 1);
+            const fileDetails = resultSplit + "FileDetails" + file.name + "|" + file.size + "|" + file.type;
 
-            console.log('Sub String Data',resultSplit)
+            console.log('Sub String Data', fileDetails)
 
-            $('#file-upload-hide').append('<input type="hidden" name="file" value="'+resultSplit+'"/>')
+            $('#file-upload-hide').append('<input type="hidden" name="file" value="' + fileDetails + '"/>')
 
         };
         reader.onerror = function (error) {
