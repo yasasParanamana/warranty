@@ -277,10 +277,13 @@ public class ClaimRepository {
 
             /*insert Spare Parts*/
 
-            int valueParts = 0;
+
             //insert in to reg_spare_part
 
             if (claimInputBean.getSpareParts().size() > 0) {
+
+                int valueParts = 0;
+
                 for (SpareParts spareParts : claimInputBean.getSpareParts()) {
 
                     valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
@@ -290,12 +293,10 @@ public class ClaimRepository {
                     );
 
                 }
+                if (valueParts != 1) {
+                    message = MessageVarList.COMMON_ERROR_PROCESS;
+                }
             }
-
-            if (valueParts != 1) {
-                message = MessageVarList.COMMON_ERROR_PROCESS;
-            }
-
 
            /* insert Attachments
             insert in to reg_warranty_attachments*/
