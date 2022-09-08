@@ -21,14 +21,14 @@
             </div>
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
                        name="updateClaimForm">
+                <div class="form-group"><span style="alignment: center" id="responseMsgUpdate"></span></div>
+                <div class="form-group row" hidden="true">
+                    <div class="col-sm-8">
+                        <form:input path="id" name="id" type="text" id="editId"/>
+                    </div>
+                </div>
 
                 <div class="modal-body" id="firstTab">
-                    <div class="form-group"><span id="responseMsgUpdate"></span></div>
-                    <div class="form-group row" hidden="true">
-                        <div class="col-sm-8">
-                            <form:input path="id" name="id" type="text" id="editId"/>
-                        </div>
-                    </div>
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -131,7 +131,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="sparePartList" id ="updateSparePartList"></div>
+                            <div class="sparePartList" id="updateSparePartList"></div>
                         </div>
                     </div>
 
@@ -166,6 +166,7 @@
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
+                            <div class="updatePdfFiletList" id="updatePdfFiletList"></div>
                         </div>
                     </div>
 
@@ -201,10 +202,7 @@
                             <label id="editCostDescription"></label>
                         </div>
                     </div>
-
-
                     <br/>
-
                     <div class="form-group">
                         <span class="text-danger">Required fields are marked by the '*'</span>
                     </div>
@@ -224,7 +222,6 @@
                 </div>
 
                 <div class="modal-body" id="secondTab">
-
                     <h5>Contact Details</h5>
                     <div class="card-deck">
                         <div class="card">
@@ -340,7 +337,7 @@
                             </button>
                         </c:if>
                         <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
+                            <button id="approveBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
                                 Send E-mail to Supplier
                             </button>
                         </c:if>
@@ -362,11 +359,10 @@
 </div>
 <script>
 
-    function previous(){
+    function previous() {
         $('#secondTab').hide();
         $('#firstTab').show();
     }
-
 
     function setSupplierDetails() {
         const supplierId = $('#supplier').val();
@@ -397,7 +393,8 @@
 
     function approve() {
 
-        var isInHouse = $("#isInHouse").is(":checked");
+        let isInHouse = $("#isInHouse").is(":checked");
+
         alert(isInHouse);
 
         if (isInHouse === true) {
@@ -405,15 +402,48 @@
             $('#secondTab').hide();
             $('#firstTab').show();
 
+            $('#responseMsgUpdate').empty();
+
+            $.ajax({
+                type: 'POST',
+                url: '${pageContext.request.contextPath}/approveWarrantyClaims.json',
+                data: $('form[name=updateClaimForm]').serialize(),
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (res) {
+                    if (res.flag) { //success
+                        $('#responseMsgUpdate').show();
+                        $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
+                        searchStart();
+                    } else {
+                        $('#responseMsgUpdate').show();
+                        $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
+                    }
+                },
+                error: function (jqXHR) {
+                    window.location = "${pageContext.request.contextPath}/logout.htm";
+                }
+            });
+
         } else {
 
             $('#secondTab').show();
             $('#firstTab').hide();
         }
 
+
+    }
+
+    function sendEmail() {
+
+        $('#responseMsgUpdate').empty();
+
         $.ajax({
             type: 'POST',
-            url: '${pageContext.request.contextPath}/approveWarrantyClaims.json',
+            url: '${pageContext.request.contextPath}/sendEmailWarrantyClaims.json',
             data: $('form[name=updateClaimForm]').serialize(),
             beforeSend: function (xhr) {
                 if (header && token) {
@@ -437,6 +467,9 @@
     }
 
     function reject() {
+
+        $('#responseMsgUpdate').empty();
+
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/rejectWarrantyClaims.json',
@@ -466,5 +499,28 @@
         $('#firstTab').show();
         $('#secondTab').hide();
     });
+
+    function downloadFile(contentType) {
+
+        const arr = contentType.split(',');
+
+        contentType = arr[0];
+        let base64Data = arr[1];
+        let fileName = arr[2];
+
+       console.log(contentType);
+       console.log(base64Data);
+       console.log(fileName);
+
+        alert(contentType);
+        alert(base64Data);
+        alert(fileName);
+
+        const linkSource = `data:${contentType};base64,${base64Data}`;
+        const downloadFileLink = document.createElement("a");
+        downloadFileLink.href = linkSource;
+        downloadFileLink.download = fileName;
+        downloadFileLink.click();
+    }
 
 </script>

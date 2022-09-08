@@ -1,6 +1,7 @@
 package com.oxcentra.warranty.controller.warrenty.claim;
 
 import com.oxcentra.warranty.annotation.accesscontrol.AccessControl;
+import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.sysconfigmgt.failurearea.FailureArea;
@@ -14,6 +15,7 @@ import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
+import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.service.common.CommonService;
 import com.oxcentra.warranty.service.warranty.claim.ClaimService;
@@ -157,6 +159,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM GET");
         Claim claim= new Claim();
         SpareParts spareParts = new SpareParts();
+        WarrantyAttachments warrantyAttachments = new WarrantyAttachments();
         try {
             if (id != null && !id.trim().isEmpty()) {
                 System.out.println("WARRANTY ID : " +id);
@@ -165,6 +168,13 @@ public class ClaimController implements RequestBeanValidation<Object> {
                 //get model
                 List<SpareParts> sparePartsList = claimService.getSpareParts(id);
                 claim.setSparePartList(sparePartsList);
+
+                //get pdf files
+                List<WarrantyAttachments> attachmentsPDFList = claimService.getPdfFiles(id);
+                claim.setPdfFileList(attachmentsPDFList);
+
+                //get jpeg
+
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
@@ -274,6 +284,26 @@ public class ClaimController implements RequestBeanValidation<Object> {
         return responseBean;
     }
 
+    @PostMapping(value = "/sendEmailWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    public @ResponseBody
+    ResponseBean sendEmailClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM SEND EMAIL");
+        ResponseBean responseBean = null;
+        try {
+            String message = claimService.SendEmail(claimInputBean, locale);
+            if (message.isEmpty()) {
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+            } else {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+            }
+        } catch (Exception e) {
+            logger.error("Exception  :  ", e);
+            responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
+        }
+        return responseBean;
+    }
+
     @ModelAttribute
     public void getClaimBean(org.springframework.ui.Model map) throws Exception {
         ClaimInputBean claimInputBean = new ClaimInputBean();
@@ -293,6 +323,9 @@ public class ClaimController implements RequestBeanValidation<Object> {
         //Supplier List
         List<Supplier> SupplierActList = commonRepository.getActiveSupplierList(StatusVarList.STATUS_DFLT_ACT);
 
+        //Cost Type
+        List<CommonKeyVal> costTypeList = claimService.getCostTypeList();
+
         //status Count
 
         //set values to claimInputBean bean
@@ -306,7 +339,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         claimInputBean.setFailureAreaActList(failureAreaActList);
         claimInputBean.setRepairTypeActList(RepairTypeActList);
         claimInputBean.setSupplierActList(SupplierActList);
-
+        claimInputBean.setCostTypeList(costTypeList);
         //set privileges
         this.applyUserPrivileges(claimInputBean);
         //add values to model map

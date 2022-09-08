@@ -1,20 +1,17 @@
 package com.oxcentra.warranty.repository.warranty.claim;
 
+import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
-import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
-import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
-import com.oxcentra.warranty.mapping.usermgt.Task;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimValueBean;
 import com.oxcentra.warranty.mapping.warranty.Claim;
-import com.oxcentra.warranty.mapping.warranty.RegWarrantyAttachments;
+import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
 import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -27,12 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.ConstraintViolationException;
-import java.io.File;
-import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,7 +56,8 @@ public class ClaimRepository {
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
-    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
+    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
+    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
             "t.id," +
             "t.chassis," +
@@ -92,6 +91,7 @@ public class ClaimRepository {
             "where t.id = ? ";
 
     private final String SQL_GET_LIST_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.warranty_id = ? ";
+    private final String SQL_GET_LIST_ATTACHMENT_PDF = "select t.attachment_id,t.warranty_id,t.file_name,t.file_format,CONVERT(t.attachment_file USING UTF8) as attachmentFile,t.createdtime from reg_warranty_attachments t  where t.warranty_id = ? ";
     private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
 
     @Transactional(readOnly = true)
@@ -307,7 +307,7 @@ public class ClaimRepository {
                 for (String file : claimInputBean.getFile()) {
 
                     try {
-                        RegWarrantyAttachments newAttachments = new RegWarrantyAttachments();
+                        WarrantyAttachments newAttachments = new WarrantyAttachments();
 
                         String fileName = "";
                         String fileSize = "";
@@ -663,7 +663,11 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_APPROVE", claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    claimInputBean.getIsInHouse(),
+                    claimInputBean.getLastUpdatedUser(),
+                    claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -680,7 +684,34 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM, "WAR_REJECTED_HO", claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    claimInputBean.getIsInHouse(),
+                    claimInputBean.getLastUpdatedUser(),
+                    claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getId());
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+        } catch (DuplicateKeyException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw e;
+        }
+        return message;
+    }
+
+   @Transactional
+    public String sendEmail(ClaimInputBean claimInputBean) throws Exception {
+        String message = "";
+        try {
+            int value = 0;
+            value = jdbcTemplate.update(SQL_EMAIL_SEND_UPDATE_CLAIM,
+                    claimInputBean.getStatus(),
+                    claimInputBean.getSupplier(),
+                    claimInputBean.getIsInHouse(),
+                    claimInputBean.getLastUpdatedUser(),
+                    claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -771,4 +802,57 @@ public class ClaimRepository {
         }
         return sparePartsBeanList;
     }
+
+    @Transactional(readOnly = true)
+    public List<WarrantyAttachments> getPdfFileList(String warrantyId) throws Exception {
+        List<WarrantyAttachments> warrantyAttachmentsBeanList;
+        try {
+            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId);
+            warrantyAttachmentsBeanList = warrantyAttachmentsList.stream().map((record) -> {
+                WarrantyAttachments claimValueBean = new WarrantyAttachments();
+                claimValueBean.setId(new BigDecimal(record.get("attachment_id").toString()));
+                claimValueBean.setWarrantyId(record.get("warranty_id").toString());
+                claimValueBean.setFileName(record.get("file_name").toString());
+                claimValueBean.setFileFormat(record.get("file_format").toString());
+
+
+                String base64value = (record.get("attachmentFile").toString());
+
+
+
+//                byte[] decodedBytes = Base64.getDecoder().decode(base64value);
+//                String decodedString = new String(decodedBytes);
+
+                System.out.println("base64value" + base64value);
+                claimValueBean.setBase64value(base64value);
+
+//                try {
+//                    byte[] buff = base64value.getBytes();
+//                    Blob blob = new SerialBlob(buff);
+//                    System.out.println("Blob" + base64value);
+//
+//                    byte[] bdata = blob.getBytes(1, (int) base64value.length());
+//                    String s = new String(bdata);
+//
+//                    System.out.println("String Value" + s);
+////                    claimValueBean.setBase64value(s);
+//
+//                    claimValueBean.setAttachmentFile(blob);
+//
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+
+                return claimValueBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            warrantyAttachmentsBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return warrantyAttachmentsBeanList;
+    }
+
+
 }

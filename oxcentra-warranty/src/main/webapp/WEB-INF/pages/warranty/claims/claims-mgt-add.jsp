@@ -302,29 +302,37 @@
                     <h5>Cost Of Estimation</h5>
 
                     <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label for="costType">Type Of Cost</label>
 
-                            <form:input path="costType" name="costType" type="text"
-                                        class="form-control form-control-sm" id="addcostType" maxlength="50"
-                                        placeholder="Type Of Cost"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
-                        </div>
                         <div class="form-group col-md-3">
+                            <label for="repairType">Type of Cost</label>
+                            <form:select path="costType" name="costType"
+                                         class="form-control form-control-sm"
+                                         id="addCostType"
+                                         onchange="setOtherCostDeatils()" >
+                                <option selected value="">Select Type of Cost</option>
+                                <c:forEach items="${claim.costTypeList}" var="costType">
+                                    <form:option
+                                            value="${costType.key}">${costType.value}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+
+                        <div class="form-group col-md-3" id="addHoursDiv">
                             <label for="hours">Hours</label>
                             <form:input path="hours" name="hours" type="text"
                                         class="form-control form-control-sm" id="addhours" maxlength="50"
                                         placeholder="Hours"
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3" id="addLabourRateDiv">
                             <label for="labourRate">Labour Rate</label>
                             <form:input path="labourRate" name="labourRate" type="text"
                                         class="form-control form-control-sm" id="addlabourRate" maxlength="50"
                                         placeholder="Labour Rate"
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3" id="addTotalCostDiv">
                             <label for="totalCost">Total Cost</label>
                             <form:input path="totalCost" name="totalCost" type="text"
                                         class="form-control form-control-sm" id="addtotalCost" maxlength="10"
@@ -339,7 +347,9 @@
                             <form:textarea path="costDescription" name="costDescription" type="text"
                                            class="form-control form-control-sm" id="addcostDescription" maxlength="50"
                                            placeholder="Description Of Cost"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
+                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
+                            />
                         </div>
                     </div>
 
@@ -368,6 +378,44 @@
 <script>
 
     $(document).ready(function () {
+        $('#addHoursDiv').hide();
+        $('#addLabourRateDiv').hide();
+        $('#addTotalCostDiv').hide();
+
+    });
+
+    function setOtherCostDeatils(){
+
+        const costType = $('#addCostType').val();
+
+        if(costType === 'Labour'){
+
+            $('#addHoursDiv').show();
+            $('#addLabourRateDiv').show();
+            $('#addTotalCostDiv').show();
+
+        }else if (costType === 'Materials' ){
+            $('#addHoursDiv').hide();
+            $('#addLabourRateDiv').hide();
+            $('#addTotalCostDiv').show();
+
+        }else if(costType === 'Sublet'){
+
+            $('#addHoursDiv').hide();
+            $('#addLabourRateDiv').hide();
+            $('#addTotalCostDiv').show();
+        }else if(costType === ''){
+
+            $('#addHoursDiv').hide();
+            $('#addLabourRateDiv').hide();
+            $('#addTotalCostDiv').hide();
+        }
+
+
+    }
+
+
+    $(document).ready(function () {
         let max_fields = 10;
         let wrapper = $("#newSparePart");
         let add_button = $("#addNewSparePart");
@@ -391,6 +439,7 @@
     });
 
     $(document).ready(function () {
+
         $('#addpurchasingDate').datepicker({
             format: 'yyyy-mm-dd',
             endDate: '+0d',

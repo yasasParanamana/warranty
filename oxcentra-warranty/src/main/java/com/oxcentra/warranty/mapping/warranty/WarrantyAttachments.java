@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Scope("prototype")
-public class RegWarrantyAttachments {
+public class WarrantyAttachments {
 
     private BigDecimal id;
     private String warrantyId;
@@ -23,6 +23,7 @@ public class RegWarrantyAttachments {
     private String fileFormat;
     private Blob attachmentFile;
     private Date createdDate;
+    private String base64value;
 
 
 }

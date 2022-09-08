@@ -258,16 +258,28 @@
                     $('#editDealershipCaravanModel').html(data.model);
 
                     $("#updateSparePartList").empty();
+                    $("#updatePdfFiletList").empty();
 
-                    let sparePartLIst = data.sparePartList ;
-
+                    let sparePartLIst = data.sparePartList;
                     let table = $('<table/>').appendTo($('.sparePartList'));
 
-                    $(sparePartLIst).each(function(i, sparePartLIst) {
+                    $(sparePartLIst).each(function (i, sparePartLIst) {
                         $('<tr/>').appendTo(table)
-                            .append($('<td/>').text("Spare Part Required   "+ sparePartLIst.sparePartType))
-                            .append($('<td/>').text("                          "))
-                            .append($('<td/>').text("Quantity     "+sparePartLIst.qty));
+                            .append($('<td/>').text("Spare Part Required   " + sparePartLIst.sparePartType))
+                            .append($('<td/>').text("Quantity     " + sparePartLIst.qty));
+                    });
+
+                    let pdfFileList = data.pdfFileList;
+                    let tableAttachment = $('<table/>').appendTo($('#updatePdfFiletList'));
+
+                    $.each(pdfFileList, function (i, pdfFileList) {
+                        console.log(pdfFileList.attachmentFile);
+
+                        $('<tr/>').appendTo(tableAttachment)
+                            .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
+                            .append($('<td/>').text(pdfFileList.fileName))
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + pdfFileList.fileFormat +','+ pdfFileList.base64value+','+pdfFileList.fileName+'\')">Download</a>'));
+                        ;
                     });
 
                     $('#firstTab').show();
@@ -282,6 +294,8 @@
                 }
             });
         }
+
+
 
         function deleteClaimInit(keyval) {
             $('#deleteCodeCommon').val(keyval);
@@ -376,20 +390,20 @@
                     <!--end::Page Title-->
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <button type="button" class="btn btn-danger">
-                    Admin Pending Approvals <span class="badge badge-light">150</span>
-                </button>
+                    <button type="button" class="btn btn-danger">
+                        Admin Pending Approvals <span class="badge badge-light">150</span>
+                    </button>
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <button type="button" class="btn btn-success">
-                    Pending Dispatch Orders <span class="badge badge-light">100</span>
-                </button>
+                    <button type="button" class="btn btn-success">
+                        Pending Dispatch Orders <span class="badge badge-light">100</span>
+                    </button>
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <button type="button" class="btn btn-warning">
-                    Suppliers Pending Approvels <span class="badge badge-light">98</span>
-                </button>
-                    </div>
+                    <button type="button" class="btn btn-warning">
+                        Suppliers Pending Approvels <span class="badge badge-light">98</span>
+                    </button>
+                </div>
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
@@ -406,7 +420,7 @@
                     <div class="card-title">
                         <div class="row">
                             <div class="col-lg-9">
-                                <input id="searchId" name="searchId" type="text"  maxlength="50" class="form-control" >
+                                <input id="searchId" name="searchId" type="text" maxlength="50" class="form-control">
                             </div>
                             <div class="col-lg-3">
                                 <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">

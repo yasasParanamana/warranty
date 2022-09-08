@@ -64,4 +64,5 @@ public class Claim {
     private String dealershipEmail;
 
     private List<SpareParts> sparePartList;
+    private List<WarrantyAttachments> pdfFileList;
 }

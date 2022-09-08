@@ -1,5 +1,6 @@
 package com.oxcentra.warranty.bean.warranty.claim;
 
+import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.sysconfigmgt.failurearea.FailureArea;
 import com.oxcentra.warranty.bean.sysconfigmgt.failuretype.FailureType;
@@ -55,7 +56,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private String assignee;
     private String supplier;
     private String status;
-    private boolean isInHouse;
+    private String isInHouse;
     private String inHouseStatus;
     private BigDecimal claimOnSupplier;
     private String supplierUrlToken;
@@ -111,6 +112,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<String> file = new ArrayList<>();
 
     private List<SpareParts> spareParts = new ArrayList<>();
+    private List<CommonKeyVal> costTypeList;
 
 
 

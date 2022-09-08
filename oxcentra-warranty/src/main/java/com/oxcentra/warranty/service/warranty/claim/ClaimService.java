@@ -1,5 +1,6 @@
 package com.oxcentra.warranty.service.warranty.claim;
 
+import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
@@ -11,6 +12,7 @@ import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
+import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.repository.warranty.claim.ClaimRepository;
 import com.oxcentra.warranty.util.common.Common;
@@ -185,6 +187,18 @@ public class ClaimService {
             throw e;
         }
         return sparePartBeanList;
+    }
+
+    public List<WarrantyAttachments> getPdfFiles(String id) throws Exception {
+        List<WarrantyAttachments> attachmentBeanList;
+        try {
+            attachmentBeanList = claimRepository.getPdfFileList(id);
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return attachmentBeanList;
     }
 
     public Supplier getSupplierDetails(String supplierId) throws Exception {
@@ -583,18 +597,14 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                    /*claimInputBean.setLastUpdatedTime(currentDate);
-                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
+                claimInputBean.setStatus("WAR_APPROVE");
+                claimInputBean.setIsInHouse("1");
+                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(lastUpdatedUser);
 
-                //check the page dual auth enable or disable
-                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
-                    auditDescription = "Requested to approve claim (ID: " + claimInputBean.getId() + ")";
-                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
-                } else {
-                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") approved by " + sessionBean.getUsername();
-                    message = claimRepository.approveRequestClaim(claimInputBean);
-                }
-//                }
+                auditDescription = "Claim (ID: " + claimInputBean.getId() + ") approved by " + sessionBean.getUsername();
+                message = claimRepository.approveRequestClaim(claimInputBean);
+
             } else {
                 message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
                 auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
@@ -637,18 +647,14 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                    /*claimInputBean.setLastUpdatedTime(currentDate);
-                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
+                claimInputBean.setStatus("WAR_REJECTED_HO");
+                claimInputBean.setIsInHouse("1");
+                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(lastUpdatedUser);
 
-                //check the page dual auth enable or disable
-                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
-                    auditDescription = "Requested to reject claim (ID: " + claimInputBean.getId() + ")";
-                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
-                } else {
-                    auditDescription = "Claim (ID: " + claimInputBean.getId() + ") rejected by " + sessionBean.getUsername();
-                    message = claimRepository.rejectRequestClaim(claimInputBean);
-                }
-//                }
+                auditDescription = "Claim (ID: " + claimInputBean.getId() + ") rejected by " + sessionBean.getUsername();
+                message = claimRepository.rejectRequestClaim(claimInputBean);
+
             } else {
                 message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
                 auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
@@ -677,6 +683,79 @@ public class ClaimService {
             sessionBean.setAudittrace(audittrace);
         }
         return message;
+    }
+
+    public String SendEmail(ClaimInputBean claimInputBean, Locale locale) throws Exception {
+        String message = "";
+        String auditDescription = "";
+        Claim existingClaim = null;
+        try {
+            existingClaim = claimRepository.getClaim(claimInputBean.getId());
+            if (existingClaim != null) {
+
+                //set the other values to input bean
+                Date currentDate = commonRepository.getCurrentDate();
+                String lastUpdatedUser = sessionBean.getUsername();
+
+                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(lastUpdatedUser);
+                claimInputBean.setStatus("WAR_ACKNOW");
+                claimInputBean.setIsInHouse("0");
+
+                auditDescription = "Claim (ID: " + claimInputBean.getId() + ") acknowledge by " + sessionBean.getUsername();
+                message = claimRepository.sendEmail(claimInputBean);
+
+            } else {
+                message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
+            }
+        } catch (EmptyResultDataAccessException ere) {
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } catch (Exception e) {
+            message = MessageVarList.COMMON_ERROR_PROCESS;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } finally {
+            if (message.isEmpty()) {
+                //set the audit trace values
+                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                audittrace.setTask(TaskVarList.UPDATE_TASK);
+                audittrace.setDescription(auditDescription);
+                //create audit record
+                audittrace.setField(fields);
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
+            }
+            //set audit to session bean
+            sessionBean.setAudittrace(audittrace);
+        }
+        return message;
+    }
+
+    public List<CommonKeyVal> getCostTypeList() {
+
+        List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
+
+        CommonKeyVal costTYpe1 = new CommonKeyVal();
+        costTYpe1.setKey("Labour");
+        costTYpe1.setValue("Labour");
+        list.add(costTYpe1);
+
+        CommonKeyVal costTYpe2 = new CommonKeyVal();
+        costTYpe2.setKey("Materials");
+        costTYpe2.setValue("Materials");
+        list.add(costTYpe2);
+
+        CommonKeyVal costTYpe3 = new CommonKeyVal();
+        costTYpe3.setKey("Sublet");
+        costTYpe3.setValue("Sublet");
+        list.add(costTYpe3);
+
+        return list;
+
     }
 
 
