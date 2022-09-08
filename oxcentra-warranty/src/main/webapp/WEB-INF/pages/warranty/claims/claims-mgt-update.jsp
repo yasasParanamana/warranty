@@ -554,11 +554,10 @@
         let base64Data = arr[1];
         let fileName = arr[2];
 
-        const linkSource = `data:${contentType};base64,${base64Data}`;
-        const downloadFileLink = document.createElement("a");
-        downloadFileLink.href = linkSource;
-        downloadFileLink.download = fileName;
-        downloadFileLink.click();
+        let a = document.createElement("a");
+        a.href = "data:"+contentType+";base64," + base64Data;
+        a.download = fileName;
+        a.click();
     }
 
 </script>
