@@ -26,6 +26,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,6 +107,9 @@ public class ClaimService {
                 claimInputBean.setCreatedUser(user);
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(user);
+                claimInputBean.setStatus("WAR_PEND");
+                claimInputBean.setTotalCost(claimInputBean.getTotalCost());
+                claimInputBean.setPurchasingDate(claimInputBean.getPurchasingDate());
 
                 ArrayList<SpareParts> sparePartsList = new ArrayList<SpareParts>();
                 SpareParts spareParts1 = new SpareParts();
@@ -121,6 +125,55 @@ public class ClaimService {
                     spareParts2.setQty(claimInputBean.getQuantity2());
                     sparePartsList.add(spareParts2);
                 }
+                SpareParts spareParts3 = new SpareParts();
+                if(claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()){
+                    spareParts3.setSparePartType(claimInputBean.getSparePartRequired3());
+                    spareParts3.setQty(claimInputBean.getQuantity3());
+                    sparePartsList.add(spareParts3);
+                }
+                SpareParts spareParts4 = new SpareParts();
+                if(claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()){
+                    spareParts4.setSparePartType(claimInputBean.getSparePartRequired4());
+                    spareParts4.setQty(claimInputBean.getQuantity4());
+                    sparePartsList.add(spareParts4);
+                }
+                SpareParts spareParts5 = new SpareParts();
+                if(claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()){
+                    spareParts5.setSparePartType(claimInputBean.getSparePartRequired5());
+                    spareParts5.setQty(claimInputBean.getQuantity5());
+                    sparePartsList.add(spareParts5);
+                }
+                SpareParts spareParts6 = new SpareParts();
+                if(claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()){
+                    spareParts6.setSparePartType(claimInputBean.getSparePartRequired6());
+                    spareParts6.setQty(claimInputBean.getQuantity6());
+                    sparePartsList.add(spareParts6);
+                }
+                SpareParts spareParts7 = new SpareParts();
+                if(claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()){
+                    spareParts7.setSparePartType(claimInputBean.getSparePartRequired7());
+                    spareParts7.setQty(claimInputBean.getQuantity7());
+                    sparePartsList.add(spareParts7);
+                }
+                SpareParts spareParts8 = new SpareParts();
+                if(claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()){
+                    spareParts8.setSparePartType(claimInputBean.getSparePartRequired8());
+                    spareParts8.setQty(claimInputBean.getQuantity8());
+                    sparePartsList.add(spareParts8);
+                }
+                SpareParts spareParts9 = new SpareParts();
+                if(claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()){
+                    spareParts9.setSparePartType(claimInputBean.getSparePartRequired9());
+                    spareParts9.setQty(claimInputBean.getQuantity9());
+                    sparePartsList.add(spareParts9);
+                }
+                SpareParts spareParts10 = new SpareParts();
+                if(claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()){
+                    spareParts10.setSparePartType(claimInputBean.getSparePartRequired10());
+                    spareParts10.setQty(claimInputBean.getQuantity10());
+                    sparePartsList.add(spareParts10);
+                }
+
                 claimInputBean.setSpareParts(sparePartsList);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") added by " + sessionBean.getUsername();
@@ -597,7 +650,7 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                claimInputBean.setStatus("WAR_APPROVE");
+                claimInputBean.setStatus("WAR_IN_PURCHASE");
                 claimInputBean.setIsInHouse("1");
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
@@ -735,6 +788,56 @@ public class ClaimService {
         return message;
     }
 
+    public String notedRequestClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
+        String message = "";
+        String auditDescription = "";
+        Claim existingClaim = null;
+        try {
+            existingClaim = claimRepository.getClaim(claimInputBean.getId());
+            if (existingClaim != null) {
+
+                //set the other values to input bean
+                Date currentDate = commonRepository.getCurrentDate();
+                String lastUpdatedUser = sessionBean.getUsername();
+
+                claimInputBean.setStatus("WAR_NOTED");
+                claimInputBean.setIsInHouse("1");
+                claimInputBean.setLastUpdatedTime(currentDate);
+                claimInputBean.setLastUpdatedUser(lastUpdatedUser);
+
+                auditDescription = "Claim (ID: " + claimInputBean.getId() + ") noted by " + sessionBean.getUsername();
+                message = claimRepository.notedRequestClaim(claimInputBean);
+
+            } else {
+                message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
+            }
+        } catch (EmptyResultDataAccessException ere) {
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } catch (Exception e) {
+            message = MessageVarList.COMMON_ERROR_PROCESS;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } finally {
+            if (message.isEmpty()) {
+                //set the audit trace values
+                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                audittrace.setTask(TaskVarList.UPDATE_TASK);
+                audittrace.setDescription(auditDescription);
+                //create audit record
+                audittrace.setField(fields);
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
+            }
+            //set audit to session bean
+            sessionBean.setAudittrace(audittrace);
+        }
+        return message;
+    }
+
     public List<CommonKeyVal> getCostTypeList() {
 
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
@@ -753,6 +856,52 @@ public class ClaimService {
         costTYpe3.setKey("Sublet");
         costTYpe3.setValue("Sublet");
         list.add(costTYpe3);
+
+        return list;
+
+    }
+
+    public List<CommonKeyVal> getFailingAreaList() {
+
+        List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
+
+        CommonKeyVal failingArea1 = new CommonKeyVal();
+        failingArea1.setKey("FAILURE_1");
+        failingArea1.setValue("FAILURE_1");
+        list.add(failingArea1);
+
+        CommonKeyVal failingArea2 = new CommonKeyVal();
+        failingArea2.setKey("FAILURE_2");
+        failingArea2.setValue("FAILURE_2");
+        list.add(failingArea2);
+
+        CommonKeyVal failingArea3 = new CommonKeyVal();
+        failingArea3.setKey("FAILURE_3");
+        failingArea3.setValue("FAILURE_3");
+        list.add(failingArea3);
+
+        return list;
+
+    }
+
+    public List<CommonKeyVal> getPurchasingStatusList() {
+
+        List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
+
+        CommonKeyVal puchasingStatus1 = new CommonKeyVal();
+        puchasingStatus1.setKey("STOCK_VAN");
+        puchasingStatus1.setValue("stock van(Consignment)");
+        list.add(puchasingStatus1);
+
+        CommonKeyVal puchasingStatus2 = new CommonKeyVal();
+        puchasingStatus2.setKey("TO_BE_DELIVERED");
+        puchasingStatus2.setValue("to be delivered");
+        list.add(puchasingStatus2);
+
+        CommonKeyVal puchasingStatus3 = new CommonKeyVal();
+        puchasingStatus3.setKey("SOLD");
+        puchasingStatus3.setValue("Sold");
+        list.add(puchasingStatus3);
 
         return list;
 

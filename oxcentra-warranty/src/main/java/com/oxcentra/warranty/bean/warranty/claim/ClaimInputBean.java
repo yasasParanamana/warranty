@@ -78,10 +78,30 @@ public class ClaimInputBean extends DataTablesRequest {
 
     private String sparePartRequired1;
     private String sparePartRequired2;
+    private String sparePartRequired3;
+    private String sparePartRequired4;
+    private String sparePartRequired5;
+    private String sparePartRequired6;
+    private String sparePartRequired7;
+    private String sparePartRequired8;
+    private String sparePartRequired9;
+    private String sparePartRequired10;
     private String quantity1;
     private String quantity2;
+    private String quantity3;
+    private String quantity4;
+    private String quantity5;
+    private String quantity6;
+    private String quantity7;
+    private String quantity8;
+    private String quantity9;
+    private String quantity10;
+
     private String[] sparePartRequired;
     private String[] quantityRequired;
+
+    private String failingArea;
+    private String purchasingStatus;
 
     /*-------for access control-----------*/
     private boolean vadd;
@@ -113,6 +133,8 @@ public class ClaimInputBean extends DataTablesRequest {
 
     private List<SpareParts> spareParts = new ArrayList<>();
     private List<CommonKeyVal> costTypeList;
+    private List<CommonKeyVal> failingAreaList;
+    private List<CommonKeyVal> purchasingStatusList;
 
 
 

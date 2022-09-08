@@ -106,7 +106,7 @@
                             <label id="editDealership"></label>
                         </div>
 
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3" >
                             <label for="editPurchasingDate">Purchasing Date</label>
                             <label>:</label>
                             <label id="editPurchasingDate"></label>
@@ -153,6 +153,20 @@
                             <label for="editRepairType">Type Of Repair</label>
                             <label>:</label>
                             <label id="editRepairType"></label>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="failingArea">Failing Area<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="failingArea" name="failingArea"
+                                         class="form-control form-control-sm"
+                                         id="editfailingArea" >
+                                <option selected value="">Select Failing Area</option>
+                                <c:forEach items="${claim.failingAreaList}" var="failingArea">
+                                    <form:option
+                                            value="${failingArea.key}">${failingArea.value}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                     </div>
                     <div class="form-row">
@@ -208,6 +222,11 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="modal-footer justify-content-end">
+                        <c:if test="${claim.vupdate}">
+                            <button id="approveBtn" type="button" onclick="noted()" class="btn btn-primary">
+                                Noted
+                            </button>
+                        </c:if>
                         <c:if test="${claim.vupdate}">
                             <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
                                 Approve
@@ -347,8 +366,6 @@
                             </button>
                         </c:if>
                     </div>
-
-
                 </div>
 
             </form:form>
@@ -365,6 +382,7 @@
     }
 
     function setSupplierDetails() {
+
         const supplierId = $('#supplier').val();
 
         $.ajax({
@@ -391,11 +409,39 @@
 
     }
 
+    function  noted(){
+
+        $('#responseMsgUpdate').empty();
+
+        $.ajax({
+            type: 'POST',
+            url: '${pageContext.request.contextPath}/notedWarrantyClaims.json',
+            data: $('form[name=updateClaimForm]').serialize(),
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (res) {
+                if (res.flag) { //success
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
+                    searchStart();
+                } else {
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
+                }
+            },
+            error: function (jqXHR) {
+                window.location = "${pageContext.request.contextPath}/logout.htm";
+            }
+        });
+
+    }
+
     function approve() {
 
         let isInHouse = $("#isInHouse").is(":checked");
-
-        alert(isInHouse);
 
         if (isInHouse === true) {
 
@@ -507,14 +553,6 @@
         contentType = arr[0];
         let base64Data = arr[1];
         let fileName = arr[2];
-
-       console.log(contentType);
-       console.log(base64Data);
-       console.log(fileName);
-
-        alert(contentType);
-        alert(base64Data);
-        alert(fileName);
 
         const linkSource = `data:${contentType};base64,${base64Data}`;
         const downloadFileLink = document.createElement("a");

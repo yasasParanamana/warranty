@@ -35,15 +35,17 @@
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="chassis">Chassis Number</label>
+                            <label for="chassis">Chassis Number<span
+                                    class="text-danger">*</span></label>
 
                             <form:input path="chassis" name="chassis" type="text"
                                         class="form-control form-control-sm" id="addchassisNumber" maxlength="50"
                                         placeholder="Chassis Number"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="model">Model</label>
+                            <label for="model">Model<span
+                                    class="text-danger">*</span></label>
                             <form:select path="model" name="model"
                                          class="form-control form-control-sm" id="addmodel">
                                 <option selected value="">Select Model</option>
@@ -61,53 +63,60 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="firstName">First Name</label>
+                            <label for="firstName">First Name<span
+                                    class="text-danger">*</span></label>
 
                             <form:input path="firstName" name="firstName" type="text"
                                         class="form-control form-control-sm" id="addfirstName" maxlength="20"
                                         placeholder="First Name"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z ]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="lastName">Last Name</label>
+                            <label for="lastName">Last Name<span
+                                    class="text-danger">*</span></label>
                             <form:input path="lastName" name="lastName" type="text"
                                         class="form-control form-control-sm" id="addlastName" maxlength="30"
                                         placeholder="Last Name"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z ]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="phone">Phone Number</label>
+                            <label for="phone">Phone Number<span
+                                    class="text-danger">*</span></label>
                             <form:input path="phone" name="phone" type="text"
                                         class="form-control form-control-sm" id="addphone" maxlength="15"
                                         placeholder="Phone Number"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9() ]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="email">Email</label>
+                            <label for="email">Email<span
+                                    class="text-danger">*</span></label>
                             <form:input path="email" name="email" type="text"
                                         class="form-control form-control-sm" id="addemail" maxlength="50"
                                         placeholder="Email"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="$(this).val($(this).val().replace(/[^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$]/g,''))"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="address">Address</label>
+                            <label for="address">Address<span
+                                    class="text-danger">*</span></label>
 
                             <form:input path="address" name="address" type="text"
                                         class="form-control form-control-sm" id="addaddress" maxlength="50"
                                         placeholder="Address"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="surburb">surburb</label>
+                            <label for="surburb">surburb<span
+                                    class="text-danger">*</span></label>
                             <form:input path="surburb" name="surburb" type="text"
                                         class="form-control form-control-sm" id="addsurburb" maxlength="20"
                                         placeholder="Surburb"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="state">State</label>
+                            <label for="state">State<span
+                                    class="text-danger">*</span></label>
                             <form:select path="state" name="state"
                                          class="form-control form-control-sm" id="addstate">
                                 <option selected value="">Select State</option>
@@ -119,11 +128,12 @@
                             </form:select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="postcode">Post Code</label>
+                            <label for="postcode">Post Code<span
+                                    class="text-danger">*</span></label>
                             <form:input path="postcode" name="postcode" type="text"
                                         class="form-control form-control-sm" id="addpostcode" maxlength="10"
                                         placeholder="Post Code"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                     </div>
 
@@ -132,16 +142,34 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="dealership">Dealership</label>
+                            <label for="dealership">Dealership<span
+                                    class="text-danger">*</span></label>
 
                             <form:input path="dealership" name="dealership" type="text"
                                         class="form-control form-control-sm" id="adddealership" maxlength="10"
                                         placeholder="Dealership" readonly="true" value="${claim.dealership}"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
 
-                        <div class="col-lg-4">
-                            <label>Purchasing Date:</label>
+                        <div class="form-group col-md-3">
+                            <label for="purchasingStatus">Purchasing Status<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="purchasingStatus" name="purchasingStatus"
+                                         class="form-control form-control-sm"
+                                         id="purchasingStatus"
+                                         onchange="setPurchaseDateDiv()" >
+                                <option selected value="">Select Purchasing Status</option>
+                                <c:forEach items="${claim.purchasingStatusList}" var="purchasingStatus">
+                                    <form:option
+                                            value="${purchasingStatus.key}">${purchasingStatus.value}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+
+                        <div class="col-lg-3" id="purchasingDateDiv">
+                            <label>Purchasing Date:<span
+                                    class="text-danger">*</span></label>
                             <div class="btn-group div-inline input-group input-group-sm input-append date">
                                 <input path="purchasingDate" name="purchasingDate" id="addpurchasingDate"
                                        class="form-control" readonly="true" onkeydown="return false"
@@ -153,13 +181,14 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="description">Description</label>
+                        <div class="form-group col-md-9">
+                            <label for="description">Description<span
+                                    class="text-danger">*</span></label>
 
                             <form:textarea path="description" name="description" type="text"
-                                           class="form-control form-control-sm" id="adddescription" maxlength="50"
-                                           placeholder="Description"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                           class="form-control form-control-sm" id="adddescription" maxlength="256"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
+
                         </div>
                     </div>
 
@@ -168,17 +197,17 @@
                             <label for="sparePartRequired1">Spare Part Required</label>
 
                             <form:input path="sparePartRequired1" name="sparePartRequired1" type="text"
-                                        class="form-control form-control-sm" id="addsparePartRequired1" maxlength="10"
+                                        class="form-control form-control-sm" id="addsparePartRequired1" maxlength="20"
                                         placeholder="Spare Part Required"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-1">
                             <label for="quantity1">Quantity</label>
 
                             <form:input path="quantity1" name="quantity1" type="text"
-                                        class="form-control form-control-sm" id="addquantity1" maxlength="10"
+                                        class="form-control form-control-sm" id="addquantity1" maxlength="3"
                                         placeholder="Quantity"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9]/g,''))"/>
                         </div>
                     </div>
                     <div class="form-row">
@@ -186,17 +215,17 @@
                             <label for="sparePartRequired2">Spare Part Required</label>
 
                             <form:input path="sparePartRequired2" name="sparePartRequired2" type="text"
-                                        class="form-control form-control-sm" id="addsparePartRequired2" maxlength="10"
+                                        class="form-control form-control-sm" id="addsparePartRequired2" maxlength="20"
                                         placeholder="Spare Part Required"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-1">
                             <label for="quantity2">Quantity</label>
 
                             <form:input path="quantity2" name="quantity2" type="text"
-                                        class="form-control form-control-sm" id="addquantity2" maxlength="10"
+                                        class="form-control form-control-sm" id="addquantity2" maxlength="3"
                                         placeholder="Quantity"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9]/g,''))"/>
                         </div>
                     </div>
                         <%--Auto Increment--%>
@@ -216,7 +245,8 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="failureType">Type Of Failure</label>
+                            <label for="failureType">Type Of Failure<span
+                                    class="text-danger">*</span></label>
                             <form:select path="failureType" name="failureType"
                                          class="form-control form-control-sm" id="addfailureType">
                                 <option selected value="">Select Failure Type</option>
@@ -229,7 +259,8 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="failureArea">Area Of Failuree</label>
+                            <label for="failureArea">Area Of Failuree<span
+                                    class="text-danger">*</span></label>
                             <form:select path="failureArea" name="failureArea"
                                          class="form-control form-control-sm" id="addfailureArea">
                                 <option selected value="">Select Failure Area</option>
@@ -242,7 +273,8 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="repairType">Type of Repair</label>
+                            <label for="repairType">Type of Repair<span
+                                    class="text-danger">*</span></label>
                             <form:select path="repairType" name="repairType"
                                          class="form-control form-control-sm" id="addrepairType">
                                 <option selected value="">Select Type of Repair</option>
@@ -255,29 +287,19 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="repairDescription">Description Of Repair</label>
+                        <div class="form-group col-md-9">
+                            <label for="repairDescription">Description Of Repair<span
+                                    class="text-danger">*</span></label>
 
                             <form:textarea path="repairDescription" name="repairDescription" type="text"
-                                           class="form-control form-control-sm" id="addrepairDescription" maxlength="50"
+                                           class="form-control form-control-sm" id="addrepairDescription" maxlength="256"
                                            placeholder="Description Of Repair"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                     </div>
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
-
-                                <%--                            <div class="input-group mb-3">--%>
-                                <%--                                <div class="input-group-prepend">--%>
-                                <%--                                    <span class="input-group-text">Upload</span>--%>
-                                <%--                                </div>--%>
-                                <%--                                <div class="custom-file">--%>
-                                <%--                                    <input path="filesUpload" type="file" class="custom-file-input" id="inputGroupFile01" accept="jpg" multiple="multiple" onchange="getNewFileInput(this)">--%>
-                                <%--                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>--%>
-                                <%--                                </div>--%>
-                                <%--                            </div>--%>
-
                             <div class="multiple-file" id="multiple_file_div">
                                 <div class="fileuploadBtn" id="file_hide_1">
                                     <label id="filePin">
@@ -304,7 +326,8 @@
                     <div class="form-row">
 
                         <div class="form-group col-md-3">
-                            <label for="repairType">Type of Cost</label>
+                            <label for="repairType">Type of Cost<span
+                                    class="text-danger">*</span></label>
                             <form:select path="costType" name="costType"
                                          class="form-control form-control-sm"
                                          id="addCostType"
@@ -319,33 +342,37 @@
                         </div>
 
                         <div class="form-group col-md-3" id="addHoursDiv">
-                            <label for="hours">Hours</label>
+                            <label for="hours">Hours<span
+                                    class="text-danger">*</span></label>
                             <form:input path="hours" name="hours" type="text"
-                                        class="form-control form-control-sm" id="addhours" maxlength="50"
+                                        class="form-control form-control-sm" id="addhours" maxlength="4"
                                         placeholder="Hours"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9.]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3" id="addLabourRateDiv">
-                            <label for="labourRate">Labour Rate</label>
+                            <label for="labourRate">Labour Rate<span
+                                    class="text-danger">*</span></label>
                             <form:input path="labourRate" name="labourRate" type="text"
-                                        class="form-control form-control-sm" id="addlabourRate" maxlength="50"
+                                        class="form-control form-control-sm" id="addlabourRate" maxlength="5"
                                         placeholder="Labour Rate"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3" id="addTotalCostDiv">
-                            <label for="totalCost">Total Cost</label>
+                            <label for="totalCost">Total Cost<span
+                                    class="text-danger">*</span></label>
                             <form:input path="totalCost" name="totalCost" type="text"
                                         class="form-control form-control-sm" id="addtotalCost" maxlength="10"
                                         placeholder="Total Cost"
-                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="costDescription">Description</label>
+                        <div class="form-group col-md-9">
+                            <label for="costDescription">Description<span
+                                    class="text-danger">*</span></label>
 
                             <form:textarea path="costDescription" name="costDescription" type="text"
-                                           class="form-control form-control-sm" id="addcostDescription" maxlength="50"
+                                           class="form-control form-control-sm" id="addcostDescription" maxlength="256"
                                            placeholder="Description Of Cost"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
                                            data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
@@ -410,22 +437,19 @@
             $('#addLabourRateDiv').hide();
             $('#addTotalCostDiv').hide();
         }
-
-
     }
-
 
     $(document).ready(function () {
         let max_fields = 10;
         let wrapper = $("#newSparePart");
         let add_button = $("#addNewSparePart");
 
-        let x = 1;
+        let x = 2;
         $(add_button).click(function (e) {
             e.preventDefault();
             if (x < max_fields) {
                 x++;
-                $(wrapper).append('<div class="form-row" ><div class="form-group col-md-6"> <label>Spare Part Required</label><input type="text" class="form-control form-control-sm" maxlength="10" name="sparePartRequired[]"  placeholder="Spare Part Required"/> </div> <div class="form-group col-md-1"><label>Quantity</label><input type="text" name="quantityRequired[]"" class="form-control form-control-sm" maxlength="10" placeholder="Quantity"/></div><a href="#" class="delete">Delete</a></div>');
+                $(wrapper).append('<div class="form-row" ><div class="form-group col-md-6"> <label>Spare Part Required</label><input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired'+x+'"  placeholder="Spare Part Required"/> </div> <div class="form-group col-md-1"><label>Quantity</label><input type="text" name="quantity'+x+'" class="form-control form-control-sm" maxlength="3" placeholder="Quantity"/></div><a href="#" class="delete">Delete</a></div>');
             } else {
                 alert('You Reached the limits')
             }
@@ -467,11 +491,6 @@
     function resetAdd() {
         $('form[name=addClaimForm]').trigger("reset");
         $('#responseMsgAdd').hide();
-    }
-
-    function addNewSparePart() {
-
-
     }
 
 
@@ -557,8 +576,7 @@
             let file = $('#file-upload')[0].files;
             if (file.length > 0) {
                 $('.uploadFileNameList').empty();
-//                        $('.uploadFileNameList').show();
-                for (var i = 0; i < file.length; i++) {
+                for (let i = 0; i < file.length; i++) {
                     $('.uploadFileNameList').append('<div class="ufileName"><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
                 }
             }
@@ -586,13 +604,10 @@
         reader.onload = function () {
 
             /*base64encoded string*/
-            console.log(reader.result);
 
             const readerResult = reader.result;
             const resultSplit = readerResult.substring(readerResult.indexOf(',') + 1);
             const fileDetails = resultSplit + "FileDetails" + file.name + "|" + file.size + "|" + file.type;
-
-            console.log('Sub String Data', fileDetails)
 
             $('#file-upload-hide').append('<input type="hidden" name="file" value="' + fileDetails + '"/>')
 
@@ -601,5 +616,16 @@
             console.log('Error: ', error);
         };
     };
+
+    function setPurchaseDateDiv(){
+
+        let failingArea = $('#purchasingStatus').val();
+
+        if(failingArea === 'STOCK_VAN'){
+            $('#purchasingDateDiv').hide();
+        }else{
+            $('#purchasingDateDiv').show();
+        }
+    }
 
 </script>

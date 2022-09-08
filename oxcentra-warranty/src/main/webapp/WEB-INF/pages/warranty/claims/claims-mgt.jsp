@@ -136,12 +136,19 @@
                                     'class': ' label-light-primary'
                                 },
                                 'Ackonwledged': {
-                                    'title': 'Ackonwledged',
+                                    'title': 'Pre Approved',
                                     'class': ' label-light-success'
                                 },
                                 'Head Office Rejected': {
                                     'title': 'Head Office Rejected',
                                     'class': ' label-light-warning'
+                                },
+                                'Noted': {
+                                    'title': 'Noted',
+                                    'class': ' label-light-success'
+                                },'In Purchase': {
+                                    'title': 'In Purchase',
+                                    'class': ' label-light-info'
                                 }
                             };
                             if (typeof status[data] === 'undefined') {
@@ -263,17 +270,18 @@
                     let sparePartLIst = data.sparePartList;
                     let table = $('<table/>').appendTo($('.sparePartList'));
 
+                    $('<tr/>').appendTo(table)
+                        .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <label>Spare Part Required</label> </div> <div class="form-group col-md-1"><label>Quantity</label></div></div>'));
+
                     $(sparePartLIst).each(function (i, sparePartLIst) {
                         $('<tr/>').appendTo(table)
-                            .append($('<td/>').text("Spare Part Required   " + sparePartLIst.sparePartType))
-                            .append($('<td/>').text("Quantity     " + sparePartLIst.qty));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantity" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
                     });
 
                     let pdfFileList = data.pdfFileList;
                     let tableAttachment = $('<table/>').appendTo($('#updatePdfFiletList'));
 
                     $.each(pdfFileList, function (i, pdfFileList) {
-                        console.log(pdfFileList.attachmentFile);
 
                         $('<tr/>').appendTo(tableAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
@@ -295,8 +303,6 @@
             });
         }
 
-
-
         function deleteClaimInit(keyval) {
             $('#deleteCodeCommon').val(keyval);
             $('#modalDeleteCommon').modal('toggle');
@@ -314,7 +320,6 @@
             $('#modalRejectCommon').modal('toggle');
             $('#modalRejectCommon').modal('show');
         }
-
 
         function searchStart() {
             oTable.fnDraw();

@@ -50,12 +50,14 @@ public class ClaimRepository {
 
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description,status,createdtime,createduser,lastupdatedtime,lastupdateduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description,status,createdtime,createduser,lastupdatedtime,lastupdateduser,total_cost,purchasing_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
     private final String SQL_INSERT_SPARE_PART = "insert into reg_spare_part (warranty_id,spare_part_type,qty) values (?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
+    private final String SQL_DELETE_CLAIM_SPARE_PART = "delete from reg_spare_part where warranty_id=?";
+    private final String SQL_DELETE_CLAIM_ATTACHMENT = "delete from reg_warranty_attachments where warranty_id=?";
     private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
     private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
@@ -253,7 +255,6 @@ public class ClaimRepository {
                     claimInputBean.getState(),
                     claimInputBean.getPostcode(),
                     claimInputBean.getDealership(),
-                    //claimInputBean.getPurchasingDate(),
                     claimInputBean.getDescription(),
                     claimInputBean.getFailureType(),
                     claimInputBean.getFailureArea(),
@@ -262,13 +263,14 @@ public class ClaimRepository {
                     claimInputBean.getCostType(),
                     claimInputBean.getHours(),
                     claimInputBean.getLabourRate(),
-                    //  claimInputBean.getTotalCost(),
                     claimInputBean.getDescription(),
-                    "WAR_PEND",
+                    claimInputBean.getStatus(),
                     claimInputBean.getCreatedTime(),
                     claimInputBean.getCreatedUser(),
                     claimInputBean.getLastUpdatedTime(),
-                    claimInputBean.getLastUpdatedUser()
+                    claimInputBean.getLastUpdatedUser(),
+                    claimInputBean.getTotalCost(),
+                    claimInputBean.getPurchasingDate()
             );
 
             if (value != 1) {
@@ -362,8 +364,10 @@ public class ClaimRepository {
             }
 
         } catch (DuplicateKeyException ex) {
+            ex.printStackTrace();
             throw ex;
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw ex;
         }
         return message;
@@ -664,6 +668,7 @@ public class ClaimRepository {
         try {
             int value = 0;
             value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    claimInputBean.getStatus(),
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
@@ -685,6 +690,7 @@ public class ClaimRepository {
         try {
             int value = 0;
             value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    claimInputBean.getStatus(),
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
@@ -724,11 +730,45 @@ public class ClaimRepository {
     }
 
     @Transactional
+    public String notedRequestClaim(ClaimInputBean claimInputBean) throws Exception {
+        String message = "";
+        try {
+            int value = 0;
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    claimInputBean.getStatus(),
+                    claimInputBean.getIsInHouse(),
+                    claimInputBean.getLastUpdatedUser(),
+                    claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getId());
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+        } catch (DuplicateKeyException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw e;
+        }
+        return message;
+    }
+
+
+    @Transactional
     public String deleteClaim(String id) throws Exception {
         String message = "";
         try {
             int count = jdbcTemplate.update(SQL_DELETE_CLAIM, id);
             if (count < 0) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
+            int countAttach = 0;
+            countAttach = jdbcTemplate.update(SQL_DELETE_CLAIM_ATTACHMENT, id);
+            if (countAttach < 0) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+            int countSpare = 0;
+            countSpare = jdbcTemplate.update(SQL_DELETE_CLAIM_SPARE_PART, id);
+            if (countSpare < 0) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
         } catch (EmptyResultDataAccessException ere) {
@@ -823,7 +863,7 @@ public class ClaimRepository {
 //                byte[] decodedBytes = Base64.getDecoder().decode(base64value);
 //                String decodedString = new String(decodedBytes);
 
-                System.out.println("base64value" + base64value);
+/*                System.out.println("base64value" + base64value);*/
                 claimValueBean.setBase64value(base64value);
 
 //                try {

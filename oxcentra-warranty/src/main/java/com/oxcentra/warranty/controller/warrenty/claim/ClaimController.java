@@ -304,6 +304,26 @@ public class ClaimController implements RequestBeanValidation<Object> {
         return responseBean;
     }
 
+    @PostMapping(value = "/notedWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    public @ResponseBody
+    ResponseBean notedRequestClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM NOTED");
+        ResponseBean responseBean = null;
+        try {
+            String message = claimService.notedRequestClaim(claimInputBean, locale);
+            if (message.isEmpty()) {
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+            } else {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+            }
+        } catch (Exception e) {
+            logger.error("Exception  :  ", e);
+            responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
+        }
+        return responseBean;
+    }
+
     @ModelAttribute
     public void getClaimBean(org.springframework.ui.Model map) throws Exception {
         ClaimInputBean claimInputBean = new ClaimInputBean();
@@ -325,6 +345,11 @@ public class ClaimController implements RequestBeanValidation<Object> {
 
         //Cost Type
         List<CommonKeyVal> costTypeList = claimService.getCostTypeList();
+        //Failing Area
+        List<CommonKeyVal> failingAreaList = claimService.getFailingAreaList();
+
+        //Failing Area
+        List<CommonKeyVal> purchasingStatusList = claimService.getPurchasingStatusList();
 
         //status Count
 
@@ -340,6 +365,8 @@ public class ClaimController implements RequestBeanValidation<Object> {
         claimInputBean.setRepairTypeActList(RepairTypeActList);
         claimInputBean.setSupplierActList(SupplierActList);
         claimInputBean.setCostTypeList(costTypeList);
+        claimInputBean.setFailingAreaList(failingAreaList);
+        claimInputBean.setPurchasingStatusList(purchasingStatusList);
         //set privileges
         this.applyUserPrivileges(claimInputBean);
         //add values to model map
