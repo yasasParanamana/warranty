@@ -263,6 +263,7 @@
                     $('#editDealershipEmail').html(data.dealershipEmail);
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
+                    $('#editClaimType').html(data.claimType);
 
                     $("#updateSparePartList").empty();
                     $("#updatePdfFiletList").empty();

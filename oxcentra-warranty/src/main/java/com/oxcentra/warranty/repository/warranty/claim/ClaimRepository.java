@@ -2,6 +2,7 @@ package com.oxcentra.warranty.repository.warranty.claim;
 
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimValueBean;
 import com.oxcentra.warranty.mapping.warranty.Claim;
@@ -50,8 +51,8 @@ public class ClaimRepository {
 
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description,status,createdtime,createduser,lastupdatedtime,lastupdateduser,total_cost,purchasing_date) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime) values (?,?,?,?,?)";
+    private final String SQL_INSERT_CLAIM = "insert into reg_warranty_claim (id,chassis,model,first_name,last_name,phone,email,address,surburb,state,postcode,dealership,description,failiure_type,failiure_area,repair_type,repair_description,cost_type,hours,labour_rate,cost_description,status,createdtime,createduser,lastupdatedtime,lastupdateduser,total_cost,purchasing_date,claim_type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    private final String SQL_INSERT_CLAIM_ATTACHMENT = "insert into reg_warranty_attachments (warranty_id,file_name,file_format,attachment_file,createdtime,attachment_type) values (?,?,?,?,?,?)";
     private final String SQL_INSERT_SPARE_PART = "insert into reg_spare_part (warranty_id,spare_part_type,qty) values (?,?,?)";
     private final String SQL_UPDATE_CLAIM = "update reg_warranty_claim set status=? where id=?";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
@@ -87,7 +88,8 @@ public class ClaimRepository {
             "r.dealership_name," +
             "r.dealership_phone," +
             "r.dealership_email," +
-            "r.dealership_address  " +
+            "r.dealership_address," +
+            "t.claim_type  " +
             "from reg_warranty_claim t " +
             "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
             "where t.id = ? ";
@@ -270,7 +272,8 @@ public class ClaimRepository {
                     claimInputBean.getLastUpdatedTime(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getTotalCost(),
-                    claimInputBean.getPurchasingDate()
+                    claimInputBean.getPurchasingDate(),
+                    claimInputBean.getClaimType()
             );
 
             if (value != 1) {
@@ -314,6 +317,7 @@ public class ClaimRepository {
                         String fileName = "";
                         String fileSize = "";
                         String fileType = "";
+                        String attachmentType = "";
 
                         String[] parts = file.split("FileDetails");
                         System.out.println(parts.toString());
@@ -327,6 +331,7 @@ public class ClaimRepository {
                         fileName = imageOtherDetails[0];
                         fileSize = imageOtherDetails[1];
                         fileType = imageOtherDetails[2];
+                        attachmentType = imageOtherDetails[3];
 
                         String values = (imageFile);
                         byte[] buff = values.getBytes();
@@ -340,6 +345,7 @@ public class ClaimRepository {
                         newAttachments.setCreatedDate(claimInputBean.getCreatedTime());
                         newAttachments.setFileFormat(fileType);
                         newAttachments.setFileName(fileName);
+                        newAttachments.setAttachmentType(attachmentType);
 
                         int valueA = 0;
                         valueA = jdbcTemplate.update(SQL_INSERT_CLAIM_ATTACHMENT,
@@ -347,7 +353,8 @@ public class ClaimRepository {
                                 newAttachments.getFileName(),
                                 newAttachments.getFileFormat(),
                                 newAttachments.getAttachmentFile(),
-                                newAttachments.getCreatedDate()
+                                newAttachments.getCreatedDate(),
+                                newAttachments.getAttachmentType()
 
                         );
 
@@ -501,7 +508,7 @@ public class ClaimRepository {
                 }
 
                 try {
-                    t.setCostType(rs.getString("cost_type"));
+                    t.setCostType(rs.getString("cost_type").replace("LABOUR","labour").replace("MATERIALS","materials").replace("SUBLET","sublet"));
                 } catch (Exception e) {
                     t.setCostType(null);
                 }
@@ -546,6 +553,12 @@ public class ClaimRepository {
                     t.setDealershipEmail(rs.getString("dealership_email"));
                 } catch (Exception e) {
                     t.setDealershipEmail(null);
+                }
+
+                try {
+                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN","stock van(Consignment)").replace("TO_BE_DELIVERED","to be delivered").replace("SOLD","Sold"));
+                } catch (Exception e) {
+                    t.setClaimType(null);
                 }
 
                 return t;
@@ -854,35 +867,7 @@ public class ClaimRepository {
                 claimValueBean.setWarrantyId(record.get("warranty_id").toString());
                 claimValueBean.setFileName(record.get("file_name").toString());
                 claimValueBean.setFileFormat(record.get("file_format").toString());
-
-
-                String base64value = (record.get("attachmentFile").toString());
-
-
-
-//                byte[] decodedBytes = Base64.getDecoder().decode(base64value);
-//                String decodedString = new String(decodedBytes);
-
-/*                System.out.println("base64value" + base64value);*/
-                claimValueBean.setBase64value(base64value);
-
-//                try {
-//                    byte[] buff = base64value.getBytes();
-//                    Blob blob = new SerialBlob(buff);
-//                    System.out.println("Blob" + base64value);
-//
-//                    byte[] bdata = blob.getBytes(1, (int) base64value.length());
-//                    String s = new String(bdata);
-//
-//                    System.out.println("String Value" + s);
-////                    claimValueBean.setBase64value(s);
-//
-//                    claimValueBean.setAttachmentFile(blob);
-//
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-
+                claimValueBean.setBase64value(record.get("attachmentFile").toString());
                 return claimValueBean;
             }).collect(Collectors.toList());
         } catch (EmptyResultDataAccessException ere) {
@@ -894,5 +879,19 @@ public class ClaimRepository {
         return warrantyAttachmentsBeanList;
     }
 
+   /* @Transactional(readOnly = true)
+    public long getRequestCount(String status) throws Exception {
+        long count = 0;
+        try {
+            StringBuilder dynamicClause = new StringBuilder(SQL_GET_LIST_DUAL_DATA_COUNT);
+            //create the where clause
+            dynamicClause = this.setDynamicClauseDual(taskInputBean, dynamicClause);
+            //create the query
+            count = jdbcTemplate.queryForObject(dynamicClause.toString(), new Object[]{PageVarList.TASK_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN, sessionBean.getUsername()}, Long.class);
+        } catch (DataAccessException ex) {
+            throw ex;
+        }
+        return count;
+    }*/
 
 }

@@ -24,6 +24,7 @@ public class WarrantyAttachments {
     private Blob attachmentFile;
     private Date createdDate;
     private String base64value;
+    private String attachmentType;
 
 
 }

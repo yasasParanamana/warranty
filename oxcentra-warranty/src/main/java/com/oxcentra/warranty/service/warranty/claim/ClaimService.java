@@ -843,17 +843,17 @@ public class ClaimService {
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
 
         CommonKeyVal costTYpe1 = new CommonKeyVal();
-        costTYpe1.setKey("Labour");
+        costTYpe1.setKey("LABOUR");
         costTYpe1.setValue("Labour");
         list.add(costTYpe1);
 
         CommonKeyVal costTYpe2 = new CommonKeyVal();
-        costTYpe2.setKey("Materials");
+        costTYpe2.setKey("MATERIALS");
         costTYpe2.setValue("Materials");
         list.add(costTYpe2);
 
         CommonKeyVal costTYpe3 = new CommonKeyVal();
-        costTYpe3.setKey("Sublet");
+        costTYpe3.setKey("SUBLET");
         costTYpe3.setValue("Sublet");
         list.add(costTYpe3);
 
@@ -884,7 +884,7 @@ public class ClaimService {
 
     }
 
-    public List<CommonKeyVal> getPurchasingStatusList() {
+    public List<CommonKeyVal> getClaimTypeList() {
 
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
 
@@ -906,6 +906,19 @@ public class ClaimService {
         return list;
 
     }
+
+   /* public String getRequestCount(String Status) throws Exception {
+        String count;
+        try {
+            count = claimRepository.getRequestCount(Status);
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return count;
+    }*/
+
 
 
 }

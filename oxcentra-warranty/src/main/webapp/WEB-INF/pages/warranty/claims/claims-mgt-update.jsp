@@ -106,6 +106,12 @@
                             <label id="editDealership"></label>
                         </div>
 
+                        <div class="form-group col-md-3">
+                            <label for="editClaimType">Claim Type</label>
+                            <label>:</label>
+                            <label id="editClaimType"></label>
+                        </div>
+
                         <div class="form-group col-md-3" >
                             <label for="editPurchasingDate">Purchasing Date</label>
                             <label>:</label>

@@ -102,6 +102,9 @@ public class ClaimInputBean extends DataTablesRequest {
 
     private String failingArea;
     private String purchasingStatus;
+    private String countPending;
+    private String countPreApprove;
+    private String countNoted;
 
     /*-------for access control-----------*/
     private boolean vadd;
@@ -129,13 +132,16 @@ public class ClaimInputBean extends DataTablesRequest {
     private List<String> filesUploadContentType = new ArrayList<String>();
     private List<String> filesUploadFileName = new ArrayList<String>();
 
+    private List<File> filesUpload_2 = new ArrayList<File>();
+
     private List<String> file = new ArrayList<>();
 
     private List<SpareParts> spareParts = new ArrayList<>();
     private List<CommonKeyVal> costTypeList;
     private List<CommonKeyVal> failingAreaList;
-    private List<CommonKeyVal> purchasingStatusList;
+    private List<CommonKeyVal> claimTypeList;
 
+    private List<File> filesUploadDealer = new ArrayList<File>();
 
 
     /* add getters setters */

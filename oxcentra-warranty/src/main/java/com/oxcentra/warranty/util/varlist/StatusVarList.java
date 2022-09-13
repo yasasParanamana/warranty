@@ -14,4 +14,10 @@ public class StatusVarList {
     //-----------------------------------------default status code----------------------------------------------------//
     public static final String STATUS_DFLT_ACT = "ACT";
     //-----------------------------------------default status code----------------------------------------------------//
+    public static final String STATUS_CLAIM_PENDING = "WAR_PEND";
+    public static final String STATUS_CLAIM_NOTED = "WAR_NOTED";
+    public static final String STATUS_CLAIM_IN_PURCHASE = "WAR_IN_PURCHASE";
+
 }
+
+

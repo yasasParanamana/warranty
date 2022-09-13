@@ -152,16 +152,16 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="purchasingStatus">Purchasing Status<span
+                            <label for="claimType">Claim Type<span
                                     class="text-danger">*</span></label>
-                            <form:select path="purchasingStatus" name="purchasingStatus"
+                            <form:select path="claimType" name="claimType"
                                          class="form-control form-control-sm"
-                                         id="purchasingStatus"
+                                         id="claimType"
                                          onchange="setPurchaseDateDiv()" >
-                                <option selected value="">Select Purchasing Status</option>
-                                <c:forEach items="${claim.purchasingStatusList}" var="purchasingStatus">
+                                <option selected value="">Select Claim Type</option>
+                                <c:forEach items="${claim.claimTypeList}" var="claimType">
                                     <form:option
-                                            value="${purchasingStatus.key}">${purchasingStatus.value}
+                                            value="${claimType.key}">${claimType.value}
                                     </form:option>
                                 </c:forEach>
                             </form:select>
@@ -179,6 +179,57 @@
                         </div>
 
                     </div>
+
+
+                    <h5>Attachments</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="multiple-file_2" id="multiple_file_div_2">
+                                <div class="fileuploadBtn_2" id="file_hide_1_2">
+                                    <label id="filePin_2">
+                                        <span class="glyphicon glyphicon-paperclip"></span>
+                                        <form:input path="filesUpload_2" type="file" name="filesUpload_2"
+                                                    multiple="multiple" id="file-upload-1_2" accept="jpg"
+                                                    onchange="getNewFileInput_2(this)"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="display: none" id="file-upload-hide_2"></div>
+                            <button id="Attachment_Reset_f3_2" type="button" class="btn btn-default"
+                                    onclick="resetReplyDataAttach_2()" cssClass="sendbtn_2"
+                                    cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset
+                            </button>
+                            <div class="uploadFileNameList_2"></div>
+                        </div>
+                    </div>
+
+
+
+
+
+                   <%-- <div class="card">
+                        <div class="card-body">
+                            <div class="multiple-file" id="multiple_file_div_dealer">
+                                <div class="fileuploadBtnDealer" id="file_hide_2">
+                                    <label id="filePin_dealer">
+                                        <span class="glyphicon glyphicon-paperclip"></span>
+                                        <form:input path="filesUploadDealer" type="file" name="filesUploadDealer"
+                                                    multiple="multiple" id="file-upload-1_dealer" accept="jpg"
+                                                    onchange="getNewFileInputDealer(this)"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="display: none" id="file-upload-hide_dealer"></div>
+                            <button id="Attachment_Reset_f3_dealer" type="button" class="btn btn-default"
+                                    onclick="resetReplyDataAttachDealer()" cssClass="sendbtn"
+                                    cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset
+                            </button>
+                            <div class="uploadFileNameListDealer"></div>
+                        </div>
+                    </div>--%>
+
 
                     <div class="form-row">
                         <div class="form-group col-md-9">
@@ -229,10 +280,6 @@
                         </div>
                     </div>
                         <%--Auto Increment--%>
-                    <div id="newSparePart">
-
-                    </div>
-
                     <div class="form-row">
                         <button id="addNewSparePart" type="button" class="btn btn-default" cssClass="sendbtn"
                                 cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Click Here to Add
@@ -415,18 +462,18 @@
 
         const costType = $('#addCostType').val();
 
-        if(costType === 'Labour'){
+        if(costType === 'LABOUR'){
 
             $('#addHoursDiv').show();
             $('#addLabourRateDiv').show();
             $('#addTotalCostDiv').show();
 
-        }else if (costType === 'Materials' ){
+        }else if (costType === 'MATERIALS' ){
             $('#addHoursDiv').hide();
             $('#addLabourRateDiv').hide();
             $('#addTotalCostDiv').show();
 
-        }else if(costType === 'Sublet'){
+        }else if(costType === 'SUBLET'){
 
             $('#addHoursDiv').hide();
             $('#addLabourRateDiv').hide();
@@ -475,9 +522,9 @@
     });
 
     function setPurchasingDate() {
-        let date = new Date();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
         if (day < 10) {
             day = '0' + day;
         }
@@ -607,7 +654,7 @@
 
             const readerResult = reader.result;
             const resultSplit = readerResult.substring(readerResult.indexOf(',') + 1);
-            const fileDetails = resultSplit + "FileDetails" + file.name + "|" + file.size + "|" + file.type;
+            const fileDetails = resultSplit + "FileDetails" + file.name + "|" + file.size + "|" + file.type+"|REPAIR";
 
             $('#file-upload-hide').append('<input type="hidden" name="file" value="' + fileDetails + '"/>')
 
@@ -619,7 +666,7 @@
 
     function setPurchaseDateDiv(){
 
-        let failingArea = $('#purchasingStatus').val();
+        let failingArea = $('#claimType').val();
 
         if(failingArea === 'STOCK_VAN'){
             $('#purchasingDateDiv').hide();
@@ -627,5 +674,87 @@
             $('#purchasingDateDiv').show();
         }
     }
+
+   /* Purchasing data related file upload*/
+
+    let file_Location_count_2 = 1;
+
+    function getNewFileInput_2(fileUpload) {
+        let file = fileUpload.files;
+
+        if (file.length > 0) {
+
+            /* $('.uploadFileNameList').empty();
+            $('.uploadFileNameList').show();*/
+
+            $('#file-upload-hide_2').empty();
+
+            for (let i = 0; i < file.length; i++) {
+
+                Base64Convert_2(file[i]);
+
+                $('.uploadFileNameList_2').append('<a class="ufileName" style="text-decoration: none;width: auto;padding: 2px 7px 1px 7px;float: left;margin: 0 3px;border-radius: 15px;cursor: pointer;background: #607D8B;color: white;border: 0px solid white;" href="' + URL.createObjectURL(file[i]) + '" download="' + file[i].name + '" ><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+            }
+        }
+        $('#file_hide__2' + file_Location_count_2).hide();
+
+        /*increment file location*/
+        file_Location_count_2++;
+
+        $('#multiple_file_div_2').append("<div class='fileuploadBtn' id='file_hide__2" + file_Location_count_2 + "'>"
+            + "<label id='filePin_2'>"
+            + "<span class='glyphicon glyphicon-paperclip'></span>"
+            + "<input type='file' name='filesUpload_2'  accept='jpg' id='file-upload-_2" + file_Location_count_2 + "' multiple='multiple' onchange='getNewFileInput_2(this)' >"
+            + "</label>"
+            + "</div>");
+    }
+
+    $(document).ready(function () {
+
+        $('#file-upload_2').change(function () {
+            let file = $('#file-upload_2')[0].files;
+            if (file.length > 0) {
+                $('.uploadFileNameList_2').empty();
+                for (let i = 0; i < file.length; i++) {
+                    $('.uploadFileNameList_2').append('<div class="ufileName"><span class="glyphicon glyphicon-paperclip"></span>' + file[i].name + '</div>');
+                }
+            }
+        });
+    });
+
+    function resetReplyDataAttach_2() {
+        file_Location_count_2 = 1;
+        $('#multiple_file_div_2').html("");
+        $('#multiple_file_div_2').append("<div class='fileuploadBtn' id='file_hide__2" + file_Location_count_2+ "'>"
+            + "<label id='filePin_2'>"
+            + "<span class='glyphicon glyphicon-paperclip'></span>"
+            + "<input type='file' name='filesUpload_2'  accept='jpg' id='file-upload-_2" + file_Location_count_2 + "' multiple='multiple' onchange='getNewFileInput_2(this)' >"
+            + "</label>"
+            + "</div>");
+        $('.uploadFileNameList_2').empty();
+        $("#messageError").empty();
+    }
+
+    function Base64Convert_2(file) {
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+
+            /*base64encoded string*/
+
+            const readerResult = reader.result;
+            const resultSplit = readerResult.substring(readerResult.indexOf(',') + 1);
+            const fileDetails = resultSplit + "FileDetails" + file.name + "|" + file.size + "|" + file.type+"|DEALER";
+
+            $('#file-upload-hide_2').append('<input type="hidden" name="file" value="' + fileDetails + '"/>')
+
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    };
+
 
 </script>
