@@ -70,6 +70,9 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/datepicker/js/bootstrap-datepicker.js?${initParam['version']}"
             type="text/javascript"></script>
 
+    <script src="${pageContext.request.contextPath}/resources/js/chart.min.js?${initParam['version']}"
+            type="text/javascript"></script>
+
 
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/resources/datatable/js/jquery.dataTables.min.js"></script>
