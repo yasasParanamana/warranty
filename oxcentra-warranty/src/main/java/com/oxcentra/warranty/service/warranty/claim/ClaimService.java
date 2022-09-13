@@ -36,7 +36,7 @@ import java.util.Locale;
 @Scope("prototype")
 public class ClaimService {
 
-@Autowired
+    @Autowired
     SessionBean sessionBean;
 
     @Autowired
@@ -115,60 +115,60 @@ public class ClaimService {
                 SpareParts spareParts1 = new SpareParts();
                 SpareParts spareParts2 = new SpareParts();
 
-                if(claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()){
+                if (claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()) {
                     spareParts1.setSparePartType(claimInputBean.getSparePartRequired1());
                     spareParts1.setQty(claimInputBean.getQuantity1());
                     sparePartsList.add(spareParts1);
                 }
-                if(claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()){
+                if (claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()) {
                     spareParts2.setSparePartType(claimInputBean.getSparePartRequired2());
                     spareParts2.setQty(claimInputBean.getQuantity2());
                     sparePartsList.add(spareParts2);
                 }
                 SpareParts spareParts3 = new SpareParts();
-                if(claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()){
+                if (claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()) {
                     spareParts3.setSparePartType(claimInputBean.getSparePartRequired3());
                     spareParts3.setQty(claimInputBean.getQuantity3());
                     sparePartsList.add(spareParts3);
                 }
                 SpareParts spareParts4 = new SpareParts();
-                if(claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()){
+                if (claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()) {
                     spareParts4.setSparePartType(claimInputBean.getSparePartRequired4());
                     spareParts4.setQty(claimInputBean.getQuantity4());
                     sparePartsList.add(spareParts4);
                 }
                 SpareParts spareParts5 = new SpareParts();
-                if(claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()){
+                if (claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()) {
                     spareParts5.setSparePartType(claimInputBean.getSparePartRequired5());
                     spareParts5.setQty(claimInputBean.getQuantity5());
                     sparePartsList.add(spareParts5);
                 }
                 SpareParts spareParts6 = new SpareParts();
-                if(claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()){
+                if (claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()) {
                     spareParts6.setSparePartType(claimInputBean.getSparePartRequired6());
                     spareParts6.setQty(claimInputBean.getQuantity6());
                     sparePartsList.add(spareParts6);
                 }
                 SpareParts spareParts7 = new SpareParts();
-                if(claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()){
+                if (claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()) {
                     spareParts7.setSparePartType(claimInputBean.getSparePartRequired7());
                     spareParts7.setQty(claimInputBean.getQuantity7());
                     sparePartsList.add(spareParts7);
                 }
                 SpareParts spareParts8 = new SpareParts();
-                if(claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()){
+                if (claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()) {
                     spareParts8.setSparePartType(claimInputBean.getSparePartRequired8());
                     spareParts8.setQty(claimInputBean.getQuantity8());
                     sparePartsList.add(spareParts8);
                 }
                 SpareParts spareParts9 = new SpareParts();
-                if(claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()){
+                if (claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()) {
                     spareParts9.setSparePartType(claimInputBean.getSparePartRequired9());
                     spareParts9.setQty(claimInputBean.getQuantity9());
                     sparePartsList.add(spareParts9);
                 }
                 SpareParts spareParts10 = new SpareParts();
-                if(claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()){
+                if (claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()) {
                     spareParts10.setSparePartType(claimInputBean.getSparePartRequired10());
                     spareParts10.setQty(claimInputBean.getQuantity10());
                     sparePartsList.add(spareParts10);
@@ -181,7 +181,7 @@ public class ClaimService {
 
             } else {
                 message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
-                auditDescription  = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_ALREADY_EXISTS, null, locale);
             }
         } catch (DuplicateKeyException ex) {
             message = MessageVarList.CLAIM_MGT_ALREADY_EXISTS;
@@ -331,8 +331,8 @@ public class ClaimService {
         String message = "";
         String auditDescription = "";
         try {
-                message = claimRepository.deleteClaim(id);
-                auditDescription = "Claim (WARRANTY ID: " + id + ") deleted by " + sessionBean.getUsername();
+            message = claimRepository.deleteClaim(id);
+            auditDescription = "Claim (WARRANTY ID: " + id + ") deleted by " + sessionBean.getUsername();
 
         } catch (EmptyResultDataAccessException ere) {
             message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
@@ -907,8 +907,8 @@ public class ClaimService {
 
     }
 
-   /* public String getRequestCount(String Status) throws Exception {
-        String count;
+  public long getRequestCount(String Status) throws Exception {
+        long count;
         try {
             count = claimRepository.getRequestCount(Status);
         } catch (EmptyResultDataAccessException ere) {
@@ -917,7 +917,7 @@ public class ClaimService {
             throw e;
         }
         return count;
-    }*/
+    }
 
 
 

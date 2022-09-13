@@ -351,7 +351,9 @@ public class ClaimController implements RequestBeanValidation<Object> {
         List<CommonKeyVal> claimTypeList = claimService.getClaimTypeList();
 
         //pending request Count
-//        String pendingRequestCount = claimService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
+        long pendingRequestCount = claimService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
+        long inPurchaseRequestCount = claimService.getRequestCount(StatusVarList.STATUS_CLAIM_IN_PURCHASE);
+        long notedRequestCount = claimService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
 
         //set values to claimInputBean bean
         claimInputBean.setStatusList(statusList);
@@ -367,6 +369,11 @@ public class ClaimController implements RequestBeanValidation<Object> {
         claimInputBean.setCostTypeList(costTypeList);
         claimInputBean.setFailingAreaList(failingAreaList);
         claimInputBean.setClaimTypeList(claimTypeList);
+
+        claimInputBean.setCountPending(Long.toString(pendingRequestCount));
+        claimInputBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
+        claimInputBean.setCountNoted(Long.toString(notedRequestCount));
+
         //set privileges
         this.applyUserPrivileges(claimInputBean);
         //add values to model map

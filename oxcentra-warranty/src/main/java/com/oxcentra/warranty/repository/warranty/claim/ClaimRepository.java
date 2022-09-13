@@ -98,6 +98,9 @@ public class ClaimRepository {
     private final String SQL_GET_LIST_ATTACHMENT_PDF = "select t.attachment_id,t.warranty_id,t.file_name,t.file_format,CONVERT(t.attachment_file USING UTF8) as attachmentFile,t.createdtime from reg_warranty_attachments t  where t.warranty_id = ? ";
     private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
 
+    private final String SQL_COUNT_STATUS = "select count(*) from reg_warranty_claim where status=?";
+
+
     @Transactional(readOnly = true)
     public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
         long count = 0;
@@ -879,19 +882,29 @@ public class ClaimRepository {
         return warrantyAttachmentsBeanList;
     }
 
-   /* @Transactional(readOnly = true)
+    /**
+     * @Author yasas_p
+     * @CreatedTime 2022-09-13 12:49:37 PM
+     * @Version V1.00
+     * @MethodName getRequestCount
+     * @MethodParams [ status]
+     * @MethodDescription - This method get the request count
+     */
+    @Transactional(readOnly = true)
     public long getRequestCount(String status) throws Exception {
+
         long count = 0;
         try {
-            StringBuilder dynamicClause = new StringBuilder(SQL_GET_LIST_DUAL_DATA_COUNT);
-            //create the where clause
-            dynamicClause = this.setDynamicClauseDual(taskInputBean, dynamicClause);
-            //create the query
-            count = jdbcTemplate.queryForObject(dynamicClause.toString(), new Object[]{PageVarList.TASK_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN, sessionBean.getUsername()}, Long.class);
-        } catch (DataAccessException ex) {
+            count = jdbcTemplate.queryForObject(SQL_COUNT_STATUS, new Object[]{
+                    status
+            }, Long.class);
+        } catch (EmptyResultDataAccessException ere) {
+            count = 0;
+        } catch (Exception ex) {
             throw ex;
         }
         return count;
-    }*/
+    }
+
 
 }

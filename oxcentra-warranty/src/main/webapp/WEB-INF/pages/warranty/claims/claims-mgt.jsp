@@ -397,17 +397,17 @@
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <button type="button" class="btn btn-danger">
-                        Admin Pending Approvals <span class="badge badge-light">150</span>
+                        Pending Approvals <span class="badge badge-light">${claim.countPending}</span>
                     </button>
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <button type="button" class="btn btn-success">
-                        Pending Dispatch Orders <span class="badge badge-light">100</span>
+                        In Purchase Request Count <span class="badge badge-light">${claim.countInPurchase}</span>
                     </button>
                 </div>
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <button type="button" class="btn btn-warning">
-                        Suppliers Pending Approvels <span class="badge badge-light">98</span>
+                        Noted Request Count <span class="badge badge-light">${claim.countNoted}</span>
                     </button>
                 </div>
                 <!--end::Page Heading-->

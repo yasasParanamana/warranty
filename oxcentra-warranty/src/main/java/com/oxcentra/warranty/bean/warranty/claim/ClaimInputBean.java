@@ -103,7 +103,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private String failingArea;
     private String purchasingStatus;
     private String countPending;
-    private String countPreApprove;
+    private String countInPurchase;
     private String countNoted;
 
     /*-------for access control-----------*/
