@@ -203,34 +203,6 @@
                             <div class="uploadFileNameList_2"></div>
                         </div>
                     </div>
-
-
-
-
-
-                   <%-- <div class="card">
-                        <div class="card-body">
-                            <div class="multiple-file" id="multiple_file_div_dealer">
-                                <div class="fileuploadBtnDealer" id="file_hide_2">
-                                    <label id="filePin_dealer">
-                                        <span class="glyphicon glyphicon-paperclip"></span>
-                                        <form:input path="filesUploadDealer" type="file" name="filesUploadDealer"
-                                                    multiple="multiple" id="file-upload-1_dealer" accept="jpg"
-                                                    onchange="getNewFileInputDealer(this)"/>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div style="display: none" id="file-upload-hide_dealer"></div>
-                            <button id="Attachment_Reset_f3_dealer" type="button" class="btn btn-default"
-                                    onclick="resetReplyDataAttachDealer()" cssClass="sendbtn"
-                                    cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset
-                            </button>
-                            <div class="uploadFileNameListDealer"></div>
-                        </div>
-                    </div>--%>
-
-
                     <div class="form-row">
                         <div class="form-group col-md-9">
                             <label for="description">Description<span
@@ -455,6 +427,9 @@
         $('#addHoursDiv').hide();
         $('#addLabourRateDiv').hide();
         $('#addTotalCostDiv').hide();
+
+        resetReplyDataAttach();
+        resetReplyDataAttach_2();
 
     });
 
@@ -684,8 +659,6 @@
 
         if (file.length > 0) {
 
-            /* $('.uploadFileNameList').empty();
-            $('.uploadFileNameList').show();*/
 
             $('#file-upload-hide_2').empty();
 

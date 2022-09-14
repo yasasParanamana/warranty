@@ -37,17 +37,17 @@
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-danger">
-                    Pending Approvals <span class="badge badge-light">5</span>
+                    Pending Approvals <span class="badge badge-light">${homeform.countPending}</span>
                 </button>
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-success">
-                    In Purchase Request Count <span class="badge badge-light">4</span>
+                    In Purchase Request Count <span class="badge badge-light">${homeform.countInPurchase}</span>
                 </button>
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-warning">
-                    Noted Request Count <span class="badge badge-light">10</span>
+                    Noted Request Count <span class="badge badge-light">${homeform.countNoted}</span>
                 </button>
             </div>
         </div>

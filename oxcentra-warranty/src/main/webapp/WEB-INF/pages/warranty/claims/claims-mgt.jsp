@@ -214,6 +214,7 @@
         }
 
         function editClaimInit(id) {
+
             $.ajax({
                 url: "${pageContext.request.contextPath}/getWarrantyClaims.json",
                 data: {

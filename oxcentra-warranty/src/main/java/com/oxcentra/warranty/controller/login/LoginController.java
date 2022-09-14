@@ -1,5 +1,6 @@
 package com.oxcentra.warranty.controller.login;
 
+import com.oxcentra.warranty.bean.home.HomeInputBean;
 import com.oxcentra.warranty.bean.login.LoginBean;
 import com.oxcentra.warranty.bean.profile.PasswordChangeBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
@@ -7,10 +8,12 @@ import com.oxcentra.warranty.mapping.usermgt.Page;
 import com.oxcentra.warranty.mapping.usermgt.PageTask;
 import com.oxcentra.warranty.mapping.usermgt.Section;
 import com.oxcentra.warranty.mapping.usermgt.User;
+import com.oxcentra.warranty.service.home.HomeService;
 import com.oxcentra.warranty.service.login.LoginService;
 import com.oxcentra.warranty.service.sysconfigmgt.passwordpolicy.PasswordPolicyService;
 import com.oxcentra.warranty.util.varlist.CommonVarList;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
+import com.oxcentra.warranty.util.varlist.StatusVarList;
 import com.oxcentra.warranty.validators.RequestBeanValidation;
 import com.oxcentra.warranty.validators.login.LoginValidator;
 import org.apache.commons.logging.Log;
@@ -60,6 +63,9 @@ public class LoginController implements RequestBeanValidation<Object> {
 
     @Autowired
     ServletContext servletContext;
+
+    @Autowired
+    HomeService homeService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView getLogin(@RequestParam(value = "error", required = false) Integer error, ModelMap modelMap, Locale locale) {
@@ -281,6 +287,19 @@ public class LoginController implements RequestBeanValidation<Object> {
 
     @ModelAttribute
     public void getLoginbean(Model map) throws Exception {
+
+/*        LoginBean loginBean = new LoginBean();
+
+        //pending request Count
+        long pendingRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
+        long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_IN_PURCHASE);
+        long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
+
+        //set values to claimInputBean bean
+        loginBean.setCountPending(Long.toString(pendingRequestCount));
+        loginBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
+        loginBean.setCountNoted(Long.toString(notedRequestCount));*/
+
         map.addAttribute("loginform", new LoginBean());
     }
 

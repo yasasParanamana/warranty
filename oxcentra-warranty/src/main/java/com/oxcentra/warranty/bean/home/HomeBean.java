@@ -1,4 +1,4 @@
-package com.oxcentra.warranty.bean.login;
+package com.oxcentra.warranty.bean.home;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class LoginBean {
+public class HomeBean {
     //-----------------------------------------form input values------------------------------------------------------//
     private String username;
     private String password;
@@ -17,8 +17,4 @@ public class LoginBean {
     private int attempts;
     private String statusCode;
     //-----------------------------------------user update values-----------------------------------------------------//
-    private String countPending;
-    private String countInPurchase;
-    private String countNoted;
-
 }
