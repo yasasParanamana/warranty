@@ -252,6 +252,9 @@
                         </div>
                     </div>
                         <%--Auto Increment--%>
+                    <div id="newSparePart">
+
+                    </div>
                     <div class="form-row">
                         <button id="addNewSparePart" type="button" class="btn btn-default" cssClass="sendbtn"
                                 cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Click Here to Add
@@ -467,6 +470,9 @@
         let add_button = $("#addNewSparePart");
 
         let x = 2;
+
+        alert(x)
+
         $(add_button).click(function (e) {
             e.preventDefault();
             if (x < max_fields) {
@@ -513,6 +519,9 @@
     function resetAdd() {
         $('form[name=addClaimForm]').trigger("reset");
         $('#responseMsgAdd').hide();
+
+        $('.uploadFileNameList').empty();
+        $('.uploadFileNameList_2').empty();
     }
 
 

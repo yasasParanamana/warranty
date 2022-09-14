@@ -113,6 +113,12 @@ public class ClaimValidator implements Validator {
                         if (validation.isEmptyFieldValue(dealership)) {
                             errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP);
                         }
+                    } else if (fieldName.equals("claimType")) {
+                        //validate the null and empty in dealership
+                        String claimType = ((ClaimInputBean) o).getClaimType();
+                        if (validation.isEmptyFieldValue(claimType)) {
+                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE);
+                        }
                     } else if (fieldName.equals("purchasingDate")) {
                         //validate the null and empty in purchasingDate
                         String purchasingDate = ((ClaimInputBean) o).getPurchasingDate();
@@ -156,17 +162,17 @@ public class ClaimValidator implements Validator {
                             errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE);
                         }
                     } else if (fieldName.equals("hours")) {
-                        //validate the null and empty in hours
+                        /*//validate the null and empty in hours
                         String hours = ((ClaimInputBean) o).getHours();
                         if (validation.isEmptyFieldValue(hours)) {
                             errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_HOURS, MessageVarList.CLAIM_MGT_EMPTY_HOURS);
-                        }
+                        }*/
                     } else if (fieldName.equals("labourRate")) {
-                        //validate the null and empty in labourRate
+                        /*//validate the null and empty in labourRate
                         String labourRate = ((ClaimInputBean) o).getLabourRate();
                         if (validation.isEmptyFieldValue(labourRate)) {
                             errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE);
-                        }
+                        }*/
                     } else if (fieldName.equals("totalCost")) {
                         //validate the null and empty in totalCost
                         String totalCost = ((ClaimInputBean) o).getTotalCost();
@@ -193,13 +199,12 @@ public class ClaimValidator implements Validator {
 
     private Field[] getRequiredFields(SortedMap<String, Field> allFields, ClaimInputBean o) {
 
-        /*return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
+        return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
                 allFields.get("phone"), allFields.get("email"), allFields.get("address"), allFields.get("surburb")
-                , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"), allFields.get("purchasingDate"), allFields.get("description")
+                , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"),allFields.get("claimType"), allFields.get("purchasingDate"), allFields.get("description")
                 , allFields.get("failureType"), allFields.get("failureArea"), allFields.get("repairType"), allFields.get("repairDescription")
                 , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription")};
-*/
-        return new Field[]{};
+        /*return new Field[]{};*/
 
     }
 }

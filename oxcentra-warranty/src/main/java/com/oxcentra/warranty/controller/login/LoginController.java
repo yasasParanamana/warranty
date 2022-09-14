@@ -287,19 +287,6 @@ public class LoginController implements RequestBeanValidation<Object> {
 
     @ModelAttribute
     public void getLoginbean(Model map) throws Exception {
-
-/*        LoginBean loginBean = new LoginBean();
-
-        //pending request Count
-        long pendingRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
-        long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_IN_PURCHASE);
-        long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
-
-        //set values to claimInputBean bean
-        loginBean.setCountPending(Long.toString(pendingRequestCount));
-        loginBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
-        loginBean.setCountNoted(Long.toString(notedRequestCount));*/
-
         map.addAttribute("loginform", new LoginBean());
     }
 
