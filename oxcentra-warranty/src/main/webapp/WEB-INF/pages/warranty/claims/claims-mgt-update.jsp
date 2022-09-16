@@ -165,7 +165,7 @@
                                     class="text-danger">*</span></label>
                             <form:select path="failingArea" name="failingArea"
                                          class="form-control form-control-sm"
-                                         id="editfailingArea" >
+                                         id="editFailingArea" >
                                 <option selected value="">Select Failing Area</option>
                                 <c:forEach items="${claim.failingAreaList}" var="failingArea">
                                     <form:option
@@ -258,7 +258,7 @@
                     <!-- /.card-body -->
                     <div class="modal-footer justify-content-end">
                         <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="noted()" class="btn btn-primary">
+                            <button id="notedBtn" type="button" onclick="noted()" class="btn btn-primary">
                                 Noted
                             </button>
                         </c:if>
@@ -369,7 +369,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="supplier">Supplier Name</label>
                                     <form:select path="supplier" name="supplier"
-                                                 class="form-control form-control-sm" id="supplier"
+                                                 class="form-control form-control-sm" id="editSupplier"
                                                  onchange="setSupplierDetails()">
                                         <option selected value="">Select Supplier</option>
                                         <c:forEach items="${claim.supplierActList}" var="supplier">
@@ -401,18 +401,13 @@
                     </div>
                     <div class="modal-footer justify-content-end">
                         <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="previous()" class="btn btn-primary">
+                            <button id="previousBtn" type="button" onclick="previous()" class="btn btn-primary">
                                 Previous
                             </button>
                         </c:if>
                         <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
+                            <button id="sendEmailBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
                                 Send E-mail to Supplier
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
-                                Cancel
                             </button>
                         </c:if>
                     </div>

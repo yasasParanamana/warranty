@@ -218,18 +218,6 @@ public class ClaimService {
         return claim;
     }
 
-//    public SpareParts getSpareParts(String id) throws Exception {
-//        SpareParts spareParts;
-//        try {
-//            spareParts = claimRepository.getSparePart(id);
-//        } catch (EmptyResultDataAccessException ere) {
-//            throw ere;
-//        } catch (Exception e) {
-//            throw e;
-//        }
-//        return spareParts;
-//    }
-
     public List<SpareParts> getSpareParts(String id) throws Exception {
         List<SpareParts> sparePartBeanList;
         try {

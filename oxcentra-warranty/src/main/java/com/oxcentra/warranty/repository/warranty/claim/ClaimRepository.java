@@ -89,9 +89,17 @@ public class ClaimRepository {
             "r.dealership_phone," +
             "r.dealership_email," +
             "r.dealership_address," +
-            "t.claim_type  " +
+            "t.claim_type,  " +
+            "t.failing_area,  " +
+            "t.comment,  " +
+            "t.supplier,  " +
+            "s.supplier_phone,  " +
+            "s.supplier_email,  " +
+            "s.supplier_address,  " +
+            "t.is_in_house  " +
             "from reg_warranty_claim t " +
             "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
+            "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
             "where t.id = ? ";
 
     private final String SQL_GET_LIST_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.warranty_id = ? ";
@@ -549,6 +557,46 @@ public class ClaimRepository {
                     t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN","stock van(Consignment)").replace("TO_BE_DELIVERED","to be delivered").replace("SOLD","Sold"));
                 } catch (Exception e) {
                     t.setClaimType(null);
+                }
+
+                try {
+                    t.setFailingArea(rs.getString("failing_area"));
+                } catch (Exception e) {
+                    t.setFailingArea(null);
+                }
+
+                try {
+                    t.setSupplier(rs.getString("supplier"));
+                } catch (Exception e) {
+                    t.setSupplier(null);
+                }
+                try {
+                    t.setSupplierPhone(rs.getString("supplier_phone"));
+                } catch (Exception e) {
+                    t.setSupplierPhone(null);
+                }
+                try {
+                    t.setSupplierEmail(rs.getString("supplier_email"));
+                } catch (Exception e) {
+                    t.setSupplierEmail(null);
+                }
+                try {
+                    t.setSupplierAddress(rs.getString("supplier_address"));
+                } catch (Exception e) {
+                    t.setSupplierAddress(null);
+                }
+
+                try {
+                    t.setComment(rs.getString("comment"));
+                } catch (Exception e) {
+                    t.setComment(null);
+                }
+
+                try {
+                    System.out.println(rs.getBoolean("is_in_house"));
+                    t.setInHouse(rs.getBoolean("is_in_house"));
+                } catch (Exception e) {
+                    t.setInHouse(false);
                 }
 
                 return t;

@@ -255,7 +255,7 @@
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
                     $('#editClaimType').html(data.claimType);
-                    $('#editFailingArea').html(data.failingArea);
+                    $('#editFailingArea').val(data.failingArea);
 
                     $('#editSupplier').val(data.supplier);
                     $('#editSupContactNumber').html(data.supplierPhone);
@@ -265,8 +265,10 @@
 
                     if(data.inHouse === true ){
                         $('#isInHouse').attr('checked', true);
+                        $('#nextBtn').hide();
                     }else{
                         $('#isInHouse').attr('checked', false);
+                        $('#nextBtn').show();
                     }
 
                     $("#updateSparePartList").empty();

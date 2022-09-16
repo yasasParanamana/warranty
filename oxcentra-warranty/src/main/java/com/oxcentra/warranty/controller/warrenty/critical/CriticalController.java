@@ -198,9 +198,6 @@ public class CriticalController implements RequestBeanValidation<Object> {
             criticalInputBean.setVadd(false);
             criticalInputBean.setVupdate(false);
             criticalInputBean.setVdelete(false);
-            criticalInputBean.setVconfirm(false);
-            criticalInputBean.setVreject(false);
-            criticalInputBean.setVdualauth(commonRepository.checkPageIsDualAuthenticate(PageVarList.CRITICAL_MGT_PAGE));
             //check task list one by one
             if (taskList != null && !taskList.isEmpty()) {
                 taskList.forEach(task -> {

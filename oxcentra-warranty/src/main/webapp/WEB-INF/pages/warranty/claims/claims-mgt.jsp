@@ -266,6 +266,19 @@
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
                     $('#editClaimType').html(data.claimType);
+                    $('#editFailingArea').val(data.failingArea);
+
+                    $('#editSupplier').val(data.supplier);
+                    $('#editSupContactNumber').html(data.supplierPhone);
+                    $('#editSupEmail').html(data.supplierEmail);
+                    $('#editSupAddress').html(data.supplierAddress);
+                    $('#editComment').val(data.comment);
+
+                    if(data.inHouse === true ){
+                        $('#isInHouse').attr('checked', true);
+                    }else{
+                        $('#isInHouse').attr('checked', false);
+                    }
 
                     $("#updateSparePartList").empty();
                     $("#updatePdfFiletList").empty();
