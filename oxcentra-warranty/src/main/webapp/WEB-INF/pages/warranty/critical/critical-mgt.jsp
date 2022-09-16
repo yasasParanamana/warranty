@@ -7,6 +7,11 @@
 
 <html>
 <head>
+    <style>
+        hr {
+            border: 1px solid #b9bbbe;
+        }
+    </style>
     <script type="text/javascript">
 
         var token = $("meta[name='_csrf']").attr("content");
@@ -458,7 +463,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-toolbar">
+                    <%--<div class="card-toolbar">
                         <!--begin::Button-->
                         <c:if test="${critical.vadd}">
                             <a href="javascript:void(0)" onclick="openAddModal()"
@@ -476,10 +481,10 @@
 													</g>
 												</svg>
                                                 <!--end::Svg Icon-->
-											</span>New Record</a>
+											</span>Download</a>
                         </c:if>
                         <!--end::Button-->
-                    </div>
+                    </div>--%>
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
