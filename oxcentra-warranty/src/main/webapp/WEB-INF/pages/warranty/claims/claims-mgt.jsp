@@ -247,11 +247,12 @@
                     $('#editFailureArea').html(data.failureArea);
                     $('#editRepairType').html(data.repairType);
                     $('#editRepairDescription').html(data.repairDescription);
-                    $('#editCostType').html(data.costType);
-                    $('#editHours').html(data.hours);
-                    $('#editLabourRate').html(data.labourRate);
-                    $('#editTotalCost').html(data.totalCost);
-                    $('#editCostDescription').html(data.costDescription);
+
+                    $('#editCostType').val(data.costType);
+                    $('#editHours').val(data.hours);
+                    $('#editLabourRate').val(data.labourRate);
+                    $('#editTotalCost').val(data.totalCost);
+                    $('#editCostDescription').val(data.costDescription);
 
                     $('#editCusFirstName').html(data.firstName);
                     $('#editCusContactNo').html(data.phone);
@@ -271,14 +272,30 @@
 
                     let sparePartLIst = data.sparePartList;
                     let table = $('<table/>').appendTo($('.sparePartList'));
+                    let x = 0;
 
                     $('<tr/>').appendTo(table)
                         .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <label>Spare Part Required</label> </div> <div class="form-group col-md-1"><label>Quantity</label></div></div>'));
 
                     $(sparePartLIst).each(function (i, sparePartLIst) {
+                        x++;
                         $('<tr/>').appendTo(table)
-                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantity" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired'+x+'"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input type="text" name="quantity'+x+'" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
                     });
+
+                    let sparePartSupList = data.sparePartList;
+                    let tableSup = $('<table/>').appendTo($('.sparePartSupList'));
+                    let y = 0;
+
+                    $('<tr/>').appendTo(tableSup)
+                        .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <label>Spare Part Required</label> </div> <div class="form-group col-md-1"><label>Quantity</label></div></div>'));
+
+                    $(sparePartSupList).each(function (i, sparePartLIst) {
+                        y++;
+                        $('<tr/>').appendTo(tableSup)
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequiredSup"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantitySup" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                    });
+
 
                     let pdfFileList = data.pdfFileList;
                     let tableAttachment = $('<table/>').appendTo($('#updatePdfFiletList'));

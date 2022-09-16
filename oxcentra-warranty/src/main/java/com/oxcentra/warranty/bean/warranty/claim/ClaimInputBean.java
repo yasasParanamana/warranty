@@ -74,7 +74,7 @@ public class ClaimInputBean extends DataTablesRequest {
     private String dealershipName;
     private String dealershipPhone;
     private String dealershipEmail;
-
+    private String comment;
 
     private String sparePartRequired1;
     private String sparePartRequired2;
@@ -97,6 +97,8 @@ public class ClaimInputBean extends DataTablesRequest {
     private String quantity9;
     private String quantity10;
 
+    private String sparePartRequiredSup;
+    private String quantitySup;
     private String[] sparePartRequired;
     private String[] quantityRequired;
 

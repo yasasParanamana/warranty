@@ -29,7 +29,7 @@
                        name="addClaimForm" enctype="multipart/form-data">
 
                 <div class="modal-body">
-                    <div class="form-group"><span id="responseMsgAdd"></span>
+                    <div class="form-group" style="text-align: center"><span id="responseMsgAdd"></span>
 
                     </div>
                     <h5>Vehicle Details</h5>
@@ -180,7 +180,7 @@
 
                     </div>
 
-
+                    <div id="claimTypeDocDiv">
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
@@ -202,6 +202,7 @@
                             </button>
                             <div class="uploadFileNameList_2"></div>
                         </div>
+                    </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-9">
@@ -267,7 +268,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="failureType">Type Of Failure<span
+                            <label for="failureType">Type of Failure<span
                                     class="text-danger">*</span></label>
                             <form:select path="failureType" name="failureType"
                                          class="form-control form-control-sm" id="addfailureType">
@@ -281,7 +282,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label for="failureArea">Area Of Failuree<span
+                            <label for="failureArea">Area of Failure<span
                                     class="text-danger">*</span></label>
                             <form:select path="failureArea" name="failureArea"
                                          class="form-control form-control-sm" id="addfailureArea">
@@ -310,7 +311,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-9">
-                            <label for="repairDescription">Description Of Repair<span
+                            <label for="repairDescription">Description of Repair<span
                                     class="text-danger">*</span></label>
 
                             <form:textarea path="repairDescription" name="repairDescription" type="text"
@@ -348,7 +349,7 @@
                     <div class="form-row">
 
                         <div class="form-group col-md-3">
-                            <label for="repairType">Type of Cost<span
+                            <label for="costType">Type of Cost<span
                                     class="text-danger">*</span></label>
                             <form:select path="costType" name="costType"
                                          class="form-control form-control-sm"
@@ -431,6 +432,9 @@
         $('#addLabourRateDiv').hide();
         $('#addTotalCostDiv').hide();
 
+        $('#purchasingDateDiv').hide();
+        $('#claimTypeDocDiv').hide();
+
         resetReplyDataAttach();
         resetReplyDataAttach_2();
 
@@ -470,8 +474,6 @@
         let add_button = $("#addNewSparePart");
 
         let x = 2;
-
-        alert(x)
 
         $(add_button).click(function (e) {
             e.preventDefault();
@@ -652,10 +654,12 @@
 
         let failingArea = $('#claimType').val();
 
-        if(failingArea === 'STOCK_VAN'){
+        if(failingArea === 'STOCK_VAN' || failingArea === ''){
             $('#purchasingDateDiv').hide();
+            $('#claimTypeDocDiv').hide();
         }else{
             $('#purchasingDateDiv').show();
+            $('#claimTypeDocDiv').show();
         }
     }
 
@@ -738,5 +742,9 @@
         };
     };
 
-
 </script>
+<style>
+    hr {
+        border: 1px solid #b9bbbe;
+    }
+</style>

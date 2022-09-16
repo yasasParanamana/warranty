@@ -59,8 +59,8 @@ public class ClaimRepository {
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
     private final String SQL_DELETE_CLAIM_SPARE_PART = "delete from reg_spare_part where warranty_id=?";
     private final String SQL_DELETE_CLAIM_ATTACHMENT = "delete from reg_warranty_attachments where warranty_id=?";
-    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
-    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? where id=?";
+    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=? where id=? ";
+    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
             "t.id," +
             "t.chassis," +
@@ -511,7 +511,8 @@ public class ClaimRepository {
                 }
 
                 try {
-                    t.setCostType(rs.getString("cost_type").replace("LABOUR","labour").replace("MATERIALS","materials").replace("SUBLET","sublet"));
+//                    t.setCostType(rs.getString("cost_type").replace("LABOUR","labour").replace("MATERIALS","materials").replace("SUBLET","sublet"));
+                    t.setCostType(rs.getString("cost_type"));
                 } catch (Exception e) {
                     t.setCostType(null);
                 }
@@ -666,7 +667,7 @@ public class ClaimRepository {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, "WAR_APPROVE", claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, StatusVarList.STATUS_CLAIM_APPROVE, claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -688,11 +689,39 @@ public class ClaimRepository {
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
-                    claimInputBean.getId());
+                    claimInputBean.getCostType(),
+                    claimInputBean.getHours(),
+                    claimInputBean.getLabourRate(),
+                    claimInputBean.getTotalCost(),
+                    claimInputBean.getCostDescription(),
+                    claimInputBean.getId()
+            );
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
+
+            //insert in to reg_spare_part
+
+            if (claimInputBean.getSpareParts().size() > 0) {
+
+                int valueParts = 0;
+
+                for (SpareParts spareParts : claimInputBean.getSpareParts()) {
+
+                    valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
+                            claimInputBean.getId(),
+                            spareParts.getSparePartType(),
+                            spareParts.getQty()
+                    );
+
+                }
+                if (valueParts != 1) {
+                    message = MessageVarList.COMMON_ERROR_PROCESS;
+                }
+            }
+
         } catch (DuplicateKeyException ex) {
+
             throw ex;
         } catch (Exception e) {
             throw e;
@@ -710,13 +739,42 @@ public class ClaimRepository {
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
-                    claimInputBean.getId());
+                    claimInputBean.getCostType(),
+                    claimInputBean.getHours(),
+                    claimInputBean.getLabourRate(),
+                    claimInputBean.getTotalCost(),
+                    claimInputBean.getCostDescription(),
+                    claimInputBean.getId()
+            );
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
+
+            //insert in to reg_spare_part
+
+            if (claimInputBean.getSpareParts().size() > 0) {
+
+                int valueParts = 0;
+
+                for (SpareParts spareParts : claimInputBean.getSpareParts()) {
+
+                    valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
+                            claimInputBean.getId(),
+                            spareParts.getSparePartType(),
+                            spareParts.getQty()
+                    );
+
+                }
+                if (valueParts != 1) {
+                    message = MessageVarList.COMMON_ERROR_PROCESS;
+                }
+            }
+
         } catch (DuplicateKeyException ex) {
+            ex.printStackTrace();
             throw ex;
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
         return message;
@@ -733,6 +791,7 @@ public class ClaimRepository {
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
+                    claimInputBean.getComment(),
                     claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
@@ -755,13 +814,49 @@ public class ClaimRepository {
                     claimInputBean.getIsInHouse(),
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
-                    claimInputBean.getId());
+                    claimInputBean.getCostType(),
+                    claimInputBean.getHours(),
+                    claimInputBean.getLabourRate(),
+                    claimInputBean.getTotalCost(),
+                    claimInputBean.getCostDescription(),
+                    claimInputBean.getId()
+            );
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
+
+            //Delete Spare Part
+
+            int countSpare = 0;
+            countSpare = jdbcTemplate.update(SQL_DELETE_CLAIM_SPARE_PART, claimInputBean.getId());
+            if (countSpare < 0) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
+            //insert in to reg_spare_part
+
+            if (claimInputBean.getSpareParts().size() > 0) {
+
+                int valueParts = 0;
+
+                for (SpareParts spareParts : claimInputBean.getSpareParts()) {
+
+                    valueParts = jdbcTemplate.update(SQL_INSERT_SPARE_PART,
+                            claimInputBean.getId(),
+                            spareParts.getSparePartType(),
+                            spareParts.getQty()
+                    );
+
+                }
+                if (valueParts != 1) {
+                    message = MessageVarList.COMMON_ERROR_PROCESS;
+                }
+            }
         } catch (DuplicateKeyException ex) {
+            ex.printStackTrace();
             throw ex;
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
         return message;

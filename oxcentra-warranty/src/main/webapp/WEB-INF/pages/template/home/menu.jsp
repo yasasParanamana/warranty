@@ -30,7 +30,7 @@
     <div class="brand flex-column-auto" id="kt_brand">
         <!--begin::Logo-->
         <a href="${pageContext.request.contextPath}/home.htm" class="brand-logo" id="header-brand-logo">
-            <img alt="Logo" src="${pageContext.request.contextPath}/resources/assets/media/logos/RDBNEWHOMELOGO1.png"/>
+            <img style="width: 120px" alt="Logo" src="${pageContext.request.contextPath}/resources/assets/media/logos/icon.png"/>
         </a>
         <!--end::Logo-->
         <!--begin::Toggle-->
@@ -125,7 +125,7 @@
                                                                       width="9" height="2" rx="1"/>
                                                             </g>
                                                             </c:if>
-                                                            <c:if test="${section.sectionCode == 'REEX'}"
+                                                            <c:if test="${section.sectionCode == 'WARRANTY'}"
                                                                   var="condition">
                 											<g stroke="none" stroke-width="1" fill="none"
                                                                fill-rule="evenodd">

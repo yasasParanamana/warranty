@@ -21,7 +21,7 @@
             </div>
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
                        name="updateClaimForm">
-                <div class="form-group"><span style="alignment: center" id="responseMsgUpdate"></span></div>
+                <div class="form-group" style="text-align: center"><span style="alignment: center" id="responseMsgUpdate"></span></div>
                 <div class="form-group row" hidden="true">
                     <div class="col-sm-8">
                         <form:input path="id" name="id" type="text" id="editId"/>
@@ -193,35 +193,64 @@
                     <hr>
                     <h5>Cost Of Estimation</h5>
 
+
                     <div class="form-row">
+
                         <div class="form-group col-md-3">
-                            <label for="editCostType">Type Of Cost</label>
-                            <label>:</label>
-                            <label id="editCostType"></label>
+                            <label for="costType">Type of Cost<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="costType" name="costType"
+                                         class="form-control form-control-sm"
+                                         id="editCostType"
+                                         onchange="setOtherCostDeatilsEdit()" >
+                                <option selected value="">Select Type of Cost</option>
+                                <c:forEach items="${claim.costTypeList}" var="costType">
+                                    <form:option
+                                            value="${costType.key}">${costType.value}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="editHours">Hours</label>
-                            <label>:</label>
-                            <label id="editHours"></label>
+
+                        <div class="form-group col-md-3" id="editHoursDiv">
+                            <label for="hours">Hours<span
+                                    class="text-danger">*</span></label>
+                            <form:input path="hours" name="hours" type="text"
+                                        class="form-control form-control-sm" id="editHours" maxlength="4"
+                                        placeholder="Hours"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9.]/g,''))"/>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="editLabourRate">Labour Rate</label>
-                            <label>:</label>
-                            <label id="editLabourRate"></label>
+                        <div class="form-group col-md-3" id="editLabourRateDiv">
+                            <label for="labourRate">Labour Rate<span
+                                    class="text-danger">*</span></label>
+                            <form:input path="labourRate" name="labourRate" type="text"
+                                        class="form-control form-control-sm" id="editLabourRate" maxlength="5"
+                                        placeholder="Labour Rate"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="editTotalCost">Total Cost</label>
-                            <label>:</label>
-                            <label id="editTotalCost"></label>
+                        <div class="form-group col-md-3" id="editTotalCostDiv">
+                            <label for="totalCost">Total Cost<span
+                                    class="text-danger">*</span></label>
+                            <form:input path="totalCost" name="totalCost" type="text"
+                                        class="form-control form-control-sm" id="editTotalCost" maxlength="10"
+                                        placeholder="Total Cost"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="editCostDescription">Description</label>
-                            <label>:</label>
-                            <label id="editCostDescription"></label>
+                        <div class="form-group col-md-9">
+                            <label for="costDescription">Description<span
+                                    class="text-danger">*</span></label>
+
+                            <form:textarea path="costDescription" name="costDescription" type="text"
+                                           class="form-control form-control-sm" id="editCostDescription" maxlength="256"
+                                           placeholder="Description Of Cost"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
+                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
+                            />
                         </div>
                     </div>
+
                     <br/>
                     <div class="form-group">
                         <span class="text-danger">Required fields are marked by the '*'</span>
@@ -314,6 +343,21 @@
 
                     <div class="card">
                         <div class="card-body">
+                            <div class="sparePartSupList" id="viewSparePartList"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-9">
+                            <label for="comment">Comment<span
+                                    class="text-danger">*</span></label>
+
+                            <form:textarea path="comment" name="comment" type="text"
+                                           class="form-control form-control-sm" id="editComment" maxlength="256"
+                                           placeholder="Comment"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
+                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the Comment<b> "
+                            />
                         </div>
                     </div>
 
@@ -564,6 +608,34 @@
         a.href = "data:"+contentType+";base64," + base64Data;
         a.download = fileName;
         a.click();
+    }
+
+    function setOtherCostDeatilsEdit(){
+
+        const costType = $('#editCostType').val();
+
+        if(costType === 'LABOUR'){
+
+            $('#editHoursDiv').show();
+            $('#editLabourRateDiv').show();
+            $('#editTotalCostDiv').show();
+
+        }else if (costType === 'MATERIALS' ){
+            $('#editHoursDiv').hide();
+            $('#editLabourRateDiv').hide();
+            $('#editTotalCostDiv').show();
+
+        }else if(costType === 'SUBLET'){
+
+            $('#editHoursDiv').hide();
+            $('#editLabourRateDiv').hide();
+            $('#editTotalCostDiv').show();
+        }else if(costType === ''){
+
+            $('#editHoursDiv').hide();
+            $('#editLabourRateDiv').hide();
+            $('#editTotalCostDiv').hide();
+        }
     }
 
 </script>

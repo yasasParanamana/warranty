@@ -107,7 +107,7 @@ public class ClaimService {
                 claimInputBean.setCreatedUser(user);
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(user);
-                claimInputBean.setStatus("WAR_PEND");
+                claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_PENDING);
                 claimInputBean.setTotalCost(claimInputBean.getTotalCost());
                 claimInputBean.setPurchasingDate(claimInputBean.getPurchasingDate());
 
@@ -650,10 +650,83 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                claimInputBean.setStatus("WAR_IN_PURCHASE");
+                claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_APPROVE);
                 claimInputBean.setIsInHouse("1");
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
+
+                System.out.println(claimInputBean.getCostType());
+
+
+                if(!claimInputBean.getCostType().equalsIgnoreCase("LABOUR")){
+                    claimInputBean.setHours(null);
+                    claimInputBean.setLabourRate(null);
+                }
+
+                ArrayList<SpareParts> sparePartsList = new ArrayList<SpareParts>();
+                SpareParts spareParts1 = new SpareParts();
+                SpareParts spareParts2 = new SpareParts();
+
+                if (claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()) {
+                    spareParts1.setSparePartType(claimInputBean.getSparePartRequired1());
+                    spareParts1.setQty(claimInputBean.getQuantity1());
+                    sparePartsList.add(spareParts1);
+                }
+                if (claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()) {
+                    spareParts2.setSparePartType(claimInputBean.getSparePartRequired2());
+                    spareParts2.setQty(claimInputBean.getQuantity2());
+                    sparePartsList.add(spareParts2);
+                }
+                SpareParts spareParts3 = new SpareParts();
+                if (claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()) {
+                    spareParts3.setSparePartType(claimInputBean.getSparePartRequired3());
+                    spareParts3.setQty(claimInputBean.getQuantity3());
+                    sparePartsList.add(spareParts3);
+                }
+                SpareParts spareParts4 = new SpareParts();
+                if (claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()) {
+                    spareParts4.setSparePartType(claimInputBean.getSparePartRequired4());
+                    spareParts4.setQty(claimInputBean.getQuantity4());
+                    sparePartsList.add(spareParts4);
+                }
+                SpareParts spareParts5 = new SpareParts();
+                if (claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()) {
+                    spareParts5.setSparePartType(claimInputBean.getSparePartRequired5());
+                    spareParts5.setQty(claimInputBean.getQuantity5());
+                    sparePartsList.add(spareParts5);
+                }
+                SpareParts spareParts6 = new SpareParts();
+                if (claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()) {
+                    spareParts6.setSparePartType(claimInputBean.getSparePartRequired6());
+                    spareParts6.setQty(claimInputBean.getQuantity6());
+                    sparePartsList.add(spareParts6);
+                }
+                SpareParts spareParts7 = new SpareParts();
+                if (claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()) {
+                    spareParts7.setSparePartType(claimInputBean.getSparePartRequired7());
+                    spareParts7.setQty(claimInputBean.getQuantity7());
+                    sparePartsList.add(spareParts7);
+                }
+                SpareParts spareParts8 = new SpareParts();
+                if (claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()) {
+                    spareParts8.setSparePartType(claimInputBean.getSparePartRequired8());
+                    spareParts8.setQty(claimInputBean.getQuantity8());
+                    sparePartsList.add(spareParts8);
+                }
+                SpareParts spareParts9 = new SpareParts();
+                if (claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()) {
+                    spareParts9.setSparePartType(claimInputBean.getSparePartRequired9());
+                    spareParts9.setQty(claimInputBean.getQuantity9());
+                    sparePartsList.add(spareParts9);
+                }
+                SpareParts spareParts10 = new SpareParts();
+                if (claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()) {
+                    spareParts10.setSparePartType(claimInputBean.getSparePartRequired10());
+                    spareParts10.setQty(claimInputBean.getQuantity10());
+                    sparePartsList.add(spareParts10);
+                }
+
+                claimInputBean.setSpareParts(sparePartsList);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") approved by " + sessionBean.getUsername();
                 message = claimRepository.approveRequestClaim(claimInputBean);
@@ -700,10 +773,80 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                claimInputBean.setStatus("WAR_REJECTED_HO");
+                claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_HEAD_OFFICE_REJECTED);
                 claimInputBean.setIsInHouse("1");
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
+
+                if(!claimInputBean.getCostType().equalsIgnoreCase("LABOUR")){
+                    claimInputBean.setHours(null);
+                    claimInputBean.setLabourRate(null);
+                }
+
+                ArrayList<SpareParts> sparePartsList = new ArrayList<SpareParts>();
+                SpareParts spareParts1 = new SpareParts();
+                SpareParts spareParts2 = new SpareParts();
+
+                if (claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()) {
+                    spareParts1.setSparePartType(claimInputBean.getSparePartRequired1());
+                    spareParts1.setQty(claimInputBean.getQuantity1());
+                    sparePartsList.add(spareParts1);
+                }
+                if (claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()) {
+                    spareParts2.setSparePartType(claimInputBean.getSparePartRequired2());
+                    spareParts2.setQty(claimInputBean.getQuantity2());
+                    sparePartsList.add(spareParts2);
+                }
+                SpareParts spareParts3 = new SpareParts();
+                if (claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()) {
+                    spareParts3.setSparePartType(claimInputBean.getSparePartRequired3());
+                    spareParts3.setQty(claimInputBean.getQuantity3());
+                    sparePartsList.add(spareParts3);
+                }
+                SpareParts spareParts4 = new SpareParts();
+                if (claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()) {
+                    spareParts4.setSparePartType(claimInputBean.getSparePartRequired4());
+                    spareParts4.setQty(claimInputBean.getQuantity4());
+                    sparePartsList.add(spareParts4);
+                }
+                SpareParts spareParts5 = new SpareParts();
+                if (claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()) {
+                    spareParts5.setSparePartType(claimInputBean.getSparePartRequired5());
+                    spareParts5.setQty(claimInputBean.getQuantity5());
+                    sparePartsList.add(spareParts5);
+                }
+                SpareParts spareParts6 = new SpareParts();
+                if (claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()) {
+                    spareParts6.setSparePartType(claimInputBean.getSparePartRequired6());
+                    spareParts6.setQty(claimInputBean.getQuantity6());
+                    sparePartsList.add(spareParts6);
+                }
+                SpareParts spareParts7 = new SpareParts();
+                if (claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()) {
+                    spareParts7.setSparePartType(claimInputBean.getSparePartRequired7());
+                    spareParts7.setQty(claimInputBean.getQuantity7());
+                    sparePartsList.add(spareParts7);
+                }
+                SpareParts spareParts8 = new SpareParts();
+                if (claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()) {
+                    spareParts8.setSparePartType(claimInputBean.getSparePartRequired8());
+                    spareParts8.setQty(claimInputBean.getQuantity8());
+                    sparePartsList.add(spareParts8);
+                }
+                SpareParts spareParts9 = new SpareParts();
+                if (claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()) {
+                    spareParts9.setSparePartType(claimInputBean.getSparePartRequired9());
+                    spareParts9.setQty(claimInputBean.getQuantity9());
+                    sparePartsList.add(spareParts9);
+                }
+                SpareParts spareParts10 = new SpareParts();
+                if (claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()) {
+                    spareParts10.setSparePartType(claimInputBean.getSparePartRequired10());
+                    spareParts10.setQty(claimInputBean.getQuantity10());
+                    sparePartsList.add(spareParts10);
+                }
+
+                claimInputBean.setSpareParts(sparePartsList);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") rejected by " + sessionBean.getUsername();
                 message = claimRepository.rejectRequestClaim(claimInputBean);
@@ -752,7 +895,7 @@ public class ClaimService {
 
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
-                claimInputBean.setStatus("WAR_ACKNOW");
+                claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
                 claimInputBean.setIsInHouse("0");
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") acknowledge by " + sessionBean.getUsername();
@@ -800,10 +943,80 @@ public class ClaimService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                claimInputBean.setStatus("WAR_NOTED");
+                claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_NOTED);
                 claimInputBean.setIsInHouse("1");
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
+
+                if(!claimInputBean.getCostType().equalsIgnoreCase("LABOUR")){
+                    claimInputBean.setHours(null);
+                    claimInputBean.setLabourRate(null);
+                }
+
+                ArrayList<SpareParts> sparePartsList = new ArrayList<SpareParts>();
+                SpareParts spareParts1 = new SpareParts();
+                SpareParts spareParts2 = new SpareParts();
+
+                if (claimInputBean.getSparePartRequired1() != null && !claimInputBean.getSparePartRequired1().isEmpty()) {
+                    spareParts1.setSparePartType(claimInputBean.getSparePartRequired1());
+                    spareParts1.setQty(claimInputBean.getQuantity1());
+                    sparePartsList.add(spareParts1);
+                }
+                if (claimInputBean.getSparePartRequired2() != null && !claimInputBean.getSparePartRequired2().isEmpty()) {
+                    spareParts2.setSparePartType(claimInputBean.getSparePartRequired2());
+                    spareParts2.setQty(claimInputBean.getQuantity2());
+                    sparePartsList.add(spareParts2);
+                }
+                SpareParts spareParts3 = new SpareParts();
+                if (claimInputBean.getSparePartRequired3() != null && !claimInputBean.getSparePartRequired3().isEmpty()) {
+                    spareParts3.setSparePartType(claimInputBean.getSparePartRequired3());
+                    spareParts3.setQty(claimInputBean.getQuantity3());
+                    sparePartsList.add(spareParts3);
+                }
+                SpareParts spareParts4 = new SpareParts();
+                if (claimInputBean.getSparePartRequired4() != null && !claimInputBean.getSparePartRequired4().isEmpty()) {
+                    spareParts4.setSparePartType(claimInputBean.getSparePartRequired4());
+                    spareParts4.setQty(claimInputBean.getQuantity4());
+                    sparePartsList.add(spareParts4);
+                }
+                SpareParts spareParts5 = new SpareParts();
+                if (claimInputBean.getSparePartRequired5() != null && !claimInputBean.getSparePartRequired5().isEmpty()) {
+                    spareParts5.setSparePartType(claimInputBean.getSparePartRequired5());
+                    spareParts5.setQty(claimInputBean.getQuantity5());
+                    sparePartsList.add(spareParts5);
+                }
+                SpareParts spareParts6 = new SpareParts();
+                if (claimInputBean.getSparePartRequired6() != null && !claimInputBean.getSparePartRequired6().isEmpty()) {
+                    spareParts6.setSparePartType(claimInputBean.getSparePartRequired6());
+                    spareParts6.setQty(claimInputBean.getQuantity6());
+                    sparePartsList.add(spareParts6);
+                }
+                SpareParts spareParts7 = new SpareParts();
+                if (claimInputBean.getSparePartRequired7() != null && !claimInputBean.getSparePartRequired7().isEmpty()) {
+                    spareParts7.setSparePartType(claimInputBean.getSparePartRequired7());
+                    spareParts7.setQty(claimInputBean.getQuantity7());
+                    sparePartsList.add(spareParts7);
+                }
+                SpareParts spareParts8 = new SpareParts();
+                if (claimInputBean.getSparePartRequired8() != null && !claimInputBean.getSparePartRequired8().isEmpty()) {
+                    spareParts8.setSparePartType(claimInputBean.getSparePartRequired8());
+                    spareParts8.setQty(claimInputBean.getQuantity8());
+                    sparePartsList.add(spareParts8);
+                }
+                SpareParts spareParts9 = new SpareParts();
+                if (claimInputBean.getSparePartRequired9() != null && !claimInputBean.getSparePartRequired9().isEmpty()) {
+                    spareParts9.setSparePartType(claimInputBean.getSparePartRequired9());
+                    spareParts9.setQty(claimInputBean.getQuantity9());
+                    sparePartsList.add(spareParts9);
+                }
+                SpareParts spareParts10 = new SpareParts();
+                if (claimInputBean.getSparePartRequired10() != null && !claimInputBean.getSparePartRequired10().isEmpty()) {
+                    spareParts10.setSparePartType(claimInputBean.getSparePartRequired10());
+                    spareParts10.setQty(claimInputBean.getQuantity10());
+                    sparePartsList.add(spareParts10);
+                }
+
+                claimInputBean.setSpareParts(sparePartsList);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") noted by " + sessionBean.getUsername();
                 message = claimRepository.notedRequestClaim(claimInputBean);
@@ -817,6 +1030,7 @@ public class ClaimService {
             //skip audit trace
             audittrace.setSkip(true);
         } catch (Exception e) {
+            e.printStackTrace();
             message = MessageVarList.COMMON_ERROR_PROCESS;
             //skip audit trace
             audittrace.setSkip(true);
