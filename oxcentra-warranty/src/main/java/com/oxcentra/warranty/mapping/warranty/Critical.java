@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Component
 @Scope("prototype")
-public class Claim {
+public class Critical {
     private String id;
     private String chassis;
     private String model;
@@ -62,11 +62,6 @@ public class Claim {
     private String dealershipName;
     private String dealershipPhone;
     private String dealershipEmail;
-    private String failingArea;
-    private String supplierPhone;
-    private String supplierEmail;
-    private String supplierAddress;
-    private String comment;
 
     private List<SpareParts> sparePartList;
     private List<WarrantyAttachments> pdfFileList;

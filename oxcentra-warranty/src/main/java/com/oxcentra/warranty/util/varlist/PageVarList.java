@@ -17,4 +17,6 @@ public class PageVarList {
     public static final String SUPPLIER_MGT_PAGE = "SUPPLIER";
     public static final String DEALERSHIP_MGT_PAGE = "DEALERSHIP";
     public static final String CLAIMS_MGT_PAGE = "CLAIMS";
+    public static final String CRITICAL_MGT_PAGE = "CRCLM";
+    public static final String IN_HOUSE_MGT_PAGE = "INHMT";
 }

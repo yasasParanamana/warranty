@@ -226,20 +226,6 @@ public class ClaimRepository {
         return claimList;
     }
 
-    @Transactional(readOnly = true)
-    public long getDataCountDual(ClaimInputBean claimInputBean) throws Exception {
-        long count = 0;
-        try {
-            StringBuilder dynamicClause = new StringBuilder(SQL_GET_LIST_DUAL_DATA_COUNT);
-            //create the where clause
-            dynamicClause = this.setDynamicClauseDual(claimInputBean, dynamicClause);
-            //create the query
-            count = jdbcTemplate.queryForObject(dynamicClause.toString(), new Object[]{PageVarList.CLAIMS_MGT_PAGE, StatusVarList.STATUS_AUTH_PEN, sessionBean.getUsername()}, Long.class);
-        } catch (DataAccessException ex) {
-            throw ex;
-        }
-        return count;
-    }
 
     @Transactional
     public String insertClaim(ClaimInputBean claimInputBean) throws Exception {
@@ -700,6 +686,14 @@ public class ClaimRepository {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
 
+            //Delete Spare Part
+
+            int countSpare = 0;
+            countSpare = jdbcTemplate.update(SQL_DELETE_CLAIM_SPARE_PART, claimInputBean.getId());
+            if (countSpare < 0) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
             //insert in to reg_spare_part
 
             if (claimInputBean.getSpareParts().size() > 0) {
@@ -749,6 +743,15 @@ public class ClaimRepository {
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
+
+            //Delete Spare Part
+
+            int countSpare = 0;
+            countSpare = jdbcTemplate.update(SQL_DELETE_CLAIM_SPARE_PART, claimInputBean.getId());
+            if (countSpare < 0) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
 
             //insert in to reg_spare_part
 
@@ -912,25 +915,7 @@ public class ClaimRepository {
         return dynamicClause;
     }
 
-    private StringBuilder setDynamicClauseDual(ClaimInputBean claimInputBean, StringBuilder dynamicClause) {
-        dynamicClause.append(" 1=1 ");
-        try {
-            if (claimInputBean.getId() != null && !claimInputBean.getId().isEmpty()) {
-                dynamicClause.append("and lower(d.key1) like lower('%").append(claimInputBean.getId()).append("%')");
-            }
 
-            if (claimInputBean.getDescription() != null && !claimInputBean.getDescription().isEmpty()) {
-                dynamicClause.append("and lower(d.key2) like lower('%").append(claimInputBean.getDescription()).append("%')");
-            }
-
-            if (claimInputBean.getStatus() != null && !claimInputBean.getStatus().isEmpty()) {
-                dynamicClause.append("and d.key3 = '").append(claimInputBean.getStatus()).append("'");
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-        return dynamicClause;
-    }
 
     @Transactional(readOnly = true)
     public List<SpareParts> getSparePartList(String warrantyId) throws Exception {
