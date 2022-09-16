@@ -241,7 +241,9 @@
                     $('#editPostcode').html(data.postcode);
                     $('#editDealership').html(data.dealership);
                     $('#editClaimType').html(data.claimType);
+
                     $('#editPurchasingDate').html(data.purchasingDate);
+
                     $('#editDescription').html(data.description);
                     $('#editFailureType').html(data.failureType);
                     $('#editFailureArea').html(data.failureArea);
