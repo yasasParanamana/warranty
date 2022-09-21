@@ -10,10 +10,10 @@ public class PageVarList {
     public static final String PAGE_MGT_PAGE = "PGMT";//------------sort key 5
     public static final String SECTION_MGT_PAGE = "SCMT";//---------sort key 6
     public static final String USER_MGT_PAGE = "USMT";//------------sort key 7
-    public static final String SMPPCONFIG_MGT_PAGE = "SMMT";//------sort key 8
     public static final String PASSWORD_PARAMETER_MGT_PAGE = "PPMT";
     public static final String USERPARAMETER_MGT_PAGE = "UPMT";
     public static final String PASSWORD_CHANGE_MGT_PAGE = "PWCM";
+
     public static final String SUPPLIER_MGT_PAGE = "SUPPLIER";
     public static final String DEALERSHIP_MGT_PAGE = "DEALERSHIP";
     public static final String CLAIMS_MGT_PAGE = "CLAIMS";

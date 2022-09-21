@@ -1,4 +1,4 @@
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+                                                                                             <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -7,6 +7,11 @@
 
 <html>
 <head>
+    <style>
+        hr {
+            border: 1px solid #b9bbbe;
+        }
+    </style>
     <script type="text/javascript">
 
         var token = $("meta[name='_csrf']").attr("content");
@@ -47,7 +52,7 @@
 
             oTable = $('#table').dataTable({
                 bServerSide: true,
-                sAjaxSource: "${pageContext.servletContext.contextPath}/listWarrantyClaims.json",
+                sAjaxSource: "${pageContext.servletContext.contextPath}/listInHouse.json",
                 fnServerData: function (sSource, aoData, fnCallback) {
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
@@ -57,7 +62,7 @@
                     $.ajax({
                         dataType: 'json',
                         type: 'POST',
-                        url: "${pageContext.request.contextPath}/listWarrantyClaims.json",
+                        url: "${pageContext.request.contextPath}/listInHouse.json",
                         contentType: "application/json",
                         data: stringify_aoData(aoData),
                         success: fnCallback,
@@ -188,25 +193,14 @@
                         }
                     },
                     {
-                        visible: ${claim.vupdate},
-                        title: "Update",
+                        visible: ${inHouse.vupdate},
+                        title: "View",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-view.svg" alt=""></button>';
                         },
                         targets: 11,
-                        defaultContent: "--"
-                    },
-                    {
-                        visible: ${claim.vdelete},
-                        title: "Delete",
-                        sortable: false,
-                        className: "dt-center",
-                        mRender: function (data, type, full) {
-                            return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
-                        },
-                        targets: 12,
                         defaultContent: "--"
                     }
                 ]
@@ -216,7 +210,7 @@
         function editClaimInit(id) {
 
             $.ajax({
-                url: "${pageContext.request.contextPath}/getWarrantyClaims.json",
+                url: "${pageContext.request.contextPath}/getInHouse.json",
                 data: {
                     id: id
                 },
@@ -266,8 +260,24 @@
                     $('#editDealershipChassisNumber').html(data.chassis);
                     $('#editDealershipCaravanModel').html(data.model);
                     $('#editClaimType').html(data.claimType);
+                    $('#editFailingArea').val(data.failingArea);
+
+                    $('#editSupplier').val(data.supplier);
+                    $('#editSupContactNumber').html(data.supplierPhone);
+                    $('#editSupEmail').html(data.supplierEmail);
+                    $('#editSupAddress').html(data.supplierAddress);
+                    $('#editComment').val(data.comment);
+
+                    if(data.inHouse === true ){
+                        $('#isInHouse').attr('checked', true);
+                        $('#nextBtn').hide();
+                    }else{
+                        $('#isInHouse').attr('checked', false);
+                        $('#nextBtn').show();
+                    }
 
                     $("#updateSparePartList").empty();
+                    $("#viewSparePartList").empty();
                     $("#updatePdfFiletList").empty();
 
                     let sparePartLIst = data.sparePartList;
@@ -363,7 +373,7 @@
         function deleteCommon() {
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/deleteWarrantyClaims.json',
+                url: '${pageContext.request.contextPath}/deleteInHouse.json',
                 data: {id: $('#deleteCodeCommon').val()},
                 beforeSend: function (xhr) {
                     if (header && token) {
@@ -413,21 +423,21 @@
                     <h5 class="text-dark font-weight-bold my-1 mr-5">Warranty Claim</h5>
                     <!--end::Page Title-->
                 </div>
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <button type="button" class="btn btn-danger">
-                        Pending Approvals <span class="badge badge-light">${claim.countPending}</span>
-                    </button>
-                </div>
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <button type="button" class="btn btn-success">
-                        In Purchase Request Count <span class="badge badge-light">${claim.countInPurchase}</span>
-                    </button>
-                </div>
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <button type="button" class="btn btn-warning">
-                        Noted Request Count <span class="badge badge-light">${claim.countNoted}</span>
-                    </button>
-                </div>
+<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
+<%--                    <button type="button" class="btn btn-danger">--%>
+<%--                        Pending Approvals <span class="badge badge-light">${claim.countPending}</span>--%>
+<%--                    </button>--%>
+<%--                </div>--%>
+<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
+<%--                    <button type="button" class="btn btn-success">--%>
+<%--                        In Purchase Request Count <span class="badge badge-light">${claim.countInPurchase}</span>--%>
+<%--                    </button>--%>
+<%--                </div>--%>
+<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
+<%--                    <button type="button" class="btn btn-warning">--%>
+<%--                        Noted Request Count <span class="badge badge-light">${claim.countNoted}</span>--%>
+<%--                    </button>--%>
+<%--                </div>--%>
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
@@ -453,28 +463,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-toolbar">
-                        <!--begin::Button-->
-                        <c:if test="${claim.vadd}">
-                            <a href="javascript:void(0)" onclick="openAddModal()"
-                               class="btn btn-sm btn-primary font-weight-bolder">
-											<span class="svg-icon svg-icon-md">
-												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg"
-                                                     width="24px"
-                                                     height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<circle fill="#000000" cx="9" cy="15" r="6"/>
-														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                                                              fill="#000000" opacity="0.3"/>
-													</g>
-												</svg>
-                                                <!--end::Svg Icon-->
-											</span>New Record</a>
-                        </c:if>
-                        <!--end::Button-->
-                    </div>
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
@@ -497,8 +485,7 @@
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
                                 <th>Last Updated Time</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th>View</th>
                             </tr>
                             </thead>
                             <tbody></tbody>
@@ -512,8 +499,7 @@
     </div>
 </div>
 <!-- start include jsp files -->
-<jsp:include page="claims-mgt-add.jsp"/>
-<jsp:include page="claims-mgt-update.jsp"/>
+<jsp:include page="inhouse-mgt-view.jsp"/>
 <jsp:include page="../../common/delete-modal.jsp"/>
 <jsp:include page="../../common/confirm-modal.jsp"/>
 <jsp:include page="../../common/reject-modal.jsp"/>

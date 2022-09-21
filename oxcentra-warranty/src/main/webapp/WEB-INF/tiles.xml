@@ -138,6 +138,10 @@
         <put-attribute name="body" value="/WEB-INF/pages/warranty/critical/critical-mgt.jsp"/>
     </definition>
 
+    <definition name="inhouseview" extends="home-template">
+        <put-attribute name="body" value="/WEB-INF/pages/warranty/inhouse/inhouse-mgt.jsp"/>
+    </definition>
+
     <definition name="404" extends="newuser-template">
         <put-attribute name="body" value="/errors/404.jsp"/>
     </definition>

@@ -242,7 +242,7 @@ public class TaskService {
         String auditDescription = "";
         try {
             //check the page dual auth enable or disable
-            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.SMPPCONFIG_MGT_PAGE)) {
+            if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
                 //get the existing task
                 Task task = taskRepository.getTask(taskCode);
                 if (task != null) {

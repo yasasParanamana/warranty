@@ -1,4 +1,4 @@
-<%--
+responseBean<%--
   Created by IntelliJ IDEA.
   User: dilanka_w
   Date: 1/12/2021
@@ -19,7 +19,7 @@
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
+            <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="inHouse" method="post"
                        name="updateClaimForm">
                 <div class="form-group" style="text-align: center"><span style="alignment: center" id="responseMsgUpdate"></span></div>
                 <div class="form-group row" hidden="true">
@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="isInHouse" disabled="disabled">
+                            <input class="form-check-input" type="checkbox"  id="isInHouse" onclick="return false;">
                             <label class="form-check-label" for="isInHouse">
                                 Is In House
                             </label>
@@ -137,7 +137,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="sparePartList" id="updateSparePartList"></div>
+                            <div class="sparePartList" id="viewSparePartList"></div>
                         </div>
                     </div>
 
@@ -146,17 +146,17 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="editFailureType">Type of Failure</label>
+                            <label for="editFailureType">Type Of Failure</label>
                             <label>:</label>
                             <label id="editFailureType"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editFailureArea">Area of Failure</label>
+                            <label for="editFailureArea">Area Of Failure</label>
                             <label>:</label>
                             <label id="editFailureArea"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editRepairType">Type of Repair</label>
+                            <label for="editRepairType">Type Of Repair</label>
                             <label>:</label>
                             <label id="editRepairType"></label>
                         </div>
@@ -165,9 +165,9 @@
                                     class="text-danger">*</span></label>
                             <form:select path="failingArea" name="failingArea"
                                          class="form-control form-control-sm"
-                                         id="editfailingArea" >
+                                         id="editFailingArea" disabled="true">
                                 <option selected value="">Select Failing Area</option>
-                                <c:forEach items="${claim.failingAreaList}" var="failingArea">
+                                <c:forEach items="${inHouse.failingAreaList}" var="failingArea">
                                     <form:option
                                             value="${failingArea.key}">${failingArea.value}
                                     </form:option>
@@ -202,9 +202,9 @@
                             <form:select path="costType" name="costType"
                                          class="form-control form-control-sm"
                                          id="editCostType"
-                                         onchange="setOtherCostDeatilsEdit()" >
+                                         onchange="setOtherCostDeatilsEdit()" disabled="true" >
                                 <option selected value="">Select Type of Cost</option>
-                                <c:forEach items="${claim.costTypeList}" var="costType">
+                                <c:forEach items="${inHouse.costTypeList}" var="costType">
                                     <form:option
                                             value="${costType.key}">${costType.value}
                                     </form:option>
@@ -215,7 +215,7 @@
                         <div class="form-group col-md-3" id="editHoursDiv">
                             <label for="hours">Hours<span
                                     class="text-danger">*</span></label>
-                            <form:input path="hours" name="hours" type="text"
+                            <form:input path="hours" name="hours" type="text" readonly="true"
                                         class="form-control form-control-sm" id="editHours" maxlength="4"
                                         placeholder="Hours"
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9.]/g,''))"/>
@@ -223,7 +223,7 @@
                         <div class="form-group col-md-3" id="editLabourRateDiv">
                             <label for="labourRate">Labour Rate<span
                                     class="text-danger">*</span></label>
-                            <form:input path="labourRate" name="labourRate" type="text"
+                            <form:input path="labourRate" name="labourRate" type="text" readonly="true"
                                         class="form-control form-control-sm" id="editLabourRate" maxlength="5"
                                         placeholder="Labour Rate"
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
@@ -231,7 +231,7 @@
                         <div class="form-group col-md-3" id="editTotalCostDiv">
                             <label for="totalCost">Total Cost<span
                                     class="text-danger">*</span></label>
-                            <form:input path="totalCost" name="totalCost" type="text"
+                            <form:input path="totalCost" name="totalCost" type="text" readonly="true"
                                         class="form-control form-control-sm" id="editTotalCost" maxlength="10"
                                         placeholder="Total Cost"
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^0-9 .]/g,''))"/>
@@ -244,7 +244,7 @@
 
                             <form:textarea path="costDescription" name="costDescription" type="text"
                                            class="form-control form-control-sm" id="editCostDescription" maxlength="256"
-                                           placeholder="Description Of Cost"
+                                           placeholder="Description Of Cost" readonly="true"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
                                            data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
                             />
@@ -257,21 +257,9 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="modal-footer justify-content-end">
-                        <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="noted()" class="btn btn-primary">
-                                Noted
+                            <button id="nextBtn" type="button" onclick="next()" class="btn btn-primary">
+                                Next
                             </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
-                                Approve
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
-                                Reject
-                            </button>
-                        </c:if>
                     </div>
                 </div>
 
@@ -343,7 +331,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="sparePartSupList" id="viewSparePartList"></div>
+                            <div class="sparePartSupList" id="updateSparePartList"></div>
                         </div>
                     </div>
 
@@ -354,7 +342,7 @@
 
                             <form:textarea path="comment" name="comment" type="text"
                                            class="form-control form-control-sm" id="editComment" maxlength="256"
-                                           placeholder="Comment"
+                                           placeholder="Comment" readonly="true"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
                                            data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the Comment<b> "
                             />
@@ -369,10 +357,10 @@
                                 <div class="form-group col-md-3">
                                     <label for="supplier">Supplier Name</label>
                                     <form:select path="supplier" name="supplier"
-                                                 class="form-control form-control-sm" id="supplier"
-                                                 onchange="setSupplierDetails()">
+                                                 class="form-control form-control-sm" id="editSupplier"
+                                                 onchange="setSupplierDetails()" disabled="true">
                                         <option selected value="">Select Supplier</option>
-                                        <c:forEach items="${claim.supplierActList}" var="supplier">
+                                        <c:forEach items="${inHouse.supplierActList}" var="supplier">
                                             <form:option
                                                     value="${supplier.supplierCode}">${supplier.supplierName}
                                             </form:option>
@@ -400,21 +388,9 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-end">
-                        <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="previous()" class="btn btn-primary">
+                            <button id="previousBtn" type="button" onclick="previous()" class="btn btn-primary">
                                 Previous
                             </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
-                                Send E-mail to Supplier
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
-                                Cancel
-                            </button>
-                        </c:if>
                     </div>
                 </div>
 
@@ -431,12 +407,20 @@
         $('#firstTab').show();
     }
 
+    function next() {
+        $('#secondTab').show();
+        $('#firstTab').hide();
+    }
+
+
+
+
     function setSupplierDetails() {
 
         const supplierId = $('#supplier').val();
 
         $.ajax({
-            url: "${pageContext.request.contextPath}/getSupplierDetailsWarrantyClaims.json",
+            url: "${pageContext.request.contextPath}/getSupplierDetailsInHouse.json",
             data: {
                 supplierId: supplierId
             },
@@ -465,7 +449,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '${pageContext.request.contextPath}/notedWarrantyClaims.json',
+            url: '${pageContext.request.contextPath}/notedInHouse.json',
             data: $('form[name=updateClaimForm]').serialize(),
             beforeSend: function (xhr) {
                 if (header && token) {
@@ -502,7 +486,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/approveWarrantyClaims.json',
+                url: '${pageContext.request.contextPath}/approveInHouse.json',
                 data: $('form[name=updateClaimForm]').serialize(),
                 beforeSend: function (xhr) {
                     if (header && token) {
@@ -539,7 +523,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '${pageContext.request.contextPath}/sendEmailWarrantyClaims.json',
+            url: '${pageContext.request.contextPath}/sendEmailInHouse.json',
             data: $('form[name=updateClaimForm]').serialize(),
             beforeSend: function (xhr) {
                 if (header && token) {
@@ -568,7 +552,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '${pageContext.request.contextPath}/rejectWarrantyClaims.json',
+            url: '${pageContext.request.contextPath}/rejectInHouse.json',
             data: $('form[name=updateClaimForm]').serialize(),
             beforeSend: function (xhr) {
                 if (header && token) {
