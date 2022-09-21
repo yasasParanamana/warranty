@@ -194,7 +194,7 @@
                     },
                     {
                         visible: ${critical.vupdate},
-                        title: "Update",
+                        title: "View",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
