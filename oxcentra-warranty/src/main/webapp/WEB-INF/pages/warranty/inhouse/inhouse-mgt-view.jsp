@@ -128,6 +128,13 @@ responseBean<%--
 
                     </div>
 
+                    <h5>Attachments</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="updateClaimFiletList" id="updateClaimFiletList"></div>
+                        </div>
+                    </div>
+
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="editDescription">Description</label>
@@ -187,7 +194,7 @@ responseBean<%--
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
-                            <div class="updatePdfFiletList" id="updatePdfFiletList"></div>
+                            <div class="updateRepairFiletList" id="updateRepairFiletList"></div>
                         </div>
                     </div>
 

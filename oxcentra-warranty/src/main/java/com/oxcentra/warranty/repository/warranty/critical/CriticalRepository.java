@@ -79,7 +79,7 @@ public class CriticalRepository {
             "where t.id = ? ";
 
     private final String SQL_GET_LIST_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.warranty_id = ? ";
-    private final String SQL_GET_LIST_ATTACHMENT_PDF = "select t.attachment_id,t.warranty_id,t.file_name,t.file_format,CONVERT(t.attachment_file USING UTF8) as attachmentFile,t.createdtime from reg_warranty_attachments t  where t.warranty_id = ? ";
+    private final String SQL_GET_LIST_ATTACHMENT_PDF = "select t.attachment_id,t.warranty_id,t.file_name,t.file_format,CONVERT(t.attachment_file USING UTF8) as attachmentFile,t.createdtime from reg_warranty_attachments t  where t.warranty_id = ? and t.attachment_type=? ";
     private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
 
 
@@ -578,10 +578,10 @@ public class CriticalRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<WarrantyAttachments> getPdfFileList(String warrantyId) throws Exception {
+    public List<WarrantyAttachments> getFileList(String warrantyId , String attachmentType) throws Exception {
         List<WarrantyAttachments> warrantyAttachmentsBeanList;
         try {
-            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId);
+            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId ,attachmentType);
             warrantyAttachmentsBeanList = warrantyAttachmentsList.stream().map((record) -> {
                 WarrantyAttachments claimValueBean = new WarrantyAttachments();
                 claimValueBean.setId(new BigDecimal(record.get("attachment_id").toString()));
@@ -599,5 +599,6 @@ public class CriticalRepository {
         }
         return warrantyAttachmentsBeanList;
     }
-    
+
+
 }

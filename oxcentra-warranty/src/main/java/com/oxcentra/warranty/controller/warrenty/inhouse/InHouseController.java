@@ -23,10 +23,7 @@ import com.oxcentra.warranty.service.warranty.inhouse.InHouseService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
 import com.oxcentra.warranty.util.common.ResponseBean;
-import com.oxcentra.warranty.util.varlist.MessageVarList;
-import com.oxcentra.warranty.util.varlist.PageVarList;
-import com.oxcentra.warranty.util.varlist.StatusVarList;
-import com.oxcentra.warranty.util.varlist.TaskVarList;
+import com.oxcentra.warranty.util.varlist.*;
 import com.oxcentra.warranty.validators.RequestBeanValidation;
 import com.oxcentra.warranty.validators.warranty.claim.ClaimValidator;
 import org.apache.commons.logging.Log;
@@ -71,6 +68,9 @@ public class InHouseController implements RequestBeanValidation<Object> {
 
     @Autowired
     Common common;
+
+    @Autowired
+    CommonVarList commonVarList;
 
     @GetMapping("/viewInHouse")
     @AccessControl(pageCode = PageVarList.IN_HOUSE_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
@@ -138,11 +138,13 @@ public class InHouseController implements RequestBeanValidation<Object> {
                 List<SpareParts> sparePartsList = inHouseService.getSpareParts(id);
                 claim.setSparePartList(sparePartsList);
 
-                //get pdf files
-                /*List<WarrantyAttachments> attachmentsPDFList = inHouseService.getPdfFiles(id);
-                claim.setPdfFileList(attachmentsPDFList);*/
+                //get repair files
+                List<WarrantyAttachments> attachmentsRepairFileList = inHouseService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_REPAIR);
+                claim.setRepairFileList(attachmentsRepairFileList);
 
-                //get jpeg
+                //get cost type files
+                List<WarrantyAttachments> attachmentsCostFileList = inHouseService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_DEALER);
+                claim.setClaimTypeFileList(attachmentsCostFileList);
 
             }
         } catch (Exception e) {

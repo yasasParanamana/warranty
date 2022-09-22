@@ -176,7 +176,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
 
                 //get cost type files
                 List<WarrantyAttachments> attachmentsCostFileList = claimService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_DEALER);
-                claim.setClaimTypeFileList(attachmentsCostFileList); ;
+                claim.setClaimTypeFileList(attachmentsCostFileList);
 
 
             }

@@ -110,10 +110,10 @@ public class InHouseService {
         return sparePartBeanList;
     }
 
-    public List<WarrantyAttachments> getPdfFiles(String id) throws Exception {
+    public List<WarrantyAttachments> getFiles(String id ,String attachmentType) throws Exception {
         List<WarrantyAttachments> attachmentBeanList;
         try {
-            attachmentBeanList = inHouseRepository.getPdfFileList(id);
+            attachmentBeanList = inHouseRepository.getFileList(id,attachmentType);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {

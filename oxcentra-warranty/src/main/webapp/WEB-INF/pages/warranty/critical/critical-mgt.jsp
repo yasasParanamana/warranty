@@ -307,15 +307,28 @@
                     });
 
 
-                    let pdfFileList = data.pdfFileList;
-                    let tableAttachment = $('<table/>').appendTo($('#updatePdfFiletList'));
+                    let repairFileList = data.repairFileList;
+                    let tableAttachment = $('<table/>').appendTo($('#updateRepairFiletList'));
 
-                    $.each(pdfFileList, function (i, pdfFileList) {
+                    $.each(repairFileList, function (i, repairFileList) {
 
                         $('<tr/>').appendTo(tableAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
-                            .append($('<td/>').text(pdfFileList.fileName))
-                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + pdfFileList.fileFormat +','+ pdfFileList.base64value+','+pdfFileList.fileName+'\')">Download</a>'));
+                            .append($('<td/>').text(repairFileList.fileName))
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + repairFileList.fileFormat +','+ repairFileList.base64value+','+repairFileList.fileName+'\')">Download</a>'));
+                        ;
+                    });
+
+
+                    let claimTypeFileList = data.claimTypeFileList;
+                    let tableClaimAttachment = $('<table/>').appendTo($('#updateClaimFiletList'));
+
+                    $.each(claimTypeFileList, function (i, claimTypeFileList) {
+
+                        $('<tr/>').appendTo(tableClaimAttachment)
+                            .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
+                            .append($('<td/>').text(claimTypeFileList.fileName))
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + claimTypeFileList.fileFormat +','+ claimTypeFileList.base64value+','+claimTypeFileList.fileName+'\')">Download</a>'));
                         ;
                     });
 

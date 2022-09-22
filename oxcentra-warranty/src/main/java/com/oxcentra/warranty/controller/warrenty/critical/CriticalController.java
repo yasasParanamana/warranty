@@ -17,10 +17,7 @@ import com.oxcentra.warranty.service.common.CommonService;
 import com.oxcentra.warranty.service.warranty.critical.CriticalService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
-import com.oxcentra.warranty.util.varlist.MessageVarList;
-import com.oxcentra.warranty.util.varlist.PageVarList;
-import com.oxcentra.warranty.util.varlist.StatusVarList;
-import com.oxcentra.warranty.util.varlist.TaskVarList;
+import com.oxcentra.warranty.util.varlist.*;
 import com.oxcentra.warranty.validators.RequestBeanValidation;
 import com.oxcentra.warranty.validators.warranty.claim.ClaimValidator;
 import org.apache.commons.logging.Log;
@@ -64,6 +61,9 @@ public class CriticalController implements RequestBeanValidation<Object> {
 
     @Autowired
     Common common;
+
+    @Autowired
+    CommonVarList commonVarList;
 
     @GetMapping("/viewCritical")
     @AccessControl(pageCode = PageVarList.CRITICAL_MGT_PAGE, taskCode = TaskVarList.VIEW_TASK)
@@ -131,11 +131,13 @@ public class CriticalController implements RequestBeanValidation<Object> {
                 List<SpareParts> sparePartsList = criticalService.getSpareParts(id);
                 claim.setSparePartList(sparePartsList);
 
-                //get pdf files
-//                List<WarrantyAttachments> attachmentsPDFList = criticalService.getPdfFiles(id);
-//                claim.setPdfFileList(attachmentsPDFList);
+                //get repair files
+                List<WarrantyAttachments> attachmentsRepairFileList = criticalService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_REPAIR);
+                claim.setRepairFileList(attachmentsRepairFileList);
 
-                //get jpeg
+                //get cost type files
+                List<WarrantyAttachments> attachmentsCostFileList = criticalService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_DEALER);
+                claim.setClaimTypeFileList(attachmentsCostFileList);
 
             }
         } catch (Exception e) {
