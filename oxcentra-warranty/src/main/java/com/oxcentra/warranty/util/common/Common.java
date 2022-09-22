@@ -307,10 +307,22 @@ public class Common {
         try {
             UUID uuid = UUID.randomUUID();
             supplierUrlToken = uuid.toString();
-            System.out.println("Randomly Generated UUID: " +supplierUrlToken);
         } catch (Exception e) {
             logger.error("Exception", e);
         }
         return supplierUrlToken;
+    }
+
+    public String getFormattedDate() {
+        String formattedDate = "--";
+        try {
+            Long currentTime = System.currentTimeMillis();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date date = new Date(currentTime);
+            formattedDate = simpleDateFormat.format(date);
+        } catch (Exception e) {
+            logger.error("Exception", e);
+        }
+        return formattedDate;
     }
 }

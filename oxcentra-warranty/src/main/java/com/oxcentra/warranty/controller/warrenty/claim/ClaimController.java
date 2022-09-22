@@ -41,7 +41,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -129,9 +131,8 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM ADD");
         ResponseBean responseBean = null;
         try {
-            claimInputBean.setId("WDC-" + System.currentTimeMillis() / 100);
+            claimInputBean.setId("WDC-" + common.getFormattedDate());
             System.out.println("Claim ID    : " + claimInputBean.getId() );
-            System.out.println("No of Files : " + claimInputBean.getFile().size() );
 
             BindingResult bindingResult = validateRequestBean(claimInputBean);
 
