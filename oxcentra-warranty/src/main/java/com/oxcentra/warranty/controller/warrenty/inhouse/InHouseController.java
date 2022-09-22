@@ -139,8 +139,8 @@ public class InHouseController implements RequestBeanValidation<Object> {
                 claim.setSparePartList(sparePartsList);
 
                 //get pdf files
-                List<WarrantyAttachments> attachmentsPDFList = inHouseService.getPdfFiles(id);
-                claim.setPdfFileList(attachmentsPDFList);
+                /*List<WarrantyAttachments> attachmentsPDFList = inHouseService.getPdfFiles(id);
+                claim.setPdfFileList(attachmentsPDFList);*/
 
                 //get jpeg
 

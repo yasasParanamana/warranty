@@ -230,10 +230,10 @@ public class ClaimService {
         return sparePartBeanList;
     }
 
-    public List<WarrantyAttachments> getPdfFiles(String id) throws Exception {
+    public List<WarrantyAttachments> getFiles(String id ,String attachmentType) throws Exception {
         List<WarrantyAttachments> attachmentBeanList;
         try {
-            attachmentBeanList = claimRepository.getPdfFileList(id);
+            attachmentBeanList = claimRepository.getFileList(id,attachmentType);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {

@@ -108,4 +108,10 @@ public class CommonVarList {
     @Value("${category.isbulk.no}")
     public String CATEGORY_ISBULK_NO;
     //-------------------------------category paramter default values ------------------------------------------------//
+
+    @Value("${attachment.filetype.dealer}")
+    public String ATTACHMENT_FILE_TYPE_DEALER;
+
+    @Value("${attachment.filetype.repair}")
+    public String ATTACHMENT_FILE_TYPE_REPAIR;
 }

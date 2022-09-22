@@ -69,5 +69,6 @@ public class Claim {
     private String comment;
 
     private List<SpareParts> sparePartList;
-    private List<WarrantyAttachments> pdfFileList;
+    private List<WarrantyAttachments> repairFileList;
+    private List<WarrantyAttachments> claimTypeFileList;
 }
