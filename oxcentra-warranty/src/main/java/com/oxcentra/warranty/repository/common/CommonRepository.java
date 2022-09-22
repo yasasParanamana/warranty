@@ -121,7 +121,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-13 12:23:47 PM
      * @Version V1.00
      * @MethodName getPasswordParam
@@ -146,7 +146,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-13 02:14:18 PM
      * @Version V1.00
      * @MethodName getUserRoleStatusCode
@@ -192,7 +192,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-20 12:07:05 PM
      * @Version V1.00
      * @MethodName getStatusList
@@ -220,7 +220,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-20 12:07:33 PM
      * @Version V1.00
      * @MethodName insertDualAuthRecordSQL
@@ -249,7 +249,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-20 12:08:50 PM
      * @Version V1.00
      * @MethodName checkPageIsDualAuthenticate
@@ -272,7 +272,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-19 04:53:52 PM
      * @Version V1.00
      * @MethodName insertAudittrace
@@ -300,7 +300,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:45:29 PM
      * @Version V1.00
      * @MethodName getTempAuthRecord
@@ -493,7 +493,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:49:15 PM
      * @Version V1.00
      * @MethodName updateTempAuthRecord
@@ -519,7 +519,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:49:37 PM
      * @Version V1.00
      * @MethodName getTempAuthRecordCount
@@ -545,7 +545,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:49:51 PM
      * @Version V1.00
      * @MethodName getPageList
@@ -572,7 +572,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:52:25 PM
      * @Version V1.00
      * @MethodName getSectionList
@@ -599,7 +599,7 @@ public class CommonRepository {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-25 12:54:49 PM
      * @Version V1.00
      * @MethodName getTaskList

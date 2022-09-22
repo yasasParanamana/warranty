@@ -6,7 +6,7 @@
 package com.oxcentra.warranty.util.common;
 
 /**
- * @author dilanka_w
+ * @author yasas
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;

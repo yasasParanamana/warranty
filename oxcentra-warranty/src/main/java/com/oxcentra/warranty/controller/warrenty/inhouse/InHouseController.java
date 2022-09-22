@@ -9,6 +9,7 @@ import com.oxcentra.warranty.bean.sysconfigmgt.failuretype.FailureType;
 import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
 import com.oxcentra.warranty.bean.sysconfigmgt.repairtype.RepairType;
 import com.oxcentra.warranty.bean.sysconfigmgt.state.State;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.bean.warranty.inhouse.InHouseInputBean;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
@@ -21,6 +22,7 @@ import com.oxcentra.warranty.service.warranty.critical.CriticalService;
 import com.oxcentra.warranty.service.warranty.inhouse.InHouseService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
+import com.oxcentra.warranty.util.common.ResponseBean;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
 import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
@@ -32,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -225,6 +228,26 @@ public class InHouseController implements RequestBeanValidation<Object> {
         dataBinder.setValidator(claimValidator);
         dataBinder.validate();
         return dataBinder.getBindingResult();
+    }
+
+    @PostMapping(value = "/updateInHouse", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @AccessControl(pageCode = PageVarList.IN_HOUSE_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    public @ResponseBody
+    ResponseBean updateClaim(@ModelAttribute("inHouse") InHouseInputBean inHouseInputBean , Locale locale) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM UPDATE");
+        ResponseBean responseBean = null;
+        try {
+            String message = inHouseService.updateRequestClaim(inHouseInputBean, locale);
+            if (message.isEmpty()) {
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_UPDATE, null, locale), null);
+            } else {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+            }
+        } catch (Exception e) {
+            logger.error("Exception  :  ", e);
+            responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
+        }
+        return responseBean;
     }
 
 }

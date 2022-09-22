@@ -1,6 +1,7 @@
 package com.oxcentra.warranty.repository.warranty.inhouse;
 
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.bean.warranty.critical.CriticalInputBean;
 import com.oxcentra.warranty.bean.warranty.inhouse.InHouseInputBean;
 import com.oxcentra.warranty.mapping.warranty.Claim;
@@ -8,8 +9,10 @@ import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
+import com.oxcentra.warranty.util.varlist.MessageVarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -83,7 +86,7 @@ public class InHouseRepository {
     private final String SQL_GET_LIST_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.warranty_id = ? ";
     private final String SQL_GET_LIST_ATTACHMENT_PDF = "select t.attachment_id,t.warranty_id,t.file_name,t.file_format,CONVERT(t.attachment_file USING UTF8) as attachmentFile,t.createdtime from reg_warranty_attachments t  where t.warranty_id = ? ";
     private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
-
+    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,lastupdateduser=?,lastupdatedtime=? ,supplier_tracking_num=? where id=? ";
 
 
     @Transactional(readOnly = true)
@@ -599,6 +602,31 @@ public class InHouseRepository {
             throw e;
         }
         return warrantyAttachmentsBeanList;
+    }
+
+    @Transactional
+    public String updateRequestClaim(InHouseInputBean inHouseInputBean) throws Exception {
+        String message = "";
+        try {
+            int value = 0;
+            value = jdbcTemplate.update(SQL_STATUS_UPDATE_CLAIM,
+                    inHouseInputBean.getStatus(),
+                    inHouseInputBean.getLastUpdatedUser(),
+                    inHouseInputBean.getLastUpdatedTime(),
+                    inHouseInputBean.getSupplierTrackingNum(),
+                    inHouseInputBean.getId()
+            );
+            if (value != 1) {
+                message = MessageVarList.COMMON_ERROR_PROCESS;
+            }
+
+        } catch (DuplicateKeyException ex) {
+
+            throw ex;
+        } catch (Exception e) {
+            throw e;
+        }
+        return message;
     }
     
 }

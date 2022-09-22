@@ -59,7 +59,7 @@ public class ClaimRepository {
     private final String SQL_DELETE_CLAIM = "delete from reg_warranty_claim where id=?";
     private final String SQL_DELETE_CLAIM_SPARE_PART = "delete from reg_spare_part where warranty_id=?";
     private final String SQL_DELETE_CLAIM_ATTACHMENT = "delete from reg_warranty_attachments where warranty_id=?";
-    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=? where id=? ";
+    private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=?, failing_area=? where id=? ";
     private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
             "t.id," +
@@ -728,6 +728,7 @@ public class ClaimRepository {
                     claimInputBean.getLabourRate(),
                     claimInputBean.getTotalCost(),
                     claimInputBean.getCostDescription(),
+                    claimInputBean.getFailingArea(),
                     claimInputBean.getId()
             );
             if (value != 1) {
@@ -786,6 +787,7 @@ public class ClaimRepository {
                     claimInputBean.getLabourRate(),
                     claimInputBean.getTotalCost(),
                     claimInputBean.getCostDescription(),
+                    claimInputBean.getFailingArea(),
                     claimInputBean.getId()
             );
             if (value != 1) {
@@ -870,6 +872,7 @@ public class ClaimRepository {
                     claimInputBean.getLabourRate(),
                     claimInputBean.getTotalCost(),
                     claimInputBean.getCostDescription(),
+                    claimInputBean.getFailingArea(),
                     claimInputBean.getId()
             );
             if (value != 1) {

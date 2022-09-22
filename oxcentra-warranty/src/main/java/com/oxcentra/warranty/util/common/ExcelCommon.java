@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ExcelCommon {
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:02:14 PM
      * @Version V1.00
      * @MethodName getFontBoldedCell
@@ -30,7 +30,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:05:41 PM
      * @Version V1.00
      * @MethodName getFontBoldedUnderlinedCell
@@ -47,7 +47,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:06:33 PM
      * @Version V1.00
      * @MethodName getColumnHeadeCell
@@ -69,7 +69,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:07:29 PM
      * @Version V1.00
      * @MethodName getRowColumnCell
@@ -87,7 +87,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:08:45 PM
      * @Version V1.00
      * @MethodName getAligneCell
@@ -109,7 +109,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:10:25 PM
      * @Version V1.00
      * @MethodName getHeaderCell
@@ -130,7 +130,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:10:56 PM
      * @Version V1.00
      * @MethodName getColumnHeaderCell
@@ -152,7 +152,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:11:40 PM
      * @Version V1.00
      * @MethodName getFirstColumnHeaderCell
@@ -175,7 +175,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:11:58 PM
      * @Version V1.00
      * @MethodName getLastColumnHeaderCell
@@ -198,7 +198,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:12:17 PM
      * @Version V1.00
      * @MethodName getRowColumnCellNew
@@ -219,7 +219,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:12:31 PM
      * @Version V1.00
      * @MethodName getRowFirstColumnCell
@@ -239,7 +239,7 @@ public class ExcelCommon {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 04:12:42 PM
      * @Version V1.00
      * @MethodName getRowColumnDetailsCell

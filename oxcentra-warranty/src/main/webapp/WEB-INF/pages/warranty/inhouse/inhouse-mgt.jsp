@@ -322,32 +322,14 @@
                     $('#firstTab').show();
                     $('#secondTab').hide();
 
-                    $('#modalUpdateClaim').modal('toggle');
-                    $('#modalUpdateClaim').modal('show');
+                    $('#modalUpdateInHouseClaim').modal('toggle');
+                    $('#modalUpdateInHouseClaim').modal('show');
 
                 },
                 error: function (data) {
                     window.location = "${pageContext.request.contextPath}/logout.htm";
                 }
             });
-        }
-
-        function deleteClaimInit(keyval) {
-            $('#deleteCodeCommon').val(keyval);
-            $('#modalDeleteCommon').modal('toggle');
-            $('#modalDeleteCommon').modal('show');
-        }
-
-        function confirmClaimInit(keyval) {
-            $('#idConfirm').val(keyval);
-            $('#modalConfirmCommon').modal('toggle');
-            $('#modalConfirmCommon').modal('show');
-        }
-
-        function rejectClaimInit(keyval) {
-            $('#idReject').val(keyval);
-            $('#modalRejectCommon').modal('toggle');
-            $('#modalRejectCommon').modal('show');
         }
 
         function searchStart() {
@@ -364,49 +346,6 @@
         function search() {
             oTable.fnDraw();
         }
-
-        function openAddModal() {
-            $('#modalAddClaim').modal('toggle');
-            $('#modalAddClaim').modal('show');
-        }
-
-        function deleteCommon() {
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath}/deleteInHouse.json',
-                data: {id: $('#deleteCodeCommon').val()},
-                beforeSend: function (xhr) {
-                    if (header && token) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                },
-                success: function (res) {
-
-                    //close delete modal
-                    $('#modalDeleteCommon').modal('toggle');
-                    //open delete process modal
-                    $('#modalDeleteProcessCommon').modal('toggle');
-                    $('#modalDeleteProcessCommon').modal('show');
-
-                    if (res.flag) { //success
-                        $('#responseMsgDelete').show();
-                        $('#responseMsgDelete').addClass('success-response').text(res.successMessage);
-                        searchStart();
-                    } else {
-                        //Set error messages
-                        $('#responseMsgDelete').show();
-                        $('#responseMsgDelete').addClass('error-response').text(res.errorMessage);
-                    }
-
-
-                },
-                error: function (jqXHR) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-        }
-
-
     </script>
 </head>
 
@@ -420,25 +359,9 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Warranty Claim</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">In House Requests</h5>
                     <!--end::Page Title-->
                 </div>
-<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-<%--                    <button type="button" class="btn btn-danger">--%>
-<%--                        Pending Approvals <span class="badge badge-light">${claim.countPending}</span>--%>
-<%--                    </button>--%>
-<%--                </div>--%>
-<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-<%--                    <button type="button" class="btn btn-success">--%>
-<%--                        In Purchase Request Count <span class="badge badge-light">${claim.countInPurchase}</span>--%>
-<%--                    </button>--%>
-<%--                </div>--%>
-<%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-<%--                    <button type="button" class="btn btn-warning">--%>
-<%--                        Noted Request Count <span class="badge badge-light">${claim.countNoted}</span>--%>
-<%--                    </button>--%>
-<%--                </div>--%>
-                <!--end::Page Heading-->
             </div>
             <!--end::Info-->
         </div>

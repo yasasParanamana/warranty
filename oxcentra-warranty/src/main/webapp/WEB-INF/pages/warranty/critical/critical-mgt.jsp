@@ -420,7 +420,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">Warranty Claim</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Critical Requests</h5>
                     <!--end::Page Title-->
                 </div>
 <%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>

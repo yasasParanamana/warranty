@@ -2,6 +2,7 @@ package com.oxcentra.warranty.service.warranty.inhouse;
 
 import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.session.SessionBean;
+import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.bean.warranty.inhouse.InHouseInputBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.warranty.Claim;
@@ -11,16 +12,16 @@ import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.repository.warranty.inhouse.InHouseRepository;
 import com.oxcentra.warranty.util.common.Common;
-import com.oxcentra.warranty.util.varlist.PageVarList;
-import com.oxcentra.warranty.util.varlist.SectionVarList;
-import com.oxcentra.warranty.util.varlist.TaskVarList;
+import com.oxcentra.warranty.util.varlist.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Scope("prototype")
@@ -202,4 +203,172 @@ public class InHouseService {
 
     }
 
+    public String updateRequestClaim(InHouseInputBean inHouseInputBean, Locale locale) throws Exception {
+        String message = "";
+        String auditDescription = "";
+        Claim existingClaim = null;
+        try {
+            existingClaim = inHouseRepository.getClaim(inHouseInputBean.getId());
+            if (existingClaim != null) {
+
+                //set the other values to input bean
+                Date currentDate = commonRepository.getCurrentDate();
+                String lastUpdatedUser = sessionBean.getUsername();
+
+                inHouseInputBean.setStatus(StatusVarList.STATUS_CLAIM_NOTED);
+                inHouseInputBean.setLastUpdatedTime(currentDate);
+                inHouseInputBean.setLastUpdatedUser(lastUpdatedUser);
+
+                auditDescription = "Claim (ID: " + inHouseInputBean.getId() + ") updated by " + sessionBean.getUsername();
+                message = inHouseRepository.updateRequestClaim(inHouseInputBean);
+
+            } else {
+                message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+                auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
+            }
+        } catch (EmptyResultDataAccessException ere) {
+            message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } catch (Exception e) {
+            message = MessageVarList.COMMON_ERROR_PROCESS;
+            //skip audit trace
+            audittrace.setSkip(true);
+        } finally {
+            if (message.isEmpty()) {
+                //set the audit trace values
+                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+                audittrace.setTask(TaskVarList.UPDATE_TASK);
+                audittrace.setDescription(auditDescription);
+                //create audit record
+                audittrace.setField(fields);
+                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
+                audittrace.setNewvalue(this.getClaimAsString(inHouseInputBean, false));
+            }
+            //set audit to session bean
+            sessionBean.setAudittrace(audittrace);
+        }
+        return message;
+    }
+
+    private String getClaimAsString(Claim claim, boolean checkChanges) {
+        StringBuilder claimStringBuilder = new StringBuilder();
+        try {
+            if (claim != null) {
+                if (claim.getId() != null) {
+                    claimStringBuilder.append(claim.getId());
+                } else {
+                    claimStringBuilder.append("error");
+                }
+
+                /*taskStringBuilder.append("|");
+                if (task.getDescription() != null) {
+                    taskStringBuilder.append(task.getDescription());
+                } else {
+                    taskStringBuilder.append("--");
+                }
+
+                taskStringBuilder.append("|");
+                if (task.getStatus() != null) {
+                    taskStringBuilder.append(task.getStatus());
+                } else {
+                    taskStringBuilder.append("--");
+                }
+
+                if (!checkChanges) {
+                    taskStringBuilder.append("|");
+                    if (task.getCreatedUser() != null) {
+                        taskStringBuilder.append(task.getCreatedUser());
+                    } else {
+                        taskStringBuilder.append("--");
+                    }
+
+                    taskStringBuilder.append("|");
+                    if (task.getCreatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(task.getCreatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }
+
+                    taskStringBuilder.append("|");
+                    if (task.getLastUpdatedUser() != null) {
+                        taskStringBuilder.append(task.getLastUpdatedUser());
+                    } else {
+                        taskStringBuilder.append("--");
+                    }*/
+
+                  /*  taskStringBuilder.append("|");
+                    if (task.getLastUpdatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(task.getLastUpdatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }*/
+                /*    }*/
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return claimStringBuilder.toString();
+    }
+
+    private String getClaimAsString(InHouseInputBean inHouseInputBean, boolean checkChanges) {
+        StringBuilder claimStringBuilder = new StringBuilder();
+        try {
+            if (inHouseInputBean != null) {
+                if (inHouseInputBean.getId() != null) {
+                    claimStringBuilder.append(inHouseInputBean.getId());
+                } else {
+                    claimStringBuilder.append("error");
+                }
+
+               /* taskStringBuilder.append("|");
+                if (taskInputBean.getDescription() != null) {
+                    taskStringBuilder.append(taskInputBean.getDescription());
+                } else {
+                    taskStringBuilder.append("--");
+                }
+
+                taskStringBuilder.append("|");
+                if (taskInputBean.getStatus() != null) {
+                    taskStringBuilder.append(taskInputBean.getStatus());
+                } else {
+                    taskStringBuilder.append("--");
+                }
+
+                if (!checkChanges) {
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getCreatedUser() != null) {
+                        taskStringBuilder.append(taskInputBean.getCreatedUser());
+                    } else {
+                        taskStringBuilder.append("--");
+                    }
+
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getCreatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(taskInputBean.getCreatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }
+
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getLastUpdatedUser() != null) {
+                        taskStringBuilder.append(taskInputBean.getLastUpdatedUser());
+                    } else {
+                        taskStringBuilder.append("--");
+                    }
+
+                    taskStringBuilder.append("|");
+                    if (taskInputBean.getLastUpdatedTime() != null) {
+                        taskStringBuilder.append(common.formatDateToString(taskInputBean.getLastUpdatedTime()));
+                    } else {
+                        taskStringBuilder.append("--");
+                    }*/
+                /* }*/
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return claimStringBuilder.toString();
+    }
 }

@@ -1,6 +1,6 @@
 responseBean<%--
   Created by IntelliJ IDEA.
-  User: dilanka_w
+  User: yasas
   Date: 1/12/2021
   Time: 5:14 PM
   To change this template use File | Settings | File Templates.
@@ -9,7 +9,7 @@ responseBean<%--
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<div class="modal fade" id="modalUpdateClaim" data-backdrop="static" tabindex="-1" role="dialog"
+<div class="modal fade" id="modalUpdateInHouseClaim" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modalUpdateTaskLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -21,7 +21,8 @@ responseBean<%--
             </div>
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="inHouse" method="post"
                        name="updateClaimForm">
-                <div class="form-group" style="text-align: center"><span style="alignment: center" id="responseMsgUpdate"></span></div>
+                <div class="form-group" style="text-align: center"><span style="alignment: center"
+                                                                         id="responseMsgUpdate"></span></div>
                 <div class="form-group row" hidden="true">
                     <div class="col-sm-8">
                         <form:input path="id" name="id" type="text" id="editId"/>
@@ -112,14 +113,14 @@ responseBean<%--
                             <label id="editClaimType"></label>
                         </div>
 
-                        <div class="form-group col-md-3" >
+                        <div class="form-group col-md-3">
                             <label for="editPurchasingDate">Purchasing Date</label>
                             <label>:</label>
                             <label id="editPurchasingDate"></label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox"  id="isInHouse" onclick="return false;">
+                            <input class="form-check-input" type="checkbox" id="isInHouse" onclick="return false;">
                             <label class="form-check-label" for="isInHouse">
                                 Is In House
                             </label>
@@ -202,7 +203,7 @@ responseBean<%--
                             <form:select path="costType" name="costType"
                                          class="form-control form-control-sm"
                                          id="editCostType"
-                                         onchange="setOtherCostDeatilsEdit()" disabled="true" >
+                                         onchange="setOtherCostDeatilsEdit()" disabled="true">
                                 <option selected value="">Select Type of Cost</option>
                                 <c:forEach items="${inHouse.costTypeList}" var="costType">
                                     <form:option
@@ -246,8 +247,19 @@ responseBean<%--
                                            class="form-control form-control-sm" id="editCostDescription" maxlength="256"
                                            placeholder="Description Of Cost" readonly="true"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
-                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
+                                           data-toggle="tooltip" data-placement="top" data-html="true"
+                                           title="<b>Input the reason for final cost<b> "
                             />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="supplierTrackingNum">Tracking Number<span
+                                    class="text-danger">*</span></label>
+                            <form:input path="supplierTrackingNum" name="supplierTrackingNum" type="text" readonly="false"
+                                        class="form-control form-control-sm" id="editSupplierTrackingNum" maxlength="50"
+                                        placeholder="Tracking Number"
+                                        onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>
                         </div>
                     </div>
 
@@ -257,143 +269,13 @@ responseBean<%--
                     </div>
                     <!-- /.card-body -->
                     <div class="modal-footer justify-content-end">
-                            <button id="nextBtn" type="button" onclick="next()" class="btn btn-primary">
-                                Next
+                        <c:if test="${inHouse.vupdate}">
+                            <button id="updateBtn" type="button" onclick="updateTrack()" class="btn btn-primary">
+                                Update
                             </button>
+                        </c:if>
                     </div>
                 </div>
-
-                <div class="modal-body" id="secondTab">
-                    <h5>Contact Details</h5>
-                    <div class="card-deck">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <label for="editContactDelarship">Delarship</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editContactDelarship"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editDealershipName">Respective Contact</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editDealershipName"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editDealershipPhone">Contact Number</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editDealershipPhone"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editDealershipEmail">Email Address</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editDealershipEmail"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editDealershipChassisNumber">Chassis Numebr</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editDealershipChassisNumber"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editDealershipCaravanModel">Caravan Model</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editDealershipCaravanModel"></label>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <label for="editCusFirstName">Customer Name</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editCusFirstName"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editCusContactNo">Contact Number</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editCusContactNo"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editCusEmail">Email Address</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editCusEmail"></label>
-                                </div>
-                                <div class="form-row">
-                                    <label for="editCusAddress">Address</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editCusAddress"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h5>Spare Part Required</h5>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="sparePartSupList" id="updateSparePartList"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-9">
-                            <label for="comment">Comment<span
-                                    class="text-danger">*</span></label>
-
-                            <form:textarea path="comment" name="comment" type="text"
-                                           class="form-control form-control-sm" id="editComment" maxlength="256"
-                                           placeholder="Comment" readonly="true"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
-                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the Comment<b> "
-                            />
-                        </div>
-                    </div>
-
-                    <h5>Complete Supplier Details</h5>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label for="supplier">Supplier Name</label>
-                                    <form:select path="supplier" name="supplier"
-                                                 class="form-control form-control-sm" id="editSupplier"
-                                                 onchange="setSupplierDetails()" disabled="true">
-                                        <option selected value="">Select Supplier</option>
-                                        <c:forEach items="${inHouse.supplierActList}" var="supplier">
-                                            <form:option
-                                                    value="${supplier.supplierCode}">${supplier.supplierName}
-                                            </form:option>
-                                        </c:forEach>
-                                    </form:select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="editSupContactNumber">Supplier Contact Number</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editSupContactNumber"></label>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="editSupEmail">Supplier Email</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editSupEmail"></label>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="editSupAddress">Supplier Address</label>
-                                    <label>:</label>
-                                    <label style="font-weight:bold" id="editSupAddress"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-end">
-                            <button id="previousBtn" type="button" onclick="previous()" class="btn btn-primary">
-                                Previous
-                            </button>
-                    </div>
-                </div>
-
             </form:form>
         </div>
         <!-- /.modal-content -->
@@ -401,184 +283,6 @@ responseBean<%--
     <!-- /.modal-dialog -->
 </div>
 <script>
-
-    function previous() {
-        $('#secondTab').hide();
-        $('#firstTab').show();
-    }
-
-    function next() {
-        $('#secondTab').show();
-        $('#firstTab').hide();
-    }
-
-
-
-
-    function setSupplierDetails() {
-
-        const supplierId = $('#supplier').val();
-
-        $.ajax({
-            url: "${pageContext.request.contextPath}/getSupplierDetailsInHouse.json",
-            data: {
-                supplierId: supplierId
-            },
-            dataType: "json",
-            type: 'GET',
-            contentType: "application/json",
-            success: function (data) {
-
-                $('#responseMsgUpdate').hide();
-
-                $('#editSupContactNumber').html(data.supplierPhone);
-                $('#editSupEmail').html(data.supplierEmail);
-                $('#editSupAddress').html(data.supplierAddress);
-
-            },
-            error: function (data) {
-                window.location = "${pageContext.request.contextPath}/logout.htm";
-            }
-        });
-
-    }
-
-    function  noted(){
-
-        $('#responseMsgUpdate').empty();
-
-        $.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath}/notedInHouse.json',
-            data: $('form[name=updateClaimForm]').serialize(),
-            beforeSend: function (xhr) {
-                if (header && token) {
-                    xhr.setRequestHeader(header, token);
-                }
-            },
-            success: function (res) {
-                if (res.flag) { //success
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
-                    searchStart();
-                } else {
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
-                }
-            },
-            error: function (jqXHR) {
-                window.location = "${pageContext.request.contextPath}/logout.htm";
-            }
-        });
-
-    }
-
-    function approve() {
-
-        let isInHouse = $("#isInHouse").is(":checked");
-
-        if (isInHouse === true) {
-
-            $('#secondTab').hide();
-            $('#firstTab').show();
-
-            $('#responseMsgUpdate').empty();
-
-            $.ajax({
-                type: 'POST',
-                url: '${pageContext.request.contextPath}/approveInHouse.json',
-                data: $('form[name=updateClaimForm]').serialize(),
-                beforeSend: function (xhr) {
-                    if (header && token) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                },
-                success: function (res) {
-                    if (res.flag) { //success
-                        $('#responseMsgUpdate').show();
-                        $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
-                        searchStart();
-                    } else {
-                        $('#responseMsgUpdate').show();
-                        $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
-                    }
-                },
-                error: function (jqXHR) {
-                    window.location = "${pageContext.request.contextPath}/logout.htm";
-                }
-            });
-
-        } else {
-
-            $('#secondTab').show();
-            $('#firstTab').hide();
-        }
-
-
-    }
-
-    function sendEmail() {
-
-        $('#responseMsgUpdate').empty();
-
-        $.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath}/sendEmailInHouse.json',
-            data: $('form[name=updateClaimForm]').serialize(),
-            beforeSend: function (xhr) {
-                if (header && token) {
-                    xhr.setRequestHeader(header, token);
-                }
-            },
-            success: function (res) {
-                if (res.flag) { //success
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
-                    searchStart();
-                } else {
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
-                }
-            },
-            error: function (jqXHR) {
-                window.location = "${pageContext.request.contextPath}/logout.htm";
-            }
-        });
-    }
-
-    function reject() {
-
-        $('#responseMsgUpdate').empty();
-
-        $.ajax({
-            type: 'POST',
-            url: '${pageContext.request.contextPath}/rejectInHouse.json',
-            data: $('form[name=updateClaimForm]').serialize(),
-            beforeSend: function (xhr) {
-                if (header && token) {
-                    xhr.setRequestHeader(header, token);
-                }
-            },
-            success: function (res) {
-                if (res.flag) { //success
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
-                    searchStart();
-                } else {
-                    $('#responseMsgUpdate').show();
-                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
-                }
-            },
-            error: function (jqXHR) {
-                window.location = "${pageContext.request.contextPath}/logout.htm";
-            }
-        });
-    }
-
-    $(function () {
-        $('#firstTab').show();
-        $('#secondTab').hide();
-    });
 
     function downloadFile(contentType) {
 
@@ -589,37 +293,39 @@ responseBean<%--
         let fileName = arr[2];
 
         let a = document.createElement("a");
-        a.href = "data:"+contentType+";base64," + base64Data;
+        a.href = "data:" + contentType + ";base64," + base64Data;
         a.download = fileName;
         a.click();
     }
 
-    function setOtherCostDeatilsEdit(){
+    function updateTrack(){
 
-        const costType = $('#editCostType').val();
+        $('#responseMsgUpdate').empty();
 
-        if(costType === 'LABOUR'){
+        $.ajax({
+            type: 'POST',
+            url: '${pageContext.request.contextPath}/updateInHouse.json',
+            data: $('form[name=updateClaimForm]').serialize(),
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (res) {
+                if (res.flag) { //success
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
+                    searchStart();
+                } else {
+                    $('#responseMsgUpdate').show();
+                    $('#responseMsgUpdate').addClass('error-response').text(res.errorMessage);
+                }
+            },
+            error: function (jqXHR) {
+                window.location = "${pageContext.request.contextPath}/logout.htm";
+            }
+        });
 
-            $('#editHoursDiv').show();
-            $('#editLabourRateDiv').show();
-            $('#editTotalCostDiv').show();
-
-        }else if (costType === 'MATERIALS' ){
-            $('#editHoursDiv').hide();
-            $('#editLabourRateDiv').hide();
-            $('#editTotalCostDiv').show();
-
-        }else if(costType === 'SUBLET'){
-
-            $('#editHoursDiv').hide();
-            $('#editLabourRateDiv').hide();
-            $('#editTotalCostDiv').show();
-        }else if(costType === ''){
-
-            $('#editHoursDiv').hide();
-            $('#editLabourRateDiv').hide();
-            $('#editTotalCostDiv').hide();
-        }
     }
 
 </script>

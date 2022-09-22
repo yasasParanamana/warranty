@@ -92,7 +92,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-01-22 12:20:25 PM
      * @Version V1.00
      * @MethodName formatDateToString
@@ -146,7 +146,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:41:39 AM
      * @Version V1.00
      * @MethodName checkMethodAccess
@@ -179,7 +179,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:42:09 AM
      * @Version V1.00
      * @MethodName getUserTaskListByPage
@@ -193,7 +193,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:42:24 AM
      * @Version V1.00
      * @MethodName getActiveStatusList
@@ -210,7 +210,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:42:45 AM
      * @Version V1.00
      * @MethodName replaceEmptyorNullStringToALL
@@ -226,7 +226,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:43:14 AM
      * @Version V1.00
      * @MethodName zipFiles
@@ -271,7 +271,7 @@ public class Common {
     }
 
     /**
-     * @Author dilanka_w
+     * @Author yasas
      * @CreatedTime 2021-03-23 10:43:53 AM
      * @Version V1.00
      * @MethodName appendSpecialCharacterToCsv
