@@ -885,6 +885,7 @@ public class ClaimService {
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
                 claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
                 claimInputBean.setIsInHouse("0");
+                claimInputBean.setSupplierUrlToken(common.GenerateUUID());
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") acknowledge by " + sessionBean.getUsername();
                 message = claimRepository.sendEmail(claimInputBean);

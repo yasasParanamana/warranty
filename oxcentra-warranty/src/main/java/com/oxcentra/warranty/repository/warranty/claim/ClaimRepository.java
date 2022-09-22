@@ -60,7 +60,7 @@ public class ClaimRepository {
     private final String SQL_DELETE_CLAIM_SPARE_PART = "delete from reg_spare_part where warranty_id=?";
     private final String SQL_DELETE_CLAIM_ATTACHMENT = "delete from reg_warranty_attachments where warranty_id=?";
     private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=?, failing_area=? where id=? ";
-    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=? where id=?";
+    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=?,supplier_url_token=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
             "t.id," +
             "t.chassis," +
@@ -845,6 +845,7 @@ public class ClaimRepository {
                     claimInputBean.getLastUpdatedUser(),
                     claimInputBean.getLastUpdatedTime(),
                     claimInputBean.getComment(),
+                    claimInputBean.getSupplierUrlToken(),
                     claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;

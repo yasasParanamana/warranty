@@ -19,10 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -303,5 +300,17 @@ public class Common {
             logger.error("Exception", e);
         }
         return strDate;
+    }
+
+    public String GenerateUUID() {
+        String supplierUrlToken = "--";
+        try {
+            UUID uuid = UUID.randomUUID();
+            supplierUrlToken = uuid.toString();
+            System.out.println("Randomly Generated UUID: " +supplierUrlToken);
+        } catch (Exception e) {
+            logger.error("Exception", e);
+        }
+        return supplierUrlToken;
     }
 }
