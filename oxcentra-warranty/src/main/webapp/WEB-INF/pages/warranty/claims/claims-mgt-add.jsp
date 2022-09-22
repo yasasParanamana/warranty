@@ -524,6 +524,8 @@
 
         $('.uploadFileNameList').empty();
         $('.uploadFileNameList_2').empty();
+        resetReplyDataAttach();
+        resetReplyDataAttach_2();
     }
 
 
@@ -540,11 +542,12 @@
                 }
             },
             success: function (res) {
-
                 if (res.flag) { //success
                     $('#responseMsgAdd').show();
                     $('#responseMsgAdd').addClass('success-response').text(res.successMessage);
                     $('form[name=addClaimForm]').trigger("reset");
+                    resetReplyDataAttach_2()
+                    resetReplyDataAttach();
                     searchStart();
                 } else {
                     $('#responseMsgAdd').show();

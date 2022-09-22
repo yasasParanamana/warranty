@@ -47,6 +47,10 @@
         .error-response {
             color: red;
         }
+        .response-clear {
+            color: white;
+        }
+
     </style>
 
     <c:set var="changePwdMode" value="${sessionBean.changePwdMode}"/>

@@ -204,7 +204,7 @@ public class ClaimValidator implements Validator {
                 , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"),allFields.get("claimType"), allFields.get("purchasingDate"), allFields.get("description")
                 , allFields.get("failureType"), allFields.get("failureArea"), allFields.get("repairType"), allFields.get("repairDescription")
                 , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription")};
-        /*return new Field[]{};*/
+       /* return new Field[]{};*/
 
     }
 }
