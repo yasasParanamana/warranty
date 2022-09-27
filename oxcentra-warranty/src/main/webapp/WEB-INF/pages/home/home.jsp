@@ -37,43 +37,229 @@
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-danger">
-                    Pending Approvals <span class="badge badge-light">${homeform.countPending}</span>
+                    Pending Approvals <span class="badge badge-light" id="pendingCount">${homeform.countPending}</span>
                 </button>
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-success">
-                    In Purchase Request Count <span class="badge badge-light">${homeform.countInPurchase}</span>
+                    In Purchase Request Count <span class="badge badge-light" id="purchaseCount">${homeform.countInPurchase}</span>
                 </button>
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <button type="button" class="btn btn-warning">
-                    Noted Request Count <span class="badge badge-light">${homeform.countNoted}</span>
+                <button type="button" class="btn btn-warning" >
+                    Noted Request Count <span class="badge badge-light" id="notedCount">${homeform.countNoted}</span>
+                </button>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-3">
+                <label>From Date:</label>
+                <div class="btn-group div-inline input-group input-group-sm input-append date">
+                    <input path="fromDate" name="fromDate" id="searchFromDate"
+                           class="form-control" readonly="true" onkeydown="return false"
+                           autocomplete="off"/>
+                </div>
+                <span class="form-text text-muted">Please select From date</span>
+            </div>
+
+            <div class="col-lg-3">
+                <label>To Date:</label>
+                <div class="btn-group div-inline input-group input-group-sm input-append date">
+                    <input path="toDate" name="toDate" id="searchToDate"
+                           class="form-control" readonly="true" onkeydown="return false"
+                           autocomplete="off"/>
+                </div>
+                <span class="form-text text-muted" id="todate-default-msg">Please select To date</span>
+                <span class="form-text text-danger" id="todate-validation-msg"></span>
+            </div>
+            <div class="col-lg-3">
+                <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getStatusCount()"
+                        id="btnSearch">
+                    Search
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
+                        id="btnReset">
+                    Reset
                 </button>
             </div>
         </div>
     </div>
+
+ <%--   <div class="card-footer">
+        <div class="row">
+            <div class="col-lg-3">
+                <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getStatusCount()"
+                        id="btnSearch">
+                    Search
+                </button>
+
+                <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
+                        id="btnReset">
+                    Reset
+                </button>
+            </div>
+
+            <div class="col-lg-5"></div>
+        </div>
+        <!--end::Form-->
+    </div>--%>
+
     <!--end::Subheader-->
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
-        <div class="container">
+        <div class="figure">
             <!--begin::Dashboard-->
-            <canvas id="myChart" style="height:40vh; width:80vw"></canvas>
+            <canvas id="myChart" ></canvas>
+        </div>
+        <div class="figure">
+            <!--begin::Dashboard-->
+            <canvas id="myChartFailingArea" ></canvas>
         </div>
         <!--end::Container-->
     </div>
     <!--end::Entry-->
 </div>
 </body>
-<script>
+<script type="text/javascript">
+
+
+    function resetForm(){
+
+        setFromDate();
+        setToDate();
+
+    }
+
+    function getStatusCount() {
+
+        const supplierId = "2";
+
+        $.ajax({
+            url: "${pageContext.request.contextPath}/getSummaryhome.json",
+            data: {
+                supplierId: supplierId
+            },
+            dataType: "json",
+            type: 'GET',
+            contentType: "application/json",
+            success: function (data) {
+
+                console.log(data);
+
+                $('span#pendingCount').html( data.countPending );
+                $('span#purchaseCount').html(data.countInPurchase);
+                $('span#notedCount').html(data.countNoted);
+
+                var monthlyData = [];
+                var monthlyCount = [];
+                $.each(data.statusCountList, function (index, item) {
+                    monthlyData .push(item.status);
+                    monthlyCount.push(item.statusCount)
+                });
+
+                createChart(monthlyData,monthlyCount);
+
+
+                var failingArea = [];
+                var failingAreaCount = [];
+                $.each(data.failingAreaCountList, function (index, item) {
+                    failingArea .push(item.failingArea);
+                    failingAreaCount.push(item.failingAreaCount)
+                });
+
+                createFailingAreaChart(failingArea,failingAreaCount);
+
+
+            },
+            error: function (data) {
+                window.location = "${pageContext.request.contextPath}/logout.htm";
+            }
+        });
+
+    }
+
+    function createFailingAreaChart (failingArea,failingAreaCount){
+
+        let chartStatus = Chart.getChart("myChartFailingArea");
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+
+
+        const ctx = document.getElementById('myChartFailingArea').getContext('2d');
+        var myChartFailingArea = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: failingArea,
+                datasets: [{
+                    label: 'Total Count vs Failing Area  ',
+                    data: failingAreaCount,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Total Count vs Failing Area'
+                },
+                responsive: false,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+
+
+
+
+
+
+    function createChart (strArrayStatus,strCount){
+
+        let chartStatus = Chart.getChart("myChart"); // <canvas> id
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+
+
+        alert(strArrayStatus);
+        alert(strCount);
+
     const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
+     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Approved', 'In Purchase', 'Noted', 'Pending', 'Head Office Rejected', 'Supplier Rejected'],
+            labels: strArrayStatus,
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Count of Unit State',
+                data: strCount,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -94,12 +280,79 @@
             }]
         },
         options: {
+            title: {
+                display: true,
+                text: 'Count of Unit State'
+            },
+            responsive: false,
+            maintainAspectRatio: true,
             scales: {
                 y: {
-                    beginAtZero: false
+                    beginAtZero: true
                 }
             }
         }
     });
+    }
+
+    window.addEventListener('beforeprint', () => {
+        myChart.resize(600, 600);
+    });
+    window.addEventListener('afterprint', () => {
+        myChart.resize();
+    });
+
+    $(document).ready(function () {
+
+        alert("sdfdsfsdf");
+
+        $('#searchFromDate').datepicker({
+            format: 'yyyy-mm-dd',
+            endDate: '+0d',
+            setDate: new Date(),
+            todayHighlight: true,
+            forceParse: false
+        });
+
+        $('#searchToDate').datepicker({
+            format: 'yyyy-mm-dd',
+            endDate: '+0d',
+            setDate: new Date(),
+            todayHighlight: true,
+            forceParse: false
+        });
+
+        setFromDate();
+        setToDate();
+    });
+
+    function setFromDate() {
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var today = (date.getFullYear() + "-" + month + "-" + day);
+        $('#searchFromDate').val(today);
+    }
+
+    function setToDate() {
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        var today = (date.getFullYear() + "-" + month + "-" + day);
+        $('#searchToDate').val(today);
+    }
+
 
 </script>

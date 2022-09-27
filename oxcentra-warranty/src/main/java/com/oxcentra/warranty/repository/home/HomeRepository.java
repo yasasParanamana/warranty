@@ -1,5 +1,6 @@
 package com.oxcentra.warranty.repository.home;
 
+import com.oxcentra.warranty.bean.home.SummaryBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.warranty.Claim;
@@ -10,6 +11,7 @@ import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
 import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -45,6 +47,8 @@ public class HomeRepository {
     CommonRepository commonRepository;
 
     private final String SQL_COUNT_STATUS = "select count(*) from reg_warranty_claim where status=?";
+    private final String SQL_GET_LIST_STATUS_COUNT = "SELECT wc.status as sts , count(wc.id) as stsCt FROM reg_warranty_claim wc GROUP BY wc.status ";
+    private final String SQL_GET_LIST_FAILING_AREA_COUNT = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount FROM reg_warranty_claim wc GROUP BY wc.failing_area";
 
     /**
      * @Author yasas_p
@@ -68,6 +72,50 @@ public class HomeRepository {
             throw ex;
         }
         return count;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SummaryBean> getStatusSummaryList() throws Exception {
+        List<SummaryBean> statusBeanList;
+        try {
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_STATUS_COUNT);
+            statusBeanList = statusSummaryList.stream().map((record) -> {
+
+                SummaryBean summaryBean = new SummaryBean();
+                summaryBean.setStatus(record.get("sts").toString());
+                summaryBean.setStatusCount(record.get("stsCt").toString());
+
+                return summaryBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            statusBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return statusBeanList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SummaryBean> getFailingAreaSummaryList() throws Exception {
+        List<SummaryBean> failingAreaBeanList;
+        try {
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_FAILING_AREA_COUNT);
+            failingAreaBeanList = statusSummaryList.stream().map((record) -> {
+
+                SummaryBean summaryBean = new SummaryBean();
+                summaryBean.setFailingArea(record.get("fail_area").toString());
+                summaryBean.setFailingAreaCount(record.get("failcount").toString());
+
+                return summaryBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            failingAreaBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return failingAreaBeanList;
     }
 
 

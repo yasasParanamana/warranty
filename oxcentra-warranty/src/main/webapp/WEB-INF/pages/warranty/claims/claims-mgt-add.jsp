@@ -323,6 +323,7 @@
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">
+                            <div class="form-row">
                             <div class="multiple-file" id="multiple_file_div">
                                 <div class="fileuploadBtn" id="file_hide_1">
                                     <label id="filePin">
@@ -333,12 +334,12 @@
                                     </label>
                                 </div>
                             </div>
-
                             <div style="display: none" id="file-upload-hide"></div>
                             <button id="Attachment_Reset_f3" type="button" class="btn btn-default"
                                     onclick="resetReplyDataAttach()" cssClass="sendbtn"
                                     cssStyle="position: absolute;margin-top: -50px;margin-left: 285px;">Attachment Reset
                             </button>
+                        </div>
                             <div class="uploadFileNameList"></div>
                         </div>
                     </div>
@@ -750,4 +751,6 @@
     hr {
         border: 1px solid #b9bbbe;
     }
+
+
 </style>

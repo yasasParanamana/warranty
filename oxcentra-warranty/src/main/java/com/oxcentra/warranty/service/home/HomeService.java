@@ -2,6 +2,7 @@ package com.oxcentra.warranty.service.home;
 
 import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
+import com.oxcentra.warranty.bean.home.SummaryBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
@@ -21,12 +22,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Scope("prototype")
@@ -64,6 +65,33 @@ public class HomeService {
         return count;
     }
 
+    public List<SummaryBean> getStatusSummary() throws Exception {
+        List<SummaryBean> SummaryBean;
+
+        try {
+            SummaryBean = homeRepository.getStatusSummaryList();
+
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return SummaryBean;
+    }
+
+    public List<SummaryBean> getFailingAreaSummary() throws Exception {
+        List<SummaryBean> SummaryBean;
+
+        try {
+            SummaryBean = homeRepository.getFailingAreaSummaryList();
+
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return SummaryBean;
+    }
 
 
 }

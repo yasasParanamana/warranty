@@ -11,15 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class HomeInputBean {
-    private String countPending;
-    private String countInPurchase;
-    private String countNoted;
 
-    private String strArrayStatus;
-    private String strCount;
+public class SummaryInputBean {
 
     private List<SummaryBean> statusCountList = new ArrayList<SummaryBean>();
-    private List<SummaryBean> failingAreaCountList = new ArrayList<SummaryBean>();
-
 }
