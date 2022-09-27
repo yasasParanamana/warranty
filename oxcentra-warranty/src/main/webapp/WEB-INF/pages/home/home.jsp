@@ -89,29 +89,29 @@
             </div>
         </div>
     </div>
-
- <%--   <div class="card-footer">
-        <div class="row">
-            <div class="col-lg-3">
-                <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getStatusCount()"
-                        id="btnSearch">
-                    Search
-                </button>
-
-                <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
-                        id="btnReset">
-                    Reset
-                </button>
-            </div>
-
-            <div class="col-lg-5"></div>
-        </div>
-        <!--end::Form-->
-    </div>--%>
-
     <!--end::Subheader-->
     <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
+
+    <div class="card-deck">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Count of Unit State</h5>
+                <canvas id="myChart" ></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Count vs Failing Area</h5>
+                <canvas id="myChartFailingArea" ></canvas>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+   <%-- <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="figure">
             <!--begin::Dashboard-->
@@ -122,7 +122,7 @@
             <canvas id="myChartFailingArea" ></canvas>
         </div>
         <!--end::Container-->
-    </div>
+    </div>--%>
     <!--end::Entry-->
 </div>
 </body>
@@ -224,7 +224,7 @@
                     display: true,
                     text: 'Total Count vs Failing Area'
                 },
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: true,
                 scales: {
                     y: {
@@ -284,7 +284,7 @@
                 display: true,
                 text: 'Count of Unit State'
             },
-            responsive: false,
+            responsive: true,
             maintainAspectRatio: true,
             scales: {
                 y: {
