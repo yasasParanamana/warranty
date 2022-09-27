@@ -93,5 +93,19 @@ public class HomeService {
         return SummaryBean;
     }
 
+    public List<SummaryBean> getFailingAreaCostSummary() throws Exception {
+        List<SummaryBean> SummaryBean;
+
+        try {
+            SummaryBean = homeRepository.getFailingAreaCostSummaryList();
+
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return SummaryBean;
+    }
+
 
 }

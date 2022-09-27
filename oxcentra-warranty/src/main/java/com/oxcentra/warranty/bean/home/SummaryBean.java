@@ -22,6 +22,9 @@ public class SummaryBean {
     private String failingArea;
     private String failingAreaCount;
 
+    private String failingAreaCost;
+    private String failingAreaCostCount;
+
     private List<SummaryBean> statusCountList = new ArrayList<SummaryBean>();
 
     String[] labelName={};

@@ -49,6 +49,7 @@ public class HomeRepository {
     private final String SQL_COUNT_STATUS = "select count(*) from reg_warranty_claim where status=?";
     private final String SQL_GET_LIST_STATUS_COUNT = "SELECT wc.status as sts , count(wc.id) as stsCt FROM reg_warranty_claim wc GROUP BY wc.status ";
     private final String SQL_GET_LIST_FAILING_AREA_COUNT = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount FROM reg_warranty_claim wc GROUP BY wc.failing_area";
+    private final String SQL_GET_LIST_FAILING_AREA_COST_COUNT = "SELECT wc.failing_area AS fail_area, SUM(wc.total_cost) AS cost_count FROM reg_warranty_claim wc GROUP BY wc.failing_area";
 
     /**
      * @Author yasas_p
@@ -116,6 +117,28 @@ public class HomeRepository {
             throw e;
         }
         return failingAreaBeanList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SummaryBean> getFailingAreaCostSummaryList() throws Exception {
+        List<SummaryBean> failingAreaCostBeanList;
+        try {
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_FAILING_AREA_COST_COUNT);
+            failingAreaCostBeanList = statusSummaryList.stream().map((record) -> {
+
+                SummaryBean summaryBean = new SummaryBean();
+                summaryBean.setFailingAreaCost(record.get("fail_area").toString());
+                summaryBean.setFailingAreaCostCount(record.get("cost_count").toString());
+
+                return summaryBean;
+            }).collect(Collectors.toList());
+        } catch (EmptyResultDataAccessException ere) {
+            //handle the empty result data access exception
+            failingAreaCostBeanList = new ArrayList<>();
+        } catch (Exception e) {
+            throw e;
+        }
+        return failingAreaCostBeanList;
     }
 
 

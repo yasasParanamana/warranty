@@ -75,6 +75,9 @@ public class HomeController {
             List<SummaryBean> failingAreaSummaryList = homeService.getFailingAreaSummary();
             homeInputBean.setFailingAreaCountList(failingAreaSummaryList);
 
+            List<SummaryBean> failingAreaCostSummaryList = homeService.getFailingAreaCostSummary();
+            homeInputBean.setFailingAreaCostCountList(failingAreaCostSummaryList);
+
             long pendingRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
             long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
             long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);

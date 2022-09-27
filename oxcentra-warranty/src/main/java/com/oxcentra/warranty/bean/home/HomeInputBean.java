@@ -21,5 +21,6 @@ public class HomeInputBean {
 
     private List<SummaryBean> statusCountList = new ArrayList<SummaryBean>();
     private List<SummaryBean> failingAreaCountList = new ArrayList<SummaryBean>();
+    private List<SummaryBean> failingAreaCostCountList = new ArrayList<SummaryBean>();
 
 }
