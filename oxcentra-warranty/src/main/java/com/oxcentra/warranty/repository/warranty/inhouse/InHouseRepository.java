@@ -39,7 +39,7 @@ public class InHouseRepository {
     @Autowired
     CommonRepository commonRepository;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where is_in_house='1' and status ='WAR_APPROVE' and ";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where is_in_house='1' and status IN('WAR_APPROVE','WAR_COMPLETED') and ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_FIND_CLAIM = "select " +
@@ -77,7 +77,8 @@ public class InHouseRepository {
             "s.supplier_phone,  " +
             "s.supplier_email,  " +
             "s.supplier_address,  " +
-            "t.is_in_house  " +
+            "t.is_in_house,  " +
+            "t.supplier_tracking_num  " +
             "from reg_warranty_claim t " +
             "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
             "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
@@ -135,7 +136,7 @@ public class InHouseRepository {
                     "t.lastupdateduser " +
                     "from reg_warranty_claim t " +
                     "left outer join status s on s.statuscode=t.status " +
-                    " where t.is_in_house='1' and t.status ='WAR_APPROVE' and " + dynamicClause.toString() + sortingStr +
+                    " where t.is_in_house='1' and t.status IN('WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr +
                     " limit " + inHouseInputBean.displayLength + " offset " + inHouseInputBean.displayStart;
 
             System.out.println("String Sql : "+sql);
@@ -433,10 +434,14 @@ public class InHouseRepository {
                 }
 
                 try {
-                    System.out.println(rs.getBoolean("is_in_house"));
                     t.setInHouse(rs.getBoolean("is_in_house"));
                 } catch (Exception e) {
                     t.setInHouse(false);
+                }
+                try {
+                    t.setSupplierTrackingNum(rs.getString("supplier_tracking_num"));
+                } catch (Exception e) {
+                    t.setSupplierTrackingNum(null);
                 }
 
                 return t;
@@ -682,7 +687,7 @@ public class InHouseRepository {
                     "from reg_warranty_claim t " +
                     "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
                     "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
-                    "where t.is_in_house='1' and t.status ='WAR_APPROVE' and " + dynamicClause.toString() + sortingStr;
+                    "where t.is_in_house='1' and t.status IN('WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr;
 
             claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Claim claim = new Claim();

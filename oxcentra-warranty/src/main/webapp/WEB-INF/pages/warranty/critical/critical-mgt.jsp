@@ -162,6 +162,10 @@
                                     'title': 'In Purchase',
                                     'class': ' label-light-info'
                                 }
+                                , 'Completed': {
+                                    'title': 'Completed',
+                                    'class': ' label-light-success'
+                                }
                             };
                             if (typeof status[data] === 'undefined') {
                                 return data;

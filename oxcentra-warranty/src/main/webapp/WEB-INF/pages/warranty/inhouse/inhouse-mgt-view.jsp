@@ -154,17 +154,17 @@ responseBean<%--
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="editFailureType">Type Of Failure</label>
+                            <label for="editFailureType">Type of Failure</label>
                             <label>:</label>
                             <label id="editFailureType"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editFailureArea">Area Of Failure</label>
+                            <label for="editFailureArea">Area of Failure</label>
                             <label>:</label>
                             <label id="editFailureArea"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editRepairType">Type Of Repair</label>
+                            <label for="editRepairType">Type of Repair</label>
                             <label>:</label>
                             <label id="editRepairType"></label>
                         </div>
@@ -185,7 +185,7 @@ responseBean<%--
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="editRepairDescription">Description Of Repair</label>
+                            <label for="editRepairDescription">Description of Repair</label>
                             <label>:</label>
                             <label id="editRepairDescription"></label>
                         </div>

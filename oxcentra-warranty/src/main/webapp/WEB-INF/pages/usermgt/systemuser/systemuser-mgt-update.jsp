@@ -101,25 +101,14 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <label>Service ID<span class="text-danger">*</span></label>
+                            <label>Dealership<span class="text-danger">*</span></label>
                             <form:input path="serviceId" name="serviceId" type="text"
-                                        onkeyup="$(this).val($(this).val().replace(/[^\d]/ig, ''))"
+                                        onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
                                         class="form-control form-control-sm" maxlength="10"
-                                        id="eServiceId" placeholder="Service Id"/>
-                            <span class="form-text text-muted">Please enter Service Id</span>
+                                        id="eServiceId" placeholder="Dealership"/>
+                            <span class="form-text text-muted">Please enter Dealership</span>
                         </div>
                     </div>
-
-                        <%--                    <div class="form-group row">--%>
-                        <%--                        <label class="col-sm-4 col-form-label">--%>
-                        <%--                            Username<span class="text-danger">*</span>--%>
-                        <%--                        </label>--%>
-                        <%--                        <div class="col-sm-8">--%>
-                        <%--                            <form:input path="userName" name="userName" type="text" class="form-control form-control-sm"--%>
-                        <%--                                        id="eUserName" maxlength="16" placeholder="Username"--%>
-                        <%--                                        onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"/>--%>
-                        <%--                        </div>--%>
-                        <%--                    </div>--%>
 
                     <div class="form-group">
                         <span class="text-danger">Required fields are marked by the '*'</span>

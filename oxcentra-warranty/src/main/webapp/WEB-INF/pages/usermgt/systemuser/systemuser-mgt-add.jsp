@@ -125,12 +125,12 @@
 
                         <div class="form-group row">
                             <div class="col-lg-4">
-                                <label>Service ID<span class="text-danger">*</span></label>
+                                <label>Dealership<span class="text-danger">*</span></label>
                                 <form:input path="serviceId" name="serviceId" type="text"
-                                            onkeyup="$(this).val($(this).val().replace(/[^\d]/ig, ''))"
+                                            onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
                                             class="form-control form-control-sm" maxlength="10"
-                                            id="aServiceId" placeholder="Service Id"/>
-                                <span class="form-text text-muted">Please enter Service Id</span>
+                                            id="aServiceId" placeholder="Dealership"/>
+                                <span class="form-text text-muted">Please enter Dealership</span>
                             </div>
                         </div>
 

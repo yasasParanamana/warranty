@@ -158,9 +158,14 @@
                                 'Noted': {
                                     'title': 'Noted',
                                     'class': ' label-light-success'
-                                }, 'In Purchase': {
+                                }
+                                , 'In Purchase': {
                                     'title': 'In Purchase',
                                     'class': ' label-light-info'
+                                }
+                                , 'Completed': {
+                                    'title': 'Completed',
+                                    'class': ' label-light-success'
                                 }
                             };
                             if (typeof status[data] === 'undefined') {
@@ -274,6 +279,8 @@
                     $('#editSupEmail').html(data.supplierEmail);
                     $('#editSupAddress').html(data.supplierAddress);
                     $('#editComment').val(data.comment);
+
+                    $('#editSupplierTrackingNum').val(data.supplierTrackingNum);
 
                     if (data.inHouse === true) {
                         $('#isInHouse').attr('checked', true);

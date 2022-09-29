@@ -133,7 +133,7 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "Service ID",
+                        title: "Dealership",
                         targets: 6,
                         mDataProp: "serviceid",
                         defaultContent: "--"
@@ -395,7 +395,7 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "Service ID",
+                        title: "Dealership",
                         targets: 8,
                         mDataProp: "key9",
                         defaultContent: "--"
@@ -785,7 +785,7 @@
                                 <th>Email</th>
                                 <th>Mobile Number</th>
                                 <th>NIC</th>
-                                <th>Service ID</th>
+                                <th>Dealership</th>
                                 <th>Last Logged Date</th>
                                 <th>Status</th>
                                 <th>Created User</th>
@@ -831,7 +831,7 @@
                                     <th>Status</th>
                                     <th>Mobile Number</th>
                                     <th>NIC</th>
-                                    <th>Service ID</th>
+                                    <th>Dealership</th>
                                     <th>Task</th>
                                     <th>Created Time</th>
                                     <th>Last Updated Time</th>

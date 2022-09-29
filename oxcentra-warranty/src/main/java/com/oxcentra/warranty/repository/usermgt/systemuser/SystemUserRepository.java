@@ -34,9 +34,9 @@ public class SystemUserRepository {
     private final String SQL_FIND_SYSTEMUSER_BY_SERVICEID = "select username from web_systemuser where username != ? and serviceid = ?";
     private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_systemuser wu left outer join status s on s.statuscode=wu.status where ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_SYSTEMUSER = "insert into web_systemuser(username,password,userrole,expirydate,fullname,email,mobile,nic,serviceid,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,createduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-    private final String SQL_FIND_SYSTEMUSER = "select username,password,userrole,expirydate,fullname,email,nic,serviceid,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime from web_systemuser wsu where wsu.username = ?";
-    private final String SQL_UPDATE_SYSTEMUSER = "update web_systemuser wsu set userrole = ?, fullname = ?, email = ?, mobile = ?, status = ?, nic = ?, serviceid = ?, lastupdateduser = ?, lastupdatedtime = ? where wsu.username = ?";
+    private final String SQL_INSERT_SYSTEMUSER = "insert into web_systemuser(username,password,userrole,expirydate,fullname,email,mobile,nic,dealership,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,createduser) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+    private final String SQL_FIND_SYSTEMUSER = "select username,password,userrole,expirydate,fullname,email,nic,dealership,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime from web_systemuser wsu where wsu.username = ?";
+    private final String SQL_UPDATE_SYSTEMUSER = "update web_systemuser wsu set userrole = ?, fullname = ?, email = ?, mobile = ?, status = ?, nic = ?, dealership = ?, lastupdateduser = ?, lastupdatedtime = ? where wsu.username = ?";
     private final String SQL_DELETE_SYSTEMUSER = "delete from web_systemuser where username = ?";
     @Autowired
     SessionBean sessionBean;
@@ -80,7 +80,7 @@ public class SystemUserRepository {
             }
             String sql =
                     " select wu.username as username,wu.fullname as fullname, u.description as userrole," +
-                            " wu.email as email,wu.mobile as mobile,wu.nic,wu.serviceid,wu.expirydate as expirydate,wu.loggeddate as loggeddate," +
+                            " wu.email as email,wu.mobile as mobile,wu.nic,wu.dealership,wu.expirydate as expirydate,wu.loggeddate as loggeddate," +
                             " s.description as statusdescription,wu.createtime as createdtime,wu.createduser as createduser,wu.lastupdatedtime,wu.lastupdateduser from web_systemuser wu " +
                             " left outer join status s on s.statuscode=wu.status " +
                             " left outer join userrole u on u.userrolecode=wu.userrole " +
@@ -115,7 +115,7 @@ public class SystemUserRepository {
                 }
 
                 try {
-                    systemUser.setServiceid(rs.getString("serviceid"));
+                    systemUser.setServiceid(rs.getString("dealership"));
                 } catch (Exception e) {
                     systemUser.setServiceid(null);
                 }
@@ -419,7 +419,7 @@ public class SystemUserRepository {
                     }
 
                     try {
-                        systemUser.setServiceid(rs.getString("serviceid"));
+                        systemUser.setServiceid(rs.getString("dealership"));
                     } catch (Exception e) {
                         systemUser.setServiceid(null);
                     }

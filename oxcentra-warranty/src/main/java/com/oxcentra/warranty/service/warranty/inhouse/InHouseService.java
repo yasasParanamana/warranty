@@ -235,7 +235,7 @@ public class InHouseService {
                 Date currentDate = commonRepository.getCurrentDate();
                 String lastUpdatedUser = sessionBean.getUsername();
 
-                inHouseInputBean.setStatus(StatusVarList.STATUS_CLAIM_NOTED);
+                inHouseInputBean.setStatus(StatusVarList.STATUS_CLAIM_COMPLETED);
                 inHouseInputBean.setLastUpdatedTime(currentDate);
                 inHouseInputBean.setLastUpdatedUser(lastUpdatedUser);
 
