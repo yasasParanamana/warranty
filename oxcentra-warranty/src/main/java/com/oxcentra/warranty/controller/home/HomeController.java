@@ -63,26 +63,40 @@ public class HomeController {
 
     @GetMapping(value = "/getSummaryhome", headers = {"content-type=application/json"})
     public @ResponseBody
-    HomeInputBean getStatusSummary(@RequestParam String supplierId) {
+    HomeInputBean getStatusSummary(@RequestParam String fromDate, String toDate) {
 
         HomeInputBean homeInputBean = new HomeInputBean();
-        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM GET");
+        logger.info("[" + sessionBean.getSessionid() + "]  SUMMARY GET");
 
         try {
+
+            homeInputBean.setFromDate(fromDate);
+            homeInputBean.setToDate(toDate);
+
+            //Summary Status Count Chart
             List<SummaryBean> statusSummaryList = homeService.getStatusSummary();
-            homeInputBean.setStatusCountList(statusSummaryList);
 
+            //Summary failing Area Count Chart
             List<SummaryBean> failingAreaSummaryList = homeService.getFailingAreaSummary();
-            homeInputBean.setFailingAreaCountList(failingAreaSummaryList);
 
+            //Summary failing Area Cost Chart
             List<SummaryBean> failingAreaCostSummaryList = homeService.getFailingAreaCostSummary();
-            homeInputBean.setFailingAreaCostCountList(failingAreaCostSummaryList);
+
+            long fullRequestCount = homeService.getRequestTotalCount();
+            String fullRequestCost = homeService.getRequestTotalCost();
 
             long pendingRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
             long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
             long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
 
             //set values to claimInputBean bean
+
+            homeInputBean.setStatusCountList(statusSummaryList);
+            homeInputBean.setFailingAreaCountList(failingAreaSummaryList);
+            homeInputBean.setFailingAreaCostCountList(failingAreaCostSummaryList);
+
+            homeInputBean.setTotalCount(Long.toString(fullRequestCount));
+            homeInputBean.setTotalCost(fullRequestCost);
             homeInputBean.setCountPending(Long.toString(pendingRequestCount));
             homeInputBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
             homeInputBean.setCountNoted(Long.toString(notedRequestCount));
@@ -103,13 +117,23 @@ public class HomeController {
         long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
         long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
 
+        //Summary Status Count Chart
+        List<SummaryBean> statusSummaryList = homeService.getStatusSummary();
+
+        //Summary failing Area Count Chart
+        List<SummaryBean> failingAreaSummaryList = homeService.getFailingAreaSummary();
+
+        //Summary failing Area Cost Chart
+        List<SummaryBean> failingAreaCostSummaryList = homeService.getFailingAreaCostSummary();
+
         //set values to claimInputBean bean
         homeInputBean.setCountPending(Long.toString(pendingRequestCount));
         homeInputBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
         homeInputBean.setCountNoted(Long.toString(notedRequestCount));
 
-//        List<SummaryBean> statusSummaryList = homeService.getStatusSummary();
-//        homeInputBean.setStatusCountList(statusSummaryList);
+        homeInputBean.setStatusCountList(statusSummaryList);
+        homeInputBean.setFailingAreaCountList(failingAreaSummaryList);
+        homeInputBean.setFailingAreaCostCountList(failingAreaCostSummaryList);
 
         //add values to model map
         map.addAttribute("homeform", homeInputBean);

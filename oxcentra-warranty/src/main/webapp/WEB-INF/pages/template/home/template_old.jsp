@@ -70,7 +70,7 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/datepicker/js/bootstrap-datepicker.js?${initParam['version']}"
             type="text/javascript"></script>
 
-    <script src="${pageContext.request.contextPath}/resources/js/chart.min.js?${initParam['version']}"
+    <script src="${pageContext.request.contextPath}/resources/assets/js/chart.min.js?${initParam['version']}"
             type="text/javascript"></script>
 
 

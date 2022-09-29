@@ -881,5 +881,23 @@
 <!--begin::Side bar toggle-->
 <script src="${pageContext.request.contextPath}/resources/assets/js/sidebartoggle.js"></script>
 <!--end::Side bar toggle-->
+<!--begin::Chart-->
+<script src="${pageContext.request.contextPath}/resources/assets/js/chart.min.js"></script>
+<!--end::Chart-->
+<!--jquery-->
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js?${initParam['version']}"
+        type="text/javascript"></script>
+
+<script src="${pageContext.request.contextPath}/resources/popper/popper.min.js?${initParam['version']}"
+        type="text/javascript"></script>
+
+<!--begin::Page Vendors(used by this page)-->
+<script src="${pageContext.request.contextPath}/resources/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+<script src="${pageContext.request.contextPath}/resources/assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+<!--end::Page Scripts-->
+
+
 </body>
 </html>

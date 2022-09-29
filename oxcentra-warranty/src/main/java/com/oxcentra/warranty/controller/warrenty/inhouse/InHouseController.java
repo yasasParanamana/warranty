@@ -39,6 +39,9 @@ import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -250,6 +253,32 @@ public class InHouseController implements RequestBeanValidation<Object> {
             responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
         }
         return responseBean;
+    }
+
+    @RequestMapping(value = "/csvInHouse", method = RequestMethod.POST)
+    @AccessControl(pageCode = PageVarList.IN_HOUSE_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    @ResponseBody
+    public void csvReportAudit(@ModelAttribute("inHouse") InHouseInputBean inHouseInputBean , HttpServletResponse httpServletResponse) {
+        logger.info("[" + sessionBean.getSessionid() + "]  IN HOUSE CSV");
+        OutputStream outputStream = null;
+        try {
+            StringBuffer csvContent = inHouseService.makeCsvReport(inHouseInputBean);
+            //set response to
+            httpServletResponse.setContentType("application/octet-stream");
+            httpServletResponse.setHeader("Content-disposition", "inline; filename=InHouse_Claim_Report.csv");
+            httpServletResponse.getOutputStream().print(csvContent.toString());
+        } catch (Exception ex) {
+            logger.error("Exception  :  ", ex);
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (IOException ex) {
+
+            }
+        }
     }
 
 }

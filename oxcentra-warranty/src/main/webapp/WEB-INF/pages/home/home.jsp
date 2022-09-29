@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: prathibha_w
+  User: yasas_p
   Date: 2/11/2021
   Time: 11:17 AM
   To change this template use File | Settings | File Templates.
@@ -15,10 +15,11 @@
 <c:set var="pageMap" value="${sessionBean.pageMap}"/>
 <c:set var="daysToExpire" value="${sessionBean.daysToExpire}"/>
 
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-</head>
-<body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.6.1.min.js"></script>
+
+<%--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/2.2.4/themes/smoothness/jquery-ui.css">--%>
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--%>
+
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -42,99 +43,118 @@
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <button type="button" class="btn btn-success">
-                    In Purchase Request Count <span class="badge badge-light" id="purchaseCount">${homeform.countInPurchase}</span>
+                    In Purchase Request Count <span class="badge badge-light"
+                                                    id="purchaseCount">${homeform.countInPurchase}</span>
                 </button>
             </div>
             <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <button type="button" class="btn btn-warning" >
+                <button type="button" class="btn btn-warning">
                     Noted Request Count <span class="badge badge-light" id="notedCount">${homeform.countNoted}</span>
                 </button>
             </div>
-
-
         </div>
-
     </div>
-    <div class="card-body">
+    <!--begin::Search-->
+    <div class="card">
         <div class="form-group row">
-            <div class="col-lg-3">
-                <label>From Date:</label>
+            <div class="col-lg-2">
+                <label for="searchFromDate">From Date :</label>
                 <div class="btn-group div-inline input-group input-group-sm input-append date">
                     <input path="fromDate" name="fromDate" id="searchFromDate"
                            class="form-control" readonly="true" onkeydown="return false"
                            autocomplete="off"/>
                 </div>
-                <span class="form-text text-muted">Please select From date</span>
             </div>
-
-            <div class="col-lg-3">
-                <label>To Date:</label>
+            <div class="col-lg-2">
+                <label for="searchToDate">To Date :</label>
                 <div class="btn-group div-inline input-group input-group-sm input-append date">
                     <input path="toDate" name="toDate" id="searchToDate"
                            class="form-control" readonly="true" onkeydown="return false"
                            autocomplete="off"/>
                 </div>
-                <span class="form-text text-muted" id="todate-default-msg">Please select To date</span>
-                <span class="form-text text-danger" id="todate-validation-msg"></span>
             </div>
-            <div class="col-lg-3">
-                <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getStatusCount()"
-                        id="btnSearch">
-                    Search
-                </button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
-                        id="btnReset">
-                    Reset
-                </button>
+            <div class="col-lg-2">
+                <label></label>
+                <div class="btn-group div-inline input-group input-group-sm input-append date">
+                    <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getSummary()"
+                            id="btnSearch">
+                        Search
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
+                            id="btnReset">
+                        Reset
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <!--end::Subheader-->
-    <!--begin::Entry-->
-
+    <!--end::Search-->
+    <!--begin::Charts-->
     <div class="card-columns">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Count of Unit State</h5>
-                <canvas id="myChart" ></canvas>
+                <canvas id="myChartStatusCount"></canvas>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Total Count vs Failing Area</h5>
-                <canvas id="myChartFailingArea" ></canvas>
+                <canvas id="myChartFailingArea"></canvas>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Total Cost vs Failing Area</h5>
-                <canvas id="myChartFailingAreaCost" ></canvas>
+                <canvas id="myChartFailingAreaCost"></canvas>
             </div>
         </div>
-
-
     </div>
-
+    <!--end::Search-->
+    <!--begin::DataCounts-->
+    <div class="card-columns">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Total Count of Insidents</th>
+                        <th scope="col" id="totalCount"></th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Total Cost For Approved Warranty Claims</th>
+                        <th scope="col" id="totalCost"></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--begin::EndDataCounts-->
 </div>
-</body>
+
 <script type="text/javascript">
 
+    /*reset Function*/
 
-    function resetForm(){
-
+    function resetForm() {
+        getSummary();
         setFromDate();
         setToDate();
-
     }
 
-    function getStatusCount() {
+    /*summary Function*/
 
-        const supplierId = "2";
+    function getSummary() {
+
+        const fromDate = $('#searchFromDate').val();
+        const toDate =$('#searchToDate').val();
 
         $.ajax({
             url: "${pageContext.request.contextPath}/getSummaryhome.json",
             data: {
-                supplierId: supplierId
+                fromDate: fromDate,
+                toDate:toDate
             },
             dataType: "json",
             type: 'GET',
@@ -143,37 +163,46 @@
 
                 console.log(data);
 
-                $('span#pendingCount').html( data.countPending );
+                <!--summary status count-->
+                $('span#pendingCount').html(data.countPending);
                 $('span#purchaseCount').html(data.countInPurchase);
                 $('span#notedCount').html(data.countNoted);
 
-                var monthlyData = [];
-                var monthlyCount = [];
+                $('#totalCount').text(data.totalCount);
+                $('#totalCost').text(data.totalCost);
+
+                <!--summary chart status count-->
+
+                var status = [];
+                var statusCount = [];
                 $.each(data.statusCountList, function (index, item) {
-                    monthlyData .push(item.status);
-                    monthlyCount.push(item.statusCount)
+                    status.push(item.status);
+                    statusCount.push(item.statusCount);
                 });
 
-                createChart(monthlyData,monthlyCount);
+                createStatusCountChart(status, statusCount);
 
+                <!--summary chart failing Area count-->
 
                 var failingArea = [];
                 var failingAreaCount = [];
                 $.each(data.failingAreaCountList, function (index, item) {
-                    failingArea .push(item.failingArea);
-                    failingAreaCount.push(item.failingAreaCount)
+                    failingArea.push(item.failingArea);
+                    failingAreaCount.push(item.failingAreaCount);
                 });
 
-                createFailingAreaChart(failingArea,failingAreaCount);
+                createFailingAreaChart(failingArea, failingAreaCount);
+
+                <!--summary chart failing Area Cost-->
 
                 var failingAreaCost = [];
                 var failingAreaCostCount = [];
                 $.each(data.failingAreaCostCountList, function (index, item) {
-                    failingAreaCost .push(item.failingAreaCost);
-                    failingAreaCostCount.push(item.failingAreaCostCount)
+                    failingAreaCost.push(item.failingAreaCost);
+                    failingAreaCostCount.push(item.failingAreaCostCount);
                 });
 
-                createFailingAreaCostChart(failingAreaCost,failingAreaCostCount);
+                createFailingAreaCostChart(failingAreaCost, failingAreaCostCount);
 
 
             },
@@ -184,7 +213,62 @@
 
     }
 
-    function createFailingAreaChart (failingArea,failingAreaCount){
+
+    <!--summary chart status count-->
+
+    function createStatusCountChart(status, statusCount) {
+
+        let chartStatus = Chart.getChart("myChartStatusCount"); // <canvas> id
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+
+        const ctx = document.getElementById('myChartStatusCount').getContext('2d');
+        var myChartStatusCount = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: status,
+                datasets: [{
+                    label: 'Count of Unit State',
+                    data: statusCount,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Count of Unit State'
+                },
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    <!--summary chart failing Area count-->
+
+    function createFailingAreaChart(failingArea, failingAreaCount) {
 
         let chartStatus = Chart.getChart("myChartFailingArea");
         if (chartStatus != undefined) {
@@ -235,13 +319,13 @@
         });
     }
 
-    function createFailingAreaCostChart (failingAreaCost,failingAreaCostCount){
+    <!--summary chart failing Area Cost-->
+    function createFailingAreaCostChart(failingAreaCost, failingAreaCostCount) {
 
         let chartStatus = Chart.getChart("myChartFailingAreaCost");
         if (chartStatus != undefined) {
             chartStatus.destroy();
         }
-
 
         const ctx = document.getElementById('myChartFailingAreaCost').getContext('2d');
         var myChartFailingAreaCost = new Chart(ctx, {
@@ -286,74 +370,16 @@
         });
     }
 
+    jQuery(document).ready(function () {
 
+        /*get all summary details*/
+        getSummary()
 
-
-
-    function createChart (strArrayStatus,strCount){
-
-        let chartStatus = Chart.getChart("myChart"); // <canvas> id
-        if (chartStatus != undefined) {
-            chartStatus.destroy();
-        }
-
-
-        alert(strArrayStatus);
-        alert(strCount);
-
-    const ctx = document.getElementById('myChart').getContext('2d');
-     var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: strArrayStatus,
-            datasets: [{
-                label: 'Count of Unit State',
-                data: strCount,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Count of Unit State'
-            },
-            responsive: true,
-            maintainAspectRatio: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    }
-
-    window.addEventListener('beforeprint', () => {
-        myChart.resize(600, 600);
-    });
-    window.addEventListener('afterprint', () => {
-        myChart.resize();
     });
 
-    $(document).ready(function () {
+    <!--calendar date -->
 
-        alert("sdfdsfsdf");
+   /* $(document).ready(function () {
 
         $('#searchFromDate').datepicker({
             format: 'yyyy-mm-dd',
@@ -401,7 +427,6 @@
         }
         var today = (date.getFullYear() + "-" + month + "-" + day);
         $('#searchToDate').val(today);
-    }
-
+    }*/
 
 </script>

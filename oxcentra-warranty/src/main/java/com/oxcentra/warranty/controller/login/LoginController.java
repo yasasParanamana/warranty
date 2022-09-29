@@ -105,6 +105,9 @@ public class LoginController implements RequestBeanValidation<Object> {
                         sessionBean.setPageTaskMap(pageTaskList);
                         //redirect to home page
                         modelAndView = new ModelAndView("home/home", modelMap);
+
+
+//                        modelAndView = new ModelAndView("redirect:/home.htm", modelMap);
                     } else {
                         User user = sessionBean.getUser();
                         if (user.getStatus().equalsIgnoreCase(commonVarList.STATUS_NEW)) {
@@ -153,6 +156,8 @@ public class LoginController implements RequestBeanValidation<Object> {
                             sessionBean.setDaysToExpire(daysToExpire);
                             //redirect to home page
                             modelAndView = new ModelAndView("home/home", "beanmap", new ModelMap());
+//                            modelAndView = new ModelAndView("redirect:/home.htm", "beanmap", new ModelMap());
+//                            modelAndView = new ModelAndView("redirect:/home.jsp", modelMap);
                         }
                     }
                 }

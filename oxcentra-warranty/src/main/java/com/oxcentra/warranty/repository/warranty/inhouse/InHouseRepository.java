@@ -536,8 +536,6 @@ public class InHouseRepository {
         return supplier;
     }
 
-   
-
     private StringBuilder setDynamicClause(InHouseInputBean inHouseInputBean, StringBuilder dynamicClause) {
         try {
             if (inHouseInputBean.getId() != null && !inHouseInputBean.getId().isEmpty()) {
@@ -629,5 +627,171 @@ public class InHouseRepository {
         }
         return message;
     }
-    
+
+    @Transactional(readOnly = true)
+    public List<Claim> getClaimSearchResultListForReport(InHouseInputBean inHouseInputBean) throws Exception {
+        System.out.println("***** 1");
+        List<Claim> claimList = null;
+        try {
+            StringBuilder dynamicClause = this.setDynamicClause(inHouseInputBean, new StringBuilder());
+            //create sorting order
+            String sortingStr = " order by t.lastupdatedtime desc ";
+
+            String sql =
+                    "select " +
+                    "t.id," +
+                    "t.chassis," +
+                    "t.model," +
+                    "t.first_name," +
+                    "t.last_name," +
+                    "t.phone," +
+                    "t.email," +
+                    "t.address," +
+                    "t.surburb," +
+                    "t.state," +
+                    "t.postcode," +
+                    "t.dealership," +
+                    "t.purchasing_date," +
+                    "t.description," +
+                    "t.failiure_type," +
+                    "t.failiure_area," +
+                    "t.repair_type," +
+                    "t.repair_description," +
+                    "t.cost_type," +
+                    "t.hours," +
+                    "t.labour_rate," +
+                    "t.total_cost," +
+                    "t.cost_description," +
+                    "r.dealership_name," +
+                    "r.dealership_phone," +
+                    "r.dealership_email," +
+                    "r.dealership_address," +
+                    "t.claim_type,  " +
+                    "t.failing_area,  " +
+                    "t.comment,  " +
+                    "t.supplier,  " +
+                    "t.status,  " +
+                    "t.createduser,  " +
+                    "t.createdtime,  " +
+                    "t.lastupdatedtime,  " +
+                    "t.lastupdateduser,  " +
+                    "s.supplier_phone,  " +
+                    "s.supplier_email,  " +
+                    "s.supplier_address,  " +
+                    "t.is_in_house  " +
+                    "from reg_warranty_claim t " +
+                    "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
+                    "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
+                    "where t.is_in_house='1' and t.status ='WAR_APPROVE' and " + dynamicClause.toString() + sortingStr;
+
+            claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
+                Claim claim = new Claim();
+
+                try {
+                    claim.setId(rs.getString("id"));
+                } catch (Exception e) {
+                    claim.setId("--");
+                }
+
+                try {
+                    if (rs.getString("first_name") != null && !rs.getString("first_name").isEmpty()) {
+                        claim.setFirstName(rs.getString("first_name"));
+                    } else {
+                        claim.setFirstName("--");
+                    }
+                } catch (Exception e) {
+                    claim.setFirstName("--");
+                }
+
+                try {
+                    if (rs.getString("last_name") != null && !rs.getString("last_name").isEmpty()) {
+                        claim.setLastName(rs.getString("last_name"));
+                    } else {
+                        claim.setLastName("--");
+                    }
+                } catch (Exception e) {
+                    claim.setLastName("--");
+                }
+
+                try {
+                    if (rs.getString("phone") != null && !rs.getString("phone").isEmpty()) {
+                        claim.setPhone(rs.getString("phone"));
+                    } else {
+                        claim.setPhone("--");
+                    }
+                } catch (Exception e) {
+                    claim.setPhone("--");
+                }
+
+                try {
+                    if (rs.getString("email") != null && !rs.getString("email").isEmpty()) {
+                        claim.setEmail(rs.getString("email"));
+                    } else {
+                        claim.setEmail("--");
+                    }
+                } catch (Exception e) {
+                    claim.setEmail(null);
+                }
+
+                try {
+                    if (rs.getString("dealership") != null && !rs.getString("dealership").isEmpty()) {
+                        claim.setDealership(rs.getString("dealership"));
+                    } else {
+                        claim.setDealership("--");
+                    }
+                } catch (Exception e) {
+                    claim.setDealership("--");
+                }
+
+                try {
+                    if (rs.getString("status") != null && !rs.getString("status").isEmpty()) {
+                        claim.setStatus(rs.getString("status"));
+                    } else {
+                        claim.setStatus("--");
+                    }
+                } catch (Exception e) {
+                    claim.setStatus("--");
+                }
+
+                try {
+                    if (rs.getString("createduser") != null && !rs.getString("createduser").isEmpty()) {
+                        claim.setCreatedUser(rs.getString("createduser"));
+                    } else {
+                        claim.setCreatedUser("--");
+                    }
+                } catch (Exception e) {
+                    claim.setCreatedUser("--");
+                }
+
+                try {
+                    if (rs.getString("createdtime") != null && !rs.getString("createdtime").isEmpty()) {
+                        claim.setCreatedTime(rs.getDate("createdtime"));
+                    } else {
+                        claim.setCreatedTime(null);
+                    }
+                } catch (Exception e) {
+                    claim.setCreatedTime(null);
+                }
+
+                try {
+                    if (rs.getString("lastupdateduser") != null && !rs.getString("lastupdateduser").isEmpty()) {
+                        claim.setLastUpdatedUser(rs.getString("lastupdateduser"));
+                    } else {
+                        claim.setLastUpdatedUser("--");
+                    }
+                } catch (Exception e) {
+                    claim.setLastUpdatedUser("--");
+                }
+
+                return claim;
+            });
+        } catch (EmptyResultDataAccessException ex) {
+            return claimList;
+        } catch (Exception e) {
+            throw e;
+        }
+        return claimList;
+    }
+
+
 }

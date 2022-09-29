@@ -46,10 +46,62 @@ public class HomeRepository {
     @Autowired
     CommonRepository commonRepository;
 
+    private final String SQL_TOTAL_COUNT = "select count(*) from reg_warranty_claim ";
+    private final String SQL_TOTAL_COST = "select sum(total_cost) from reg_warranty_claim ";
     private final String SQL_COUNT_STATUS = "select count(*) from reg_warranty_claim where status=?";
     private final String SQL_GET_LIST_STATUS_COUNT = "SELECT wc.status as sts , count(wc.id) as stsCt FROM reg_warranty_claim wc GROUP BY wc.status ";
     private final String SQL_GET_LIST_FAILING_AREA_COUNT = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount FROM reg_warranty_claim wc GROUP BY wc.failing_area";
     private final String SQL_GET_LIST_FAILING_AREA_COST_COUNT = "SELECT wc.failing_area AS fail_area, SUM(wc.total_cost) AS cost_count FROM reg_warranty_claim wc GROUP BY wc.failing_area";
+
+
+    /**
+     * @Author yasas_p
+     * @CreatedTime 2022-09-13 12:49:37 PM
+     * @Version V1.00
+     * @MethodName getRequestTotalCount
+     * @MethodParams [ status]
+     * @MethodDescription - This method get the request count
+     */
+    @Transactional(readOnly = true)
+    public long getRequestTotalCount() throws Exception {
+
+        long count = 0;
+        try {
+            count = jdbcTemplate.queryForObject(SQL_TOTAL_COUNT, new Object[]{
+
+            }, Long.class);
+        } catch (EmptyResultDataAccessException ere) {
+            count = 0;
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return count;
+    }
+
+    /**
+     * @Author yasas_p
+     * @CreatedTime 2022-09-13 12:49:37 PM
+     * @Version V1.00
+     * @MethodName getRequestTotalCost
+     * @MethodParams [ status]
+     * @MethodDescription - This method get the request count
+     */
+    @Transactional(readOnly = true)
+    public String getRequestTotalCost() throws Exception {
+
+        String cost = "0";
+        try {
+            cost = jdbcTemplate.queryForObject(SQL_TOTAL_COST, new Object[]{
+
+            }, String.class);
+        } catch (EmptyResultDataAccessException ere) {
+            cost = "0";
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return cost;
+    }
+
 
     /**
      * @Author yasas_p

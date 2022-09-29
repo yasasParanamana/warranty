@@ -142,5 +142,8 @@ public class CriticalInputBean extends DataTablesRequest {
 
     private List<File> filesUploadDealer = new ArrayList<File>();
 
+    private String fromDate;
+    private String toDate;
+
 
 }

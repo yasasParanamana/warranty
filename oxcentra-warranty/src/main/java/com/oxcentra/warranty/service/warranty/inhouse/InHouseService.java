@@ -60,6 +60,26 @@ public class InHouseService {
         }
         return count;
     }
+    public List<Claim> getClaimSearchResultListForReport(InHouseInputBean inHouseInputBean) throws Exception {
+        List<Claim> claimList;
+        try {
+            //set audit trace values
+            audittrace.setSection(SectionVarList.SECTION_WARRANTY_MGT);
+            audittrace.setPage(PageVarList.IN_HOUSE_MGT_PAGE);
+            audittrace.setTask(TaskVarList.DOWNLOAD_TASK);
+            audittrace.setDescription("Get audit trace search list.");
+            //get sms outbox search list for report
+            claimList = inHouseRepository.getClaimSearchResultListForReport(inHouseInputBean);
+        } catch (EmptyResultDataAccessException ere) {
+            audittrace.setSkip(true);
+            throw ere;
+        } catch (Exception e) {
+            audittrace.setSkip(true);
+            throw e;
+        }
+        return claimList;
+    }
+
 
     public List<Claim> getCriticalSearchResults(InHouseInputBean inHouseInputBean) throws Exception {
         List<Claim> claimList;
@@ -371,4 +391,207 @@ public class InHouseService {
         }
         return claimStringBuilder.toString();
     }
+
+    public StringBuffer makeCsvReport(InHouseInputBean inHouseInputBean) throws Exception {
+        StringBuffer stringBuffer = new StringBuffer();
+        try {
+            List<Claim> claimList = this.getClaimSearchResultListForReport(inHouseInputBean);
+            if (!claimList.isEmpty()) {
+                stringBuffer.append("No");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Warranty ID");
+                stringBuffer.append(',');
+
+                stringBuffer.append("First Name");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Last Name");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Phone Number");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Email");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Dealership");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Status");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Created USer");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Created Date");
+                stringBuffer.append(',');
+
+                stringBuffer.append("Last Updated User");
+                stringBuffer.append(',');
+
+                stringBuffer.append('\n');
+
+                int i = 0;
+                for (Claim claim : claimList) {
+                    i++;
+                    try {
+                        stringBuffer.append(i);
+                        stringBuffer.append(",");
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getId() != null) {
+                            stringBuffer.append(claim.getId());
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getFirstName() != null && !claim.getFirstName().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getFirstName()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getLastName() != null && !claim.getLastName().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getLastName()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getPhone() != null && !claim.getPhone().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getPhone()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getEmail() != null && !claim.getEmail().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getEmail()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getDealership() != null && !claim.getDealership().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getDealership()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getStatus() != null && !claim.getStatus().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getStatus()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getCreatedUser() != null && !claim.getCreatedUser().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getCreatedUser()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getCreatedTime() != null) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getCreatedTime().toString()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    try {
+                        if (claim.getLastUpdatedUser() != null && !claim.getCreatedUser().isEmpty()) {
+                            stringBuffer.append(common.appendSpecialCharacterToCsv(claim.getCreatedUser()));
+                            stringBuffer.append(",");
+                        } else {
+                            stringBuffer.append("--");
+                            stringBuffer.append(",");
+                        }
+                    } catch (NullPointerException E) {
+                        stringBuffer.append("--");
+                        stringBuffer.append(",");
+                    }
+
+                    stringBuffer.append('\n');
+
+                }
+                stringBuffer.append('\n');
+
+                stringBuffer.append("From Date : ");
+                stringBuffer.append(inHouseInputBean.getFromDate());
+                stringBuffer.append('\n');
+
+                stringBuffer.append("To Date : ");
+                stringBuffer.append(inHouseInputBean.getToDate());
+                stringBuffer.append('\n');
+
+                stringBuffer.append('\n');
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return stringBuffer;
+    }
+
 }

@@ -52,8 +52,33 @@ public class HomeService {
     HomeRepository homeRepository;
 
 
+    public long getRequestTotalCount() throws Exception {
+        long count;
+        try {
+            count = homeRepository.getRequestTotalCount();
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return count;
+    }
 
-  public long getRequestCount(String Status) throws Exception {
+    public String getRequestTotalCost() throws Exception {
+        String cost;
+        try {
+            cost = homeRepository.getRequestTotalCost();
+        } catch (EmptyResultDataAccessException ere) {
+            throw ere;
+        } catch (Exception e) {
+            throw e;
+        }
+        return cost;
+    }
+
+
+
+    public long getRequestCount(String Status) throws Exception {
         long count;
         try {
             count = homeRepository.getRequestCount(Status);

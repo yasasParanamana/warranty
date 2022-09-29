@@ -1,4 +1,4 @@
-                                                                                             <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -13,6 +13,13 @@
         }
     </style>
     <script type="text/javascript">
+
+        function downloadCSVReport() {
+            form = document.getElementById('inHouseform');
+            form.action = 'csvInHouse.htm';
+            form.submit();
+        }
+
 
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
@@ -151,7 +158,7 @@
                                 'Noted': {
                                     'title': 'Noted',
                                     'class': ' label-light-success'
-                                },'In Purchase': {
+                                }, 'In Purchase': {
                                     'title': 'In Purchase',
                                     'class': ' label-light-info'
                                 }
@@ -268,10 +275,10 @@
                     $('#editSupAddress').html(data.supplierAddress);
                     $('#editComment').val(data.comment);
 
-                    if(data.inHouse === true ){
+                    if (data.inHouse === true) {
                         $('#isInHouse').attr('checked', true);
                         $('#nextBtn').hide();
-                    }else{
+                    } else {
                         $('#isInHouse').attr('checked', false);
                         $('#nextBtn').show();
                     }
@@ -290,7 +297,7 @@
                     $(sparePartLIst).each(function (i, sparePartLIst) {
                         x++;
                         $('<tr/>').appendTo(table)
-                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired'+x+'"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input type="text" name="quantity'+x+'" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired' + x + '"  value="' + sparePartLIst.sparePartType + '" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input type="text" name="quantity' + x + '" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="' + sparePartLIst.qty + '" /></div></div>'));
                     });
 
                     let sparePartSupList = data.sparePartList;
@@ -303,7 +310,7 @@
                     $(sparePartSupList).each(function (i, sparePartLIst) {
                         y++;
                         $('<tr/>').appendTo(tableSup)
-                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequiredSup"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantitySup" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequiredSup"  value="' + sparePartLIst.sparePartType + '" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantitySup" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="' + sparePartLIst.qty + '" /></div></div>'));
                     });
 
 
@@ -315,7 +322,7 @@
                         $('<tr/>').appendTo(tableAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
                             .append($('<td/>').text(repairFileList.fileName))
-                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + repairFileList.fileFormat +','+ repairFileList.base64value+','+repairFileList.fileName+'\')">Download</a>'));
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + repairFileList.fileFormat + ',' + repairFileList.base64value + ',' + repairFileList.fileName + '\')">Download</a>'));
                         ;
                     });
 
@@ -328,7 +335,7 @@
                         $('<tr/>').appendTo(tableClaimAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
                             .append($('<td/>').text(claimTypeFileList.fileName))
-                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + claimTypeFileList.fileFormat +','+ claimTypeFileList.base64value+','+claimTypeFileList.fileName+'\')">Download</a>'));
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + claimTypeFileList.fileFormat + ',' + claimTypeFileList.base64value + ',' + claimTypeFileList.fileName + '\')">Download</a>'));
                         ;
                     });
 
@@ -388,18 +395,30 @@
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap border-0 pt-1 pb-0">
-                    <div class="card-title">
-                        <div class="row">
-                            <div class="col-lg-9">
-                                <input id="searchId" name="searchId" type="text" maxlength="50" class="form-control">
-                            </div>
-                            <div class="col-lg-3">
-                                <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
-                                    Search
-                                </button>
+
+                    <form:form class="form" id="inHouseform" name="inhousesearch" action="InHouse" theme="simple"
+                               method="post" modelAttribute="inHouseView">
+
+                        <div class="card-title">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input id="searchId" name="searchId" type="text" maxlength="50"
+                                           class="form-control">
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
+                                        Search
+                                    </button>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button id="viewCSV" type="button" class="btn btn-primary mr-2 btn-sm"
+                                            onclick="downloadCSVReport()">
+                                        CSV
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form:form>
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->

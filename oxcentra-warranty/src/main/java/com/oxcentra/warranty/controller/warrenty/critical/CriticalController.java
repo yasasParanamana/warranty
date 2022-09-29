@@ -32,6 +32,9 @@ import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -225,4 +228,29 @@ public class CriticalController implements RequestBeanValidation<Object> {
         return dataBinder.getBindingResult();
     }
 
+    @RequestMapping(value = "/csvCritical", method = RequestMethod.POST)
+    @AccessControl(pageCode = PageVarList.CRITICAL_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
+    @ResponseBody
+    public void csvReportAudit(@ModelAttribute("critical") CriticalInputBean criticalInputBean , HttpServletResponse httpServletResponse) {
+        logger.info("[" + sessionBean.getSessionid() + "]  CRITICAL CSV");
+        OutputStream outputStream = null;
+        try {
+            StringBuffer csvContent = criticalService.makeCsvReport(criticalInputBean);
+            //set response to
+            httpServletResponse.setContentType("application/octet-stream");
+            httpServletResponse.setHeader("Content-disposition", "inline; filename=Critical_Claim_Report.csv");
+            httpServletResponse.getOutputStream().print(csvContent.toString());
+        } catch (Exception ex) {
+            logger.error("Exception  :  ", ex);
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (IOException ex) {
+
+            }
+        }
+    }
 }

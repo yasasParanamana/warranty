@@ -66,6 +66,7 @@
                     <!--begin::Form-->
                     <form:form novalidate="novalidate" method="post" class="form" modelAttribute="loginform"
                                action="checkuser.htm" id="kt_login_signin_form">
+<%--                               action="home.htm" id="kt_login_signin_form">--%>
                         <!-- Error Message -->
                         <c:set var="errorMessage" value="${msg}"/>
                         <c:set var="successMessage" value="${cmsg}"/>

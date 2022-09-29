@@ -59,6 +59,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String uri = request.getRequestURI().substring(request.getContextPath().length());
 
             if (!uri.equals("/checkuser.htm") && !uri.equals("/logout.htm")) {
+//            if (!uri.equals("/home.htm") && !uri.equals("/logout.htm")) {
                 logger.info("session id :" + httpSession.getId());
                 //check the session bean
                 if (sessionBean != null) {

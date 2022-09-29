@@ -16,11 +16,17 @@ public class HomeInputBean {
     private String countInPurchase;
     private String countNoted;
 
+    private String fromDate;
+    private String toDate;
+
     private String strArrayStatus;
     private String strCount;
 
     private List<SummaryBean> statusCountList = new ArrayList<SummaryBean>();
     private List<SummaryBean> failingAreaCountList = new ArrayList<SummaryBean>();
     private List<SummaryBean> failingAreaCostCountList = new ArrayList<SummaryBean>();
+
+    private String totalCount;
+    private String totalCost;
 
 }
