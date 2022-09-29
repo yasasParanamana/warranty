@@ -885,10 +885,10 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/chart.min.js"></script>
 <!--end::Chart-->
 <!--jquery-->
-<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js?${initParam['version']}"
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"
         type="text/javascript"></script>
 
-<script src="${pageContext.request.contextPath}/resources/popper/popper.min.js?${initParam['version']}"
+<script src="${pageContext.request.contextPath}/resources/popper/popper.min.js"
         type="text/javascript"></script>
 
 <!--begin::Page Vendors(used by this page)-->

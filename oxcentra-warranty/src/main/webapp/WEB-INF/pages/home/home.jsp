@@ -9,6 +9,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <c:set var="changePwdMode" value="${sessionBean.changePwdMode}"/>
 <c:set var="sectionList" value="${sessionBean.sectionList}"/>
@@ -16,9 +19,6 @@
 <c:set var="daysToExpire" value="${sessionBean.daysToExpire}"/>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.6.1.min.js"></script>
-
-<%--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/2.2.4/themes/smoothness/jquery-ui.css">--%>
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--%>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -54,82 +54,88 @@
             </div>
         </div>
     </div>
-    <!--begin::Search-->
-    <div class="card">
-        <div class="form-group row">
-            <div class="col-lg-2">
-                <label for="searchFromDate">From Date :</label>
-                <div class="btn-group div-inline input-group input-group-sm input-append date">
-                    <input path="fromDate" name="fromDate" id="searchFromDate"
-                           class="form-control" readonly="true" onkeydown="return false"
-                           autocomplete="off"/>
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Search-->
+        <div class="card">
+            <div class="form-group row">
+                <div class="col-lg-2">
+                </div>
+                <div class="col-lg-2">
+                    <label for="searchFromDate">From Date :</label>
+                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                        <input path="fromDate" name="fromDate" id="searchFromDate"
+                               class="form-control" readonly="true" onkeydown="return false"
+                               autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <label for="searchToDate">To Date :</label>
+                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                        <input path="toDate" name="toDate" id="searchToDate"
+                               class="form-control" readonly="true" onkeydown="return false"
+                               autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <label></label>
+                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                        <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getSummary()"
+                                id="btnSearch">
+                            Search
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
+                                id="btnReset">
+                            Reset
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-2">
-                <label for="searchToDate">To Date :</label>
-                <div class="btn-group div-inline input-group input-group-sm input-append date">
-                    <input path="toDate" name="toDate" id="searchToDate"
-                           class="form-control" readonly="true" onkeydown="return false"
-                           autocomplete="off"/>
+        </div>
+        <!--end::Search-->
+        <!--begin::Charts-->
+        <div class="card-columns">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Count of Unit State</h5>
+                    <canvas id="myChartStatusCount"></canvas>
                 </div>
             </div>
-            <div class="col-lg-2">
-                <label></label>
-                <div class="btn-group div-inline input-group input-group-sm input-append date">
-                    <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="getSummary()"
-                            id="btnSearch">
-                        Search
-                    </button>
-                    <button type="button" class="btn btn-secondary btn-sm" onclick="resetForm()"
-                            id="btnReset">
-                        Reset
-                    </button>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Count vs Failing Area</h5>
+                    <canvas id="myChartFailingArea"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Cost vs Failing Area</h5>
+                    <canvas id="myChartFailingAreaCost"></canvas>
+                </div>
+            </div>
+        </div>
+        <!--end::Search-->
+        <!--begin::DataCounts-->
+        <div class="card-columns">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Total Count of Insidents</th>
+                            <th scope="col" id="totalCount"></th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Total Cost For Approved Warranty Claims</th>
+                            <th scope="col" id="totalCost"></th>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <!--end::Search-->
-    <!--begin::Charts-->
-    <div class="card-columns">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Count of Unit State</h5>
-                <canvas id="myChartStatusCount"></canvas>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Total Count vs Failing Area</h5>
-                <canvas id="myChartFailingArea"></canvas>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Total Cost vs Failing Area</h5>
-                <canvas id="myChartFailingAreaCost"></canvas>
-            </div>
-        </div>
-    </div>
-    <!--end::Search-->
-    <!--begin::DataCounts-->
-    <div class="card-columns">
-        <div class="card">
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Total Count of Insidents</th>
-                        <th scope="col" id="totalCount"></th>
-                    </tr>
-                    <tr>
-                        <th scope="col">Total Cost For Approved Warranty Claims</th>
-                        <th scope="col" id="totalCost"></th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
+    <!--end::Container-->
     <!--begin::EndDataCounts-->
 </div>
 
@@ -148,13 +154,13 @@
     function getSummary() {
 
         const fromDate = $('#searchFromDate').val();
-        const toDate =$('#searchToDate').val();
+        const toDate = $('#searchToDate').val();
 
         $.ajax({
             url: "${pageContext.request.contextPath}/getSummaryhome.json",
             data: {
                 fromDate: fromDate,
-                toDate:toDate
+                toDate: toDate
             },
             dataType: "json",
             type: 'GET',
@@ -379,7 +385,7 @@
 
     <!--calendar date -->
 
-   /* $(document).ready(function () {
+    $(document).ready(function () {
 
         $('#searchFromDate').datepicker({
             format: 'yyyy-mm-dd',
@@ -401,32 +407,32 @@
         setToDate();
     });
 
-    function setFromDate() {
-        var date = new Date();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-        var today = (date.getFullYear() + "-" + month + "-" + day);
-        $('#searchFromDate').val(today);
-    }
+     function setFromDate() {
+         var date = new Date();
+         var month = date.getMonth() + 1;
+         var day = date.getDate();
+         if (day < 10) {
+             day = '0' + day;
+         }
+         if (month < 10) {
+             month = '0' + month;
+         }
+         var today = (date.getFullYear() + "-" + month + "-" + day);
+         $('#searchFromDate').val(today);
+     }
 
-    function setToDate() {
-        var date = new Date();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-        var today = (date.getFullYear() + "-" + month + "-" + day);
-        $('#searchToDate').val(today);
-    }*/
+     function setToDate() {
+         var date = new Date();
+         var month = date.getMonth() + 1;
+         var day = date.getDate();
+         if (day < 10) {
+             day = '0' + day;
+         }
+         if (month < 10) {
+             month = '0' + month;
+         }
+         var today = (date.getFullYear() + "-" + month + "-" + day);
+         $('#searchToDate').val(today);
+     }
 
 </script>
