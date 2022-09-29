@@ -96,7 +96,8 @@ public class ClaimRepository {
             "s.supplier_phone,  " +
             "s.supplier_email,  " +
             "s.supplier_address,  " +
-            "t.is_in_house  " +
+            "t.is_in_house,  " +
+            "t.status  " +
             "from reg_warranty_claim t " +
             "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
             "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
@@ -317,11 +318,8 @@ public class ClaimRepository {
                         String attachmentType = "";
 
                         String[] parts = file.split("FileDetails");
-                        System.out.println(parts.toString());
                         String imageFile = parts[0];
-                        System.out.println(imageFile);
                         String othersDetails = parts[1];
-                        System.out.println(othersDetails);
 
                         String[] imageOtherDetails = othersDetails.split("\\|");
 
@@ -336,8 +334,6 @@ public class ClaimRepository {
 
                         newAttachments.setAttachmentFile(blob);
                         newAttachments.setWarrantyId(claimInputBean.getId());
-
-                        System.out.println(claimInputBean.getCreatedTime());
 
                         newAttachments.setCreatedDate(claimInputBean.getCreatedTime());
                         newAttachments.setFileFormat(fileType);
@@ -593,10 +589,15 @@ public class ClaimRepository {
                 }
 
                 try {
-                    System.out.println(rs.getBoolean("is_in_house"));
                     t.setInHouse(rs.getBoolean("is_in_house"));
                 } catch (Exception e) {
                     t.setInHouse(false);
+                }
+
+                try {
+                    t.setStatus(rs.getString("status"));
+                } catch (Exception e) {
+                    t.setStatus(null);
                 }
 
                 return t;

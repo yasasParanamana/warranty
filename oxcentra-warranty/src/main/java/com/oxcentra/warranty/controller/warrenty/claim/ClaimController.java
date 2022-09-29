@@ -100,7 +100,6 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  WARRANTY CLAIMS SEARCH");
         DataTablesResponse<Claim> responseBean = new DataTablesResponse<>();
         try {
-            System.out.println("claimInputBean > " + claimInputBean);
             long count = claimService.getDataCount(claimInputBean);
             if (count > 0) {
                 List<Claim> list = claimService.getClaimSearchResults(claimInputBean);

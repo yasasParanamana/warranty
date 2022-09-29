@@ -21,7 +21,8 @@
             </div>
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
                        name="updateClaimForm">
-                <div class="form-group" style="text-align: center"><span style="alignment: center" id="responseMsgUpdate"></span></div>
+                <div class="form-group" style="text-align: center"><span style="alignment: center"
+                                                                         id="responseMsgUpdate"></span></div>
                 <div class="form-group row" hidden="true">
                     <div class="col-sm-8">
                         <form:input path="id" name="id" type="text" id="editId"/>
@@ -112,7 +113,7 @@
                             <label id="editClaimType"></label>
                         </div>
 
-                        <div class="form-group col-md-3" >
+                        <div class="form-group col-md-3">
                             <label for="editPurchasingDate">Purchasing Date</label>
                             <label>:</label>
                             <label id="editPurchasingDate"></label>
@@ -173,7 +174,7 @@
                                     class="text-danger">*</span></label>
                             <form:select path="failingArea" name="failingArea"
                                          class="form-control form-control-sm"
-                                         id="editFailingArea" >
+                                         id="editFailingArea">
                                 <option selected value="">Select Failing Area</option>
                                 <c:forEach items="${claim.failingAreaList}" var="failingArea">
                                     <form:option
@@ -210,7 +211,7 @@
                             <form:select path="costType" name="costType"
                                          class="form-control form-control-sm"
                                          id="editCostType"
-                                         onchange="setOtherCostDeatilsEdit()" >
+                                         onchange="setOtherCostDeatilsEdit()">
                                 <option selected value="">Select Type of Cost</option>
                                 <c:forEach items="${claim.costTypeList}" var="costType">
                                     <form:option
@@ -254,7 +255,8 @@
                                            class="form-control form-control-sm" id="editCostDescription" maxlength="256"
                                            placeholder="Description Of Cost"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
-                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
+                                           data-toggle="tooltip" data-placement="top" data-html="true"
+                                           title="<b>Input the reason for final cost<b> "
                             />
                         </div>
                     </div>
@@ -265,21 +267,30 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="modal-footer justify-content-end">
-                        <c:if test="${claim.vupdate}">
-                            <button id="notedBtn" type="button" onclick="noted()" class="btn btn-primary">
-                                Noted
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
-                                Approve
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
-                                Reject
-                            </button>
-                        </c:if>
+                        <div id="firstButtons">
+                            <c:if test="${claim.vupdate}">
+                                <button id="notedBtn" type="button" onclick="noted()" class="btn btn-primary">
+                                    Noted
+                                </button>
+                            </c:if>
+                            <c:if test="${claim.vupdate}">
+                                <button id="approveBtn" type="button" onclick="approve()" class="btn btn-primary">
+                                    Approve
+                                </button>
+                            </c:if>
+                            <c:if test="${claim.vupdate}">
+                                <button id="rejectBtn" type="button" onclick="reject()" class="btn btn-primary">
+                                    Reject
+                                </button>
+                            </c:if>
+                        </div>
+                        <div id="secondButton">
+                            <c:if test="${claim.vupdate}">
+                                <button id="nextBtn" type="button" onclick="next()" class="btn btn-primary">
+                                    Next
+                                </button>
+                            </c:if>
+                        </div>
                     </div>
                 </div>
 
@@ -364,7 +375,8 @@
                                            class="form-control form-control-sm" id="editComment" maxlength="256"
                                            placeholder="Comment"
                                            onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
-                                           data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the Comment<b> "
+                                           data-toggle="tooltip" data-placement="top" data-html="true"
+                                           title="<b>Input the Comment<b> "
                             />
                         </div>
                     </div>
@@ -408,16 +420,21 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-end">
-                        <c:if test="${claim.vupdate}">
-                            <button id="previousBtn" type="button" onclick="previous()" class="btn btn-primary">
-                                Previous
-                            </button>
-                        </c:if>
-                        <c:if test="${claim.vupdate}">
-                            <button id="sendEmailBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
-                                Send E-mail to Supplier
-                            </button>
-                        </c:if>
+                        <div id="secondPageSecondButton">
+                            <c:if test="${claim.vupdate}">
+                                <button id="previousBtn" type="button" onclick="previous()" class="btn btn-primary">
+                                    Previous
+                                </button>
+                            </c:if>
+                        </div>
+                            <div id="secondPageFirstButtons">
+                            <c:if test="${claim.vupdate}">
+                                <button id="sendEmailBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
+                                    Send E-mail to Supplier
+                                </button>
+                            </c:if>
+                        </div>
+
                     </div>
                 </div>
 
@@ -462,7 +479,7 @@
 
     }
 
-    function  noted(){
+    function noted() {
 
         $('#responseMsgUpdate').empty();
 
@@ -608,32 +625,32 @@
         let fileName = arr[2];
 
         let a = document.createElement("a");
-        a.href = "data:"+contentType+";base64," + base64Data;
+        a.href = "data:" + contentType + ";base64," + base64Data;
         a.download = fileName;
         a.click();
     }
 
-    function setOtherCostDeatilsEdit(){
+    function setOtherCostDeatilsEdit() {
 
         const costType = $('#editCostType').val();
 
-        if(costType === 'LABOUR'){
+        if (costType === 'LABOUR') {
 
             $('#editHoursDiv').show();
             $('#editLabourRateDiv').show();
             $('#editTotalCostDiv').show();
 
-        }else if (costType === 'MATERIALS' ){
+        } else if (costType === 'MATERIALS') {
             $('#editHoursDiv').hide();
             $('#editLabourRateDiv').hide();
             $('#editTotalCostDiv').show();
 
-        }else if(costType === 'SUBLET'){
+        } else if (costType === 'SUBLET') {
 
             $('#editHoursDiv').hide();
             $('#editLabourRateDiv').hide();
             $('#editTotalCostDiv').show();
-        }else if(costType === ''){
+        } else if (costType === '') {
 
             $('#editHoursDiv').hide();
             $('#editLabourRateDiv').hide();
@@ -651,4 +668,9 @@
             forceParse: false
         });
     });
+
+    function next() {
+        $('#secondTab').show();
+        $('#firstTab').hide();
+    }
 </script>

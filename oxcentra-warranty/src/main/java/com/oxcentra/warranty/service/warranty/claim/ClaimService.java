@@ -643,9 +643,6 @@ public class ClaimService {
                 claimInputBean.setLastUpdatedTime(currentDate);
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
 
-                System.out.println(claimInputBean.getCostType());
-
-
                 if(!claimInputBean.getCostType().equalsIgnoreCase("LABOUR")){
                     claimInputBean.setHours(null);
                     claimInputBean.setLabourRate(null);

@@ -280,6 +280,18 @@
                     $('#editSupAddress').html(data.supplierAddress);
                     $('#editComment').val(data.comment);
 
+                    if(data.status === 'WAR_PEND'){
+                        $('#firstButtons').show();
+                        $('#secondPageFirstButtons').show();
+                        $('#secondButton').hide();
+                        $('#secondPageSecondButton').show();
+                    }else{
+                        $('#firstButtons').hide();
+                        $('#secondPageFirstButtons').hide();
+                        $('#secondButton').show();
+                        $('#secondPageSecondButton').show();
+                    }
+
                     if(data.inHouse === true ){
                         $('#isInHouse').attr('checked', true);
                     }else{
