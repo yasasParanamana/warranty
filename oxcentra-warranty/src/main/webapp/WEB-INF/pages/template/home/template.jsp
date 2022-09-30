@@ -65,7 +65,9 @@
     <%--Used by all pages (dont put end of the page, not working)--%>
     <script src="${pageContext.request.contextPath}/resources/assets/plugins/global/plugins.bundle.js"></script>
 
-
+    <!--begin::Chart-->
+    <script src="${pageContext.request.contextPath}/resources/assets/js/chart.min.js"></script>
+    <!--end::Chart-->
 </head>
 
 <!--begin::Body-->

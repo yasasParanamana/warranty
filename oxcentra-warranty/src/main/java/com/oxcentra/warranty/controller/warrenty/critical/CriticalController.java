@@ -91,7 +91,6 @@ public class CriticalController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CRITICAL SEARCH");
         DataTablesResponse<Claim> responseBean = new DataTablesResponse<>();
         try {
-            System.out.println("criticalInputBean > " + criticalInputBean);
             long count = criticalService.getDataCount(criticalInputBean);
             if (count > 0) {
                 List<Claim> list = criticalService.getCriticalSearchResults(criticalInputBean);

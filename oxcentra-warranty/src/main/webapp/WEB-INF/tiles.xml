@@ -38,7 +38,7 @@
         <put-attribute name="body" value="/WEB-INF/pages/login/login.jsp"/>
     </definition>
 
-    <definition name="home/home" extends="dashboard-template">
+    <definition name="home/home" extends="home-template">
         <put-attribute name="body" value="/WEB-INF/pages/home/home.jsp"/>
     </definition>
 

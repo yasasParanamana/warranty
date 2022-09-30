@@ -18,7 +18,6 @@
 <c:set var="pageMap" value="${sessionBean.pageMap}"/>
 <c:set var="daysToExpire" value="${sessionBean.daysToExpire}"/>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.6.1.min.js"></script>
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
@@ -125,6 +124,14 @@
                             <th scope="col">Total Count of Insidents</th>
                             <th scope="col" id="totalCount"></th>
                         </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
                         <tr>
                             <th scope="col">Total Cost For Approved Warranty Claims</th>
                             <th scope="col" id="totalCost"></th>
@@ -392,7 +399,7 @@
             endDate: '+0d',
             setDate: new Date(),
             todayHighlight: true,
-            forceParse: false
+            forceParse: false,
         });
 
         $('#searchToDate').datepicker({

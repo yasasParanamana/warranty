@@ -98,7 +98,6 @@ public class InHouseController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  IN_HOUSE SEARCH");
         DataTablesResponse<Claim> responseBean = new DataTablesResponse<>();
         try {
-            System.out.println("inHouseInputBean > " + inHouseInputBean);
             long count = inHouseService.getDataCount(inHouseInputBean);
             if (count > 0) {
                 List<Claim> list = inHouseService.getCriticalSearchResults(inHouseInputBean);
@@ -122,7 +121,6 @@ public class InHouseController implements RequestBeanValidation<Object> {
         }
         return responseBean;
     }
-
 
     @GetMapping(value = "/getInHouse")
     @AccessControl(pageCode = PageVarList.IN_HOUSE_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)

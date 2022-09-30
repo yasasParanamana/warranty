@@ -2,6 +2,7 @@ package com.oxcentra.warranty.service.home;
 
 import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
+import com.oxcentra.warranty.bean.home.HomeInputBean;
 import com.oxcentra.warranty.bean.home.SummaryBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
@@ -52,10 +53,10 @@ public class HomeService {
     HomeRepository homeRepository;
 
 
-    public long getRequestTotalCount() throws Exception {
+    public long getRequestTotalCount(HomeInputBean homeInputBean) throws Exception {
         long count;
         try {
-            count = homeRepository.getRequestTotalCount();
+            count = homeRepository.getRequestTotalCount(homeInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -64,10 +65,10 @@ public class HomeService {
         return count;
     }
 
-    public String getRequestTotalCost() throws Exception {
+    public String getRequestTotalCost(HomeInputBean homeInputBean) throws Exception {
         String cost;
         try {
-            cost = homeRepository.getRequestTotalCost();
+            cost = homeRepository.getRequestTotalCost(homeInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -78,10 +79,11 @@ public class HomeService {
 
 
 
-    public long getRequestCount(String Status) throws Exception {
+    public long getRequestCount(String Status ,HomeInputBean homeInputBean) throws Exception {
         long count;
         try {
-            count = homeRepository.getRequestCount(Status);
+            homeInputBean.setStatus(Status);
+            count = homeRepository.getRequestCount(Status ,homeInputBean);
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
         } catch (Exception e) {
@@ -90,11 +92,11 @@ public class HomeService {
         return count;
     }
 
-    public List<SummaryBean> getStatusSummary() throws Exception {
+    public List<SummaryBean> getStatusSummary(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> SummaryBean;
 
         try {
-            SummaryBean = homeRepository.getStatusSummaryList();
+            SummaryBean = homeRepository.getStatusSummaryList(homeInputBean);
 
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
@@ -104,11 +106,11 @@ public class HomeService {
         return SummaryBean;
     }
 
-    public List<SummaryBean> getFailingAreaSummary() throws Exception {
+    public List<SummaryBean> getFailingAreaSummary(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> SummaryBean;
 
         try {
-            SummaryBean = homeRepository.getFailingAreaSummaryList();
+            SummaryBean = homeRepository.getFailingAreaSummaryList(homeInputBean);
 
         } catch (EmptyResultDataAccessException ere) {
             throw ere;
@@ -118,11 +120,11 @@ public class HomeService {
         return SummaryBean;
     }
 
-    public List<SummaryBean> getFailingAreaCostSummary() throws Exception {
+    public List<SummaryBean> getFailingAreaCostSummary(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> SummaryBean;
 
         try {
-            SummaryBean = homeRepository.getFailingAreaCostSummaryList();
+            SummaryBean = homeRepository.getFailingAreaCostSummaryList(homeInputBean);
 
         } catch (EmptyResultDataAccessException ere) {
             throw ere;

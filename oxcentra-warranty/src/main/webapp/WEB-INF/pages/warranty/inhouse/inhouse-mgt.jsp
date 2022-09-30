@@ -64,7 +64,8 @@
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'id', 'value': $('#searchId').val()}
+                        {'name': 'fromDate', 'value': $('#searchFromDate').val()},
+                        {'name': 'toDate', 'value': $('#searchToDate').val()}
                     );
                     $.ajax({
                         dataType: 'json',
@@ -365,15 +366,71 @@
         }
 
         function resetSearch() {
-            $('#searchId').val("");
-            $('#searchDescription').val("");
-            $('#searchStatus').val("");
             oTable.fnDraw();
         }
 
         function search() {
             oTable.fnDraw();
         }
+
+        <!--calendar date -->
+
+        $(document).ready(function () {
+
+            $('#searchFromDate').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: '+0d',
+                setDate: new Date(),
+                todayHighlight: true,
+                forceParse: false,
+            });
+
+            $('#searchToDate').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: '+0d',
+                setDate: new Date(),
+                todayHighlight: true,
+                forceParse: false
+            });
+
+            setFromDate();
+            setToDate();
+        });
+
+        function setFromDate() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var today = (date.getFullYear() + "-" + month + "-" + day);
+            $('#searchFromDate').val(today);
+        }
+
+        function setToDate() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var today = (date.getFullYear() + "-" + month + "-" + day);
+            $('#searchToDate').val(today);
+        }
+
+        function resetForm() {
+            setFromDate();
+            setToDate();
+            searchStart();
+        }
+
     </script>
 </head>
 
@@ -408,19 +465,38 @@
 
                         <div class="card-title">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <input id="searchId" name="searchId" type="text" maxlength="50"
-                                           class="form-control">
+                                <div class="col-lg-3">
+                                    <label for="searchFromDate">From Date :</label>
+                                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                                        <input path="fromDate" name="fromDate" id="searchFromDate"
+                                               class="form-control" readonly="true" onkeydown="return false"
+                                               autocomplete="off"/>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
+                                    <label for="searchToDate">To Date :</label>
+                                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                                        <input path="toDate" name="toDate" id="searchToDate"
+                                               class="form-control" readonly="true" onkeydown="return false"
+                                               autocomplete="off"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="search()">
                                         Search
                                     </button>
                                 </div>
-                                <div class="col-lg-3">
-                                    <button id="viewCSV" type="button" class="btn btn-primary mr-2 btn-sm"
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-primary mr-2 btn-sm " onclick="resetForm()"
+                                            id="btnReset">
+                                        Reset
+                                    </button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button id="viewCSV" type="button" class="btn btn-success mr-2 btn-sm"
                                             onclick="downloadCSVReport()">
-                                        CSV
+                                        View CSV
                                     </button>
                                 </div>
                             </div>

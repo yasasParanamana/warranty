@@ -29,4 +29,6 @@ public class HomeInputBean {
     private String totalCount;
     private String totalCost;
 
+    private String status;
+
 }

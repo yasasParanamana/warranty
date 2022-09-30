@@ -64,7 +64,8 @@
                     aoData.push(
                         {'name': 'csrf_token', 'value': token},
                         {'name': 'header', 'value': header},
-                        {'name': 'id', 'value': $('#searchId').val()}
+                        {'name': 'fromDate', 'value': $('#searchFromDate').val()},
+                        {'name': 'toDate', 'value': $('#searchToDate').val()}
                     );
                     $.ajax({
                         dataType: 'json',
@@ -430,6 +431,64 @@
             });
         }
 
+        <!--calendar date -->
+
+        $(document).ready(function () {
+
+            $('#searchFromDate').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: '+0d',
+                setDate: new Date(),
+                todayHighlight: true,
+                forceParse: false,
+            });
+
+            $('#searchToDate').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: '+0d',
+                setDate: new Date(),
+                todayHighlight: true,
+                forceParse: false
+            });
+
+            setFromDate();
+            setToDate();
+        });
+
+        function setFromDate() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var today = (date.getFullYear() + "-" + month + "-" + day);
+            $('#searchFromDate').val(today);
+        }
+
+        function setToDate() {
+            var date = new Date();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (month < 10) {
+                month = '0' + month;
+            }
+            var today = (date.getFullYear() + "-" + month + "-" + day);
+            $('#searchToDate').val(today);
+        }
+
+        function resetForm() {
+            setFromDate();
+            setToDate();
+            searchStart();
+        }
+
 
     </script>
 </head>
@@ -447,22 +506,6 @@
                     <h5 class="text-dark font-weight-bold my-1 mr-5">Critical Requests</h5>
                     <!--end::Page Title-->
                 </div>
-                <%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-                <%--                    <button type="button" class="btn btn-danger">--%>
-                <%--                        Pending Approvals <span class="badge badge-light">${claim.countPending}</span>--%>
-                <%--                    </button>--%>
-                <%--                </div>--%>
-                <%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-                <%--                    <button type="button" class="btn btn-success">--%>
-                <%--                        In Purchase Request Count <span class="badge badge-light">${claim.countInPurchase}</span>--%>
-                <%--                    </button>--%>
-                <%--                </div>--%>
-                <%--                <div class="d-flex align-items-baseline flex-wrap mr-5">--%>
-                <%--                    <button type="button" class="btn btn-warning">--%>
-                <%--                        Noted Request Count <span class="badge badge-light">${claim.countNoted}</span>--%>
-                <%--                    </button>--%>
-                <%--                </div>--%>
-                <!--end::Page Heading-->
             </div>
             <!--end::Info-->
         </div>
@@ -479,47 +522,44 @@
                                method="post" modelAttribute="criticalView">
                         <div class="card-title">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <input id="searchId" name="searchId" type="text" maxlength="50"
-                                           class="form-control">
+                                <div class="col-lg-3">
+                                    <label for="searchFromDate">From Date :</label>
+                                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                                        <input path="fromDate" name="fromDate" id="searchFromDate"
+                                               class="form-control" readonly="true" onkeydown="return false"
+                                               autocomplete="off"/>
+                                    </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <button type="button" class="btn btn-sm btn-primary mr-2" onclick="search()">
+                                    <label for="searchToDate">To Date :</label>
+                                    <div class="btn-group div-inline input-group input-group-sm input-append date">
+                                        <input path="toDate" name="toDate" id="searchToDate"
+                                               class="form-control" readonly="true" onkeydown="return false"
+                                               autocomplete="off"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-primary mr-2 btn-sm" onclick="search()">
                                         Search
                                     </button>
                                 </div>
-                                <div class="col-lg-3">
-                                    <button id="viewCSV" type="button" class="btn btn-primary mr-2 btn-sm"
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-primary mr-2 btn-sm " onclick="resetForm()"
+                                            id="btnReset">
+                                        Reset
+                                    </button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button id="viewCSV" type="button" class="btn btn-success mr-2 btn-sm"
                                             onclick="downloadCSVReport()">
-                                        CSV
+                                        View CSV
                                     </button>
                                 </div>
                             </div>
                         </div>
 
                     </form:form>
-                    <%--<div class="card-toolbar">
-                        <!--begin::Button-->
-                        <c:if test="${critical.vadd}">
-                            <a href="javascript:void(0)" onclick="openAddModal()"
-                               class="btn btn-sm btn-primary font-weight-bolder">
-											<span class="svg-icon svg-icon-md">
-												<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg"
-                                                     width="24px"
-                                                     height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<circle fill="#000000" cx="9" cy="15" r="6"/>
-														<path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                                                              fill="#000000" opacity="0.3"/>
-													</g>
-												</svg>
-                                                <!--end::Svg Icon-->
-											</span>Download</a>
-                        </c:if>
-                        <!--end::Button-->
-                    </div>--%>
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->

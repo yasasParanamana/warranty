@@ -20,10 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -139,7 +138,6 @@ public class InHouseRepository {
                     " where t.is_in_house='1' and t.status IN('WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr +
                     " limit " + inHouseInputBean.displayLength + " offset " + inHouseInputBean.displayStart;
 
-            System.out.println("String Sql : "+sql);
 
             claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Claim claim = new Claim();
@@ -395,7 +393,7 @@ public class InHouseRepository {
                 }
 
                 try {
-                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN","stock van(Consignment)").replace("TO_BE_DELIVERED","to be delivered").replace("SOLD","Sold"));
+                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN", "stock van(Consignment)").replace("TO_BE_DELIVERED", "to be delivered").replace("SOLD", "Sold"));
                 } catch (Exception e) {
                     t.setClaimType(null);
                 }
@@ -541,19 +539,56 @@ public class InHouseRepository {
         return supplier;
     }
 
-    private StringBuilder setDynamicClause(InHouseInputBean inHouseInputBean, StringBuilder dynamicClause) {
+    private StringBuilder setDynamicClause(InHouseInputBean inHouseInputBean, StringBuilder dynamicClause) throws Exception {
         try {
-            if (inHouseInputBean.getId() != null && !inHouseInputBean.getId().isEmpty()) {
-                dynamicClause.append(" 1=0 ");
-                dynamicClause.append("or lower(t.id) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.first_name) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.last_name) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.phone) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.email) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.dealership) like lower('%").append(inHouseInputBean.getId()).append("%')");
-                dynamicClause.append("or t.status = '").append(inHouseInputBean.getStatus()).append("'");
-            } else {
-                dynamicClause.append(" 1=1 ");
+
+            dynamicClause.append(" 1=1 ");
+
+            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("YYYY/MM/dd 00:00:00");
+
+            if (inHouseInputBean.getFromDate() != null && !inHouseInputBean.getFromDate().isEmpty()) {
+                String fromDate = inHouseInputBean.getFromDate();
+                Date fDate = parser.parse(fromDate);
+                //format the from date
+                String formattedFromDate = formatter.format(fDate);
+                //add to dynamic clause
+                dynamicClause.append(" and t.createdtime >='").append(formattedFromDate).append("'");
+            }else{
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 0);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedFromDate = formatter.format(tDate);
+
+                dynamicClause.append(" and t.createdtime >='").append(formattedFromDate).append("'");
+            }
+
+            if (inHouseInputBean.getToDate() != null && !inHouseInputBean.getToDate().isEmpty()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(inHouseInputBean.getToDate()));
+                //add one to calender instance
+                calendar.add(Calendar.DATE, 1);
+                //format the from date
+                String toDate = simpleDateFormat.format(calendar.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+                //add to dynamic clause
+                dynamicClause.append(" and t.createdtime <'").append(formattedToDate).append("'");
+            }else{
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+
+                dynamicClause.append(" and t.createdtime <'").append(formattedToDate).append("'");
             }
         } catch (Exception e) {
             throw e;
@@ -561,7 +596,7 @@ public class InHouseRepository {
         return dynamicClause;
     }
 
-    
+
     @Transactional(readOnly = true)
     public List<SpareParts> getSparePartList(String warrantyId) throws Exception {
         List<SpareParts> sparePartsBeanList;
@@ -585,10 +620,10 @@ public class InHouseRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<WarrantyAttachments> getFileList(String warrantyId , String attachmentType) throws Exception {
+    public List<WarrantyAttachments> getFileList(String warrantyId, String attachmentType) throws Exception {
         List<WarrantyAttachments> warrantyAttachmentsBeanList;
         try {
-            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId ,attachmentType);
+            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId, attachmentType);
             warrantyAttachmentsBeanList = warrantyAttachmentsList.stream().map((record) -> {
                 WarrantyAttachments claimValueBean = new WarrantyAttachments();
                 claimValueBean.setId(new BigDecimal(record.get("attachment_id").toString()));
@@ -635,7 +670,6 @@ public class InHouseRepository {
 
     @Transactional(readOnly = true)
     public List<Claim> getClaimSearchResultListForReport(InHouseInputBean inHouseInputBean) throws Exception {
-        System.out.println("***** 1");
         List<Claim> claimList = null;
         try {
             StringBuilder dynamicClause = this.setDynamicClause(inHouseInputBean, new StringBuilder());
@@ -644,50 +678,51 @@ public class InHouseRepository {
 
             String sql =
                     "select " +
-                    "t.id," +
-                    "t.chassis," +
-                    "t.model," +
-                    "t.first_name," +
-                    "t.last_name," +
-                    "t.phone," +
-                    "t.email," +
-                    "t.address," +
-                    "t.surburb," +
-                    "t.state," +
-                    "t.postcode," +
-                    "t.dealership," +
-                    "t.purchasing_date," +
-                    "t.description," +
-                    "t.failiure_type," +
-                    "t.failiure_area," +
-                    "t.repair_type," +
-                    "t.repair_description," +
-                    "t.cost_type," +
-                    "t.hours," +
-                    "t.labour_rate," +
-                    "t.total_cost," +
-                    "t.cost_description," +
-                    "r.dealership_name," +
-                    "r.dealership_phone," +
-                    "r.dealership_email," +
-                    "r.dealership_address," +
-                    "t.claim_type,  " +
-                    "t.failing_area,  " +
-                    "t.comment,  " +
-                    "t.supplier,  " +
-                    "t.status,  " +
-                    "t.createduser,  " +
-                    "t.createdtime,  " +
-                    "t.lastupdatedtime,  " +
-                    "t.lastupdateduser,  " +
-                    "s.supplier_phone,  " +
-                    "s.supplier_email,  " +
-                    "s.supplier_address,  " +
-                    "t.is_in_house  " +
-                    "from reg_warranty_claim t " +
-                    "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
-                    "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
-                    "where t.is_in_house='1' and t.status IN('WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr;
+                            "t.id," +
+                            "t.chassis," +
+                            "t.model," +
+                            "t.first_name," +
+                            "t.last_name," +
+                            "t.phone," +
+                            "t.email," +
+                            "t.address," +
+                            "t.surburb," +
+                            "t.state," +
+                            "t.postcode," +
+                            "t.dealership," +
+                            "t.purchasing_date," +
+                            "t.description," +
+                            "t.failiure_type," +
+                            "t.failiure_area," +
+                            "t.repair_type," +
+                            "t.repair_description," +
+                            "t.cost_type," +
+                            "t.hours," +
+                            "t.labour_rate," +
+                            "t.total_cost," +
+                            "t.cost_description," +
+                            "r.dealership_name," +
+                            "r.dealership_phone," +
+                            "r.dealership_email," +
+                            "r.dealership_address," +
+                            "t.claim_type,  " +
+                            "t.failing_area,  " +
+                            "t.comment,  " +
+                            "t.supplier,  " +
+                            "st.description as statusdes,  " +
+                            "t.createduser,  " +
+                            "t.createdtime,  " +
+                            "t.lastupdatedtime,  " +
+                            "t.lastupdateduser,  " +
+                            "s.supplier_phone,  " +
+                            "s.supplier_email,  " +
+                            "s.supplier_address,  " +
+                            "t.is_in_house  " +
+                            "from reg_warranty_claim t " +
+                            "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
+                            "LEFT OUTER JOIN status st on st.statuscode=t.status " +
+                            "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
+                            "where t.is_in_house='1' and t.status IN('WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr;
 
             claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Claim claim = new Claim();
@@ -749,8 +784,8 @@ public class InHouseRepository {
                 }
 
                 try {
-                    if (rs.getString("status") != null && !rs.getString("status").isEmpty()) {
-                        claim.setStatus(rs.getString("status"));
+                    if (rs.getString("statusdes") != null && !rs.getString("statusdes").isEmpty()) {
+                        claim.setStatus(rs.getString("statusdes"));
                     } else {
                         claim.setStatus("--");
                     }

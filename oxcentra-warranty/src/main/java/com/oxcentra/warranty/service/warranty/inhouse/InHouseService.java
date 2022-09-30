@@ -85,8 +85,8 @@ public class InHouseService {
         List<Claim> claimList;
         try {
             //set audit trace values
-            audittrace.setSection(SectionVarList.SECTION_USER_MGT);
-            audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
+            audittrace.setSection(SectionVarList.SECTION_WARRANTY_MGT);
+            audittrace.setPage(PageVarList.IN_HOUSE_MGT_PAGE);
             audittrace.setTask(TaskVarList.VIEW_TASK);
             audittrace.setDescription("Get Critical search list.");
             //Get Critical search list.

@@ -13,12 +13,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -83,7 +82,6 @@ public class CriticalRepository {
     private final String SQL_GET_SPARE_PARTS = "select t.id,t.warranty_id,t.spare_part_type,t.spare_part_name,t.qty from reg_spare_part t  where t.id = ? ";
 
 
-
     @Transactional(readOnly = true)
     public long getDataCount(CriticalInputBean criticalInputBean) throws Exception {
         long count = 0;
@@ -132,8 +130,6 @@ public class CriticalRepository {
                     "left outer join status s on s.statuscode=t.status " +
                     " where t.is_critical = '1' and " + dynamicClause.toString() + sortingStr +
                     " limit " + criticalInputBean.displayLength + " offset " + criticalInputBean.displayStart;
-
-            System.out.println("String Sql : "+sql);
 
             claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
                 Claim claim = new Claim();
@@ -389,7 +385,7 @@ public class CriticalRepository {
                 }
 
                 try {
-                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN","stock van(Consignment)").replace("TO_BE_DELIVERED","to be delivered").replace("SOLD","Sold"));
+                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN", "stock van(Consignment)").replace("TO_BE_DELIVERED", "to be delivered").replace("SOLD", "Sold"));
                 } catch (Exception e) {
                     t.setClaimType(null);
                 }
@@ -428,7 +424,6 @@ public class CriticalRepository {
                 }
 
                 try {
-                    System.out.println(rs.getBoolean("is_in_house"));
                     t.setInHouse(rs.getBoolean("is_in_house"));
                 } catch (Exception e) {
                     t.setInHouse(false);
@@ -531,22 +526,56 @@ public class CriticalRepository {
         return supplier;
     }
 
-   
 
-    private StringBuilder setDynamicClause(CriticalInputBean criticalInputBean, StringBuilder dynamicClause) {
+    private StringBuilder setDynamicClause(CriticalInputBean criticalInputBean, StringBuilder dynamicClause) throws Exception {
         try {
-            if (criticalInputBean.getId() != null && !criticalInputBean.getId().isEmpty()) {
-                dynamicClause.append(" 1=0 ");
-                dynamicClause.append("or lower(t.id) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.first_name) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.last_name) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.phone) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.email) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or lower(t.dealership) like lower('%").append(criticalInputBean.getId()).append("%')");
-                dynamicClause.append("or t.status = '").append(criticalInputBean.getStatus()).append("'");
-                dynamicClause.append("or t.is_critical = '1'");
+            dynamicClause.append(" 1=1 ");
+
+            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("YYYY/MM/dd 00:00:00");
+
+            if (criticalInputBean.getFromDate() != null && !criticalInputBean.getFromDate().isEmpty()) {
+                String fromDate = criticalInputBean.getFromDate();
+                Date fDate = parser.parse(fromDate);
+                //format the from date
+                String formattedFromDate = formatter.format(fDate);
+                //add to dynamic clause
+                dynamicClause.append(" and t.createdtime >='").append(formattedFromDate).append("'");
             } else {
-                dynamicClause.append(" 1=1 ");
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 0);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedFromDate = formatter.format(tDate);
+
+                dynamicClause.append(" and t.createdtime >='").append(formattedFromDate).append("'");
+            }
+
+            if (criticalInputBean.getToDate() != null && !criticalInputBean.getToDate().isEmpty()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(criticalInputBean.getToDate()));
+                //add one to calender instance
+                calendar.add(Calendar.DATE, 1);
+                //format the from date
+                String toDate = simpleDateFormat.format(calendar.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+                //add to dynamic clause
+                dynamicClause.append(" and t.createdtime <'").append(formattedToDate).append("'");
+            } else {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+
+                dynamicClause.append(" and t.createdtime <'").append(formattedToDate).append("'");
             }
         } catch (Exception e) {
             throw e;
@@ -554,7 +583,7 @@ public class CriticalRepository {
         return dynamicClause;
     }
 
-    
+
     @Transactional(readOnly = true)
     public List<SpareParts> getSparePartList(String warrantyId) throws Exception {
         List<SpareParts> sparePartsBeanList;
@@ -578,10 +607,10 @@ public class CriticalRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<WarrantyAttachments> getFileList(String warrantyId , String attachmentType) throws Exception {
+    public List<WarrantyAttachments> getFileList(String warrantyId, String attachmentType) throws Exception {
         List<WarrantyAttachments> warrantyAttachmentsBeanList;
         try {
-            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId ,attachmentType);
+            List<Map<String, Object>> warrantyAttachmentsList = jdbcTemplate.queryForList(SQL_GET_LIST_ATTACHMENT_PDF, warrantyId, attachmentType);
             warrantyAttachmentsBeanList = warrantyAttachmentsList.stream().map((record) -> {
                 WarrantyAttachments claimValueBean = new WarrantyAttachments();
                 claimValueBean.setId(new BigDecimal(record.get("attachment_id").toString()));
@@ -641,7 +670,7 @@ public class CriticalRepository {
                             "t.failing_area,  " +
                             "t.comment,  " +
                             "t.supplier,  " +
-                            "t.status,  " +
+                            "st.description as statusdes,  " +
                             "t.createduser,  " +
                             "t.createdtime,  " +
                             "t.lastupdatedtime,  " +
@@ -652,6 +681,7 @@ public class CriticalRepository {
                             "t.is_in_house  " +
                             "from reg_warranty_claim t " +
                             "LEFT OUTER JOIN reg_dealership r ON r.dealership_code = t.dealership " +
+                            "LEFT OUTER JOIN status st on st.statuscode=t.status " +
                             "LEFT OUTER JOIN reg_supplier s ON s.supplier_code = t.supplier " +
                             "where t.is_critical = '1' and " + dynamicClause.toString() + sortingStr;
 
@@ -715,8 +745,8 @@ public class CriticalRepository {
                 }
 
                 try {
-                    if (rs.getString("status") != null && !rs.getString("status").isEmpty()) {
-                        claim.setStatus(rs.getString("status"));
+                    if (rs.getString("statusdes") != null && !rs.getString("statusdes").isEmpty()) {
+                        claim.setStatus(rs.getString("statusdes"));
                     } else {
                         claim.setStatus("--");
                     }

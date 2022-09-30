@@ -1,5 +1,7 @@
 package com.oxcentra.warranty.repository.home;
 
+import com.oxcentra.warranty.bean.audit.AuditTraceInputBean;
+import com.oxcentra.warranty.bean.home.HomeInputBean;
 import com.oxcentra.warranty.bean.home.SummaryBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
@@ -28,9 +30,7 @@ import java.math.BigDecimal;
 import java.sql.Blob;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -63,11 +63,18 @@ public class HomeRepository {
      * @MethodDescription - This method get the request count
      */
     @Transactional(readOnly = true)
-    public long getRequestTotalCount() throws Exception {
+    public long getRequestTotalCount(HomeInputBean homeInputBean) throws Exception {
 
         long count = 0;
         try {
-            count = jdbcTemplate.queryForObject(SQL_TOTAL_COUNT, new Object[]{
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+
+            String sql
+                    = "select count(*) "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() ;
+
+            count = jdbcTemplate.queryForObject(sql, new Object[]{
 
             }, Long.class);
         } catch (EmptyResultDataAccessException ere) {
@@ -87,11 +94,18 @@ public class HomeRepository {
      * @MethodDescription - This method get the request count
      */
     @Transactional(readOnly = true)
-    public String getRequestTotalCost() throws Exception {
+    public String getRequestTotalCost(HomeInputBean homeInputBean) throws Exception {
 
         String cost = "0";
         try {
-            cost = jdbcTemplate.queryForObject(SQL_TOTAL_COST, new Object[]{
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+
+            String sql
+                    = "select sum(total_cost) "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() ;
+
+            cost = jdbcTemplate.queryForObject(sql, new Object[]{
 
             }, String.class);
         } catch (EmptyResultDataAccessException ere) {
@@ -112,12 +126,18 @@ public class HomeRepository {
      * @MethodDescription - This method get the request count
      */
     @Transactional(readOnly = true)
-    public long getRequestCount(String status) throws Exception {
+    public long getRequestCount(String status, HomeInputBean homeInputBean) throws Exception {
 
         long count = 0;
         try {
-            count = jdbcTemplate.queryForObject(SQL_COUNT_STATUS, new Object[]{
-                    status
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+
+            String sql
+                    = "select count(*) "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() ;
+
+            count = jdbcTemplate.queryForObject(sql, new Object[]{
             }, Long.class);
         } catch (EmptyResultDataAccessException ere) {
             count = 0;
@@ -128,10 +148,20 @@ public class HomeRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<SummaryBean> getStatusSummaryList() throws Exception {
+    public List<SummaryBean> getStatusSummaryList(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> statusBeanList;
         try {
-            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_STATUS_COUNT);
+
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+            //create groupBy
+            String groupByStr = " GROUP BY wc.status ";
+
+            String sql
+                    = "SELECT wc.status as sts , count(wc.id) as stsCt "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() + groupByStr;
+
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             statusBeanList = statusSummaryList.stream().map((record) -> {
 
                 SummaryBean summaryBean = new SummaryBean();
@@ -149,11 +179,82 @@ public class HomeRepository {
         return statusBeanList;
     }
 
+    private StringBuilder setDynamicClause(HomeInputBean homeInputBean, StringBuilder dynamicClause) throws Exception {
+
+        dynamicClause.append(" 1=1 ");
+        try {
+            DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatter = new SimpleDateFormat("YYYY/MM/dd 00:00:00");
+
+            if (homeInputBean.getFromDate() != null && !homeInputBean.getFromDate().isEmpty()) {
+                String fromDate = homeInputBean.getFromDate();
+                Date fDate = parser.parse(fromDate);
+                //format the from date
+                String formattedFromDate = formatter.format(fDate);
+                //add to dynamic clause
+                dynamicClause.append(" and wc.createdtime >='").append(formattedFromDate).append("'");
+            }else{
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -30);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedFromDate = formatter.format(tDate);
+
+                dynamicClause.append(" and wc.createdtime >='").append(formattedFromDate).append("'");
+            }
+
+            if (homeInputBean.getToDate() != null && !homeInputBean.getToDate().isEmpty()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(simpleDateFormat.parse(homeInputBean.getToDate()));
+                //add one to calender instance
+                calendar.add(Calendar.DATE, 1);
+                //format the from date
+                String toDate = simpleDateFormat.format(calendar.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+                //add to dynamic clause
+                dynamicClause.append(" and wc.createdtime <'").append(formattedToDate).append("'");
+            }else{
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, 1);
+
+                String toDate = simpleDateFormat.format(cal.getTime());
+                Date tDate = parser.parse(toDate);
+                String formattedToDate = formatter.format(tDate);
+
+                dynamicClause.append(" and wc.createdtime <'").append(formattedToDate).append("'");
+            }
+
+            if (homeInputBean.getStatus() != null && !homeInputBean.getStatus().isEmpty()) {
+                dynamicClause.append(" and lower(wc.status) like lower('%").append(homeInputBean.getStatus()).append("%')");
+            }
+
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return dynamicClause;
+    }
+
+
     @Transactional(readOnly = true)
-    public List<SummaryBean> getFailingAreaSummaryList() throws Exception {
+    public List<SummaryBean> getFailingAreaSummaryList(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> failingAreaBeanList;
         try {
-            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_FAILING_AREA_COUNT);
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+            //create groupBy
+            String groupByStr = " GROUP BY wc.failing_area ";
+
+            String sql
+                    = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() + groupByStr;
+
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             failingAreaBeanList = statusSummaryList.stream().map((record) -> {
 
                 SummaryBean summaryBean = new SummaryBean();
@@ -172,10 +273,20 @@ public class HomeRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<SummaryBean> getFailingAreaCostSummaryList() throws Exception {
+    public List<SummaryBean> getFailingAreaCostSummaryList(HomeInputBean homeInputBean) throws Exception {
         List<SummaryBean> failingAreaCostBeanList;
         try {
-            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(SQL_GET_LIST_FAILING_AREA_COST_COUNT);
+
+            StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
+            //create sorting order
+            String groupByStr = " GROUP BY wc.failing_area ";
+
+            String sql
+                    = "SELECT wc.failing_area AS fail_area, SUM(wc.total_cost) AS cost_count "
+                    + "FROM reg_warranty_claim wc "
+                    + "where " + dynamicClause.toString() + groupByStr;
+
+            List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             failingAreaCostBeanList = statusSummaryList.stream().map((record) -> {
 
                 SummaryBean summaryBean = new SummaryBean();
