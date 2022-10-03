@@ -46,12 +46,12 @@ public class PasswordPolicyRepository {
     @Autowired
     SessionBean sessionBean;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from WEB_PASSWORDPOLICY p where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
-    private final String SQL_FIND_WEB_PASSWORDPOLICY = "select passwordpolicyid , minimumlength , maximumlength , minimumspecialcharacters , minimumuppercasecharacters , minimumnumericalcharacters , minimumlowercasecharacters , noofinvalidloginattempt , repeatcharactersallow , initialpasswordexpirystatus , passwordexpiryperiod , noofhistorypassword , minimumpasswordchangeperiod , idleaccountexpiryperiod , description , lastupdateduser , lastupdatedtime , createtime from WEB_PASSWORDPOLICY where passwordpolicyid=?";
-    private final String SQL_UPDATE_PASSWORDPOLICY = "update WEB_PASSWORDPOLICY set minimumlength=?,maximumlength=?,minimumspecialcharacters=?,minimumuppercasecharacters=?,minimumnumericalcharacters=?,minimumlowercasecharacters=?,noofinvalidloginattempt=?,repeatcharactersallow=?,initialpasswordexpirystatus=?,passwordexpiryperiod=?,noofhistorypassword=?,minimumpasswordchangeperiod=?,idleaccountexpiryperiod=?,description=?,lastupdateduser=?,lastupdatedtime=? where passwordpolicyid=?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from web_passwordpolicy p where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
+    private final String SQL_FIND_WEB_PASSWORDPOLICY = "select passwordpolicyid , minimumlength , maximumlength , minimumspecialcharacters , minimumuppercasecharacters , minimumnumericalcharacters , minimumlowercasecharacters , noofinvalidloginattempt , repeatcharactersallow , initialpasswordexpirystatus , passwordexpiryperiod , noofhistorypassword , minimumpasswordchangeperiod , idleaccountexpiryperiod , description , lastupdateduser , lastupdatedtime , createtime from web_passwordpolicy where passwordpolicyid=?";
+    private final String SQL_UPDATE_PASSWORDPOLICY = "update web_passwordpolicy set minimumlength=?,maximumlength=?,minimumspecialcharacters=?,minimumuppercasecharacters=?,minimumnumericalcharacters=?,minimumlowercasecharacters=?,noofinvalidloginattempt=?,repeatcharactersallow=?,initialpasswordexpirystatus=?,passwordexpiryperiod=?,noofhistorypassword=?,minimumpasswordchangeperiod=?,idleaccountexpiryperiod=?,description=?,lastupdateduser=?,lastupdatedtime=? where passwordpolicyid=?";
     private final String SQL_GET_WEB_PASSWORDPOLICY = "select passwordpolicyid , minimumlength , maximumlength , minimumspecialcharacters , minimumuppercasecharacters , minimumnumericalcharacters , minimumlowercasecharacters , noofinvalidloginattempt , repeatcharactersallow , initialpasswordexpirystatus , passwordexpiryperiod , noofhistorypassword , minimumpasswordchangeperiod , idleaccountexpiryperiod , description , lastupdateduser , lastupdatedtime , createtime from WEB_PASSWORDPOLICY where passwordpolicyid = ?";
-    private final String SQL_GET_WEB_PASSWORDHISTORYLIST = "select id,username,password,lastupdateduser,lastupdatedtime,createdtime from WEB_PASSWORDHISTORY where username = ? order by id desc limit ?";
+    private final String SQL_GET_WEB_PASSWORDHISTORYLIST = "select id,username,password,lastupdateduser,lastupdatedtime,createdtime from web_passwordhistory where username = ? order by id desc limit ?";
 
     @Transactional(readOnly = true)
     public long getDataCount(PasswordPolicyInputBean passwordPolicy) throws Exception {
@@ -86,7 +86,7 @@ public class PasswordPolicyRepository {
                     " select p.passwordpolicyid, p.minimumlength, p.maximumlength, p.minimumspecialcharacters, p.minimumuppercasecharacters," +
                             " p.minimumnumericalcharacters, p.minimumlowercasecharacters, p.lastupdateduser, p.lastupdatedtime, p.createtime," +
                             " p.noofinvalidloginattempt, p.repeatcharactersallow, p.initialpasswordexpirystatus, p.passwordexpiryperiod," +
-                            " p.noofhistorypassword, p.minimumpasswordchangeperiod, p.idleaccountexpiryperiod, p.description from WEB_PASSWORDPOLICY p " +
+                            " p.noofhistorypassword, p.minimumpasswordchangeperiod, p.idleaccountexpiryperiod, p.description from web_passwordpolicy p " +
                             " limit " + passwordPolicyInputBean.displayLength + " offset " + passwordPolicyInputBean.displayStart;
 
             passwordPolicyList = jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -228,8 +228,8 @@ public class PasswordPolicyRepository {
             }
             String sql =
                     " select wta.id,wta.key1,wta.key2,wta.key3,wta.key4,wta.key5,wta.key6,wta.key7,wta.key8,wta.key9,wta.key10,wta.key11,wta.key12,wta.key13,wta.key14,wta.key15,t.description task,wta.createdtime,wta.lastupdatedtime,wta.lastupdateduser " +
-                            " from WEB_TMPAUTHREC wta" +
-                            " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                            " from web_tmpauthrec wta" +
+                            " left outer join web_task t on t.taskcode = wta.task " +
                             " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                             " limit " + passwordPolicyInputBean.displayLength + " offset " + passwordPolicyInputBean.displayStart;
 

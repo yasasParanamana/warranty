@@ -134,8 +134,8 @@ public class PasswordParamRepository {
 
             String sql =
                     " select wta.id, wta.key1, wta.key2, wta.key3, t.description task, wta.createdtime, wta.lastupdatedtime, wta.lastupdateduser " +
-                            " from WEB_TMPAUTHREC wta" +
-                            " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                            " from web_tmpauthrec wta" +
+                            " left outer join web_task t on t.taskcode = wta.task " +
                             " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                             " limit " + passwordParamInputBean.displayLength + " offset " + passwordParamInputBean.displayStart;
 

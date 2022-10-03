@@ -40,7 +40,7 @@ public class ProfileRepository {
     @Autowired
     SHA256Algorithm sha256Algorithm;
 
-    private final String SQL_UPDATE_SYSTEMUSER = "update WEB_SYSTEMUSER set password=? , expirydate=? ,loggeddate=?, status=? , lastupdateduser=? , lastupdatedtime=? where username=?";
+    private final String SQL_UPDATE_SYSTEMUSER = "update web_systemuser set password=? , expirydate=? ,loggeddate=?, status=? , lastupdateduser=? , lastupdatedtime=? where username=?";
     private final String SQL_INSERT_PASSWORDHISTORY = "insert into WEB_PASSWORDHISTORY(username,password,lastupdateduser) values(?,?,?)";
 
     @Transactional

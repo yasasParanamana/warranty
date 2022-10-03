@@ -112,9 +112,8 @@ public class ClaimInputBean extends DataTablesRequest {
     private boolean vadd;
     private boolean vupdate;
     private boolean vdelete;
-    private boolean vconfirm;
-    private boolean vreject;
-    private boolean vdualauth;
+    private boolean vview;
+
 
     /*-------for access control-----------*/
     private List<Status> statusList;

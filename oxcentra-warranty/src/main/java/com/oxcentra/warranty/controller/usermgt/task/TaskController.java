@@ -85,7 +85,6 @@ public class TaskController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  TASK SEARCH");
         DataTablesResponse<Task> responseBean = new DataTablesResponse<>();
         try {
-            System.out.println("taskInputBean > " + taskInputBean);
             long count = taskService.getDataCount(taskInputBean);
             if (count > 0) {
                 List<Task> list = taskService.getTaskSearchResults(taskInputBean);

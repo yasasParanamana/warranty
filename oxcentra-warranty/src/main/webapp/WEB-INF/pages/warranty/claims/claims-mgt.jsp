@@ -192,12 +192,12 @@
                         }
                     },
                     {
-                        visible: ${claim.vupdate},
-                        title: "Update",
+                        visible: ${claim.vview},
+                        title: "View",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-view.svg" alt=""></button>';
                         },
                         targets: 11,
                         defaultContent: "--"
@@ -541,7 +541,7 @@
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
                                 <th>Last Updated Time</th>
-                                <th>Update</th>
+                                <th>View</th>
                                 <th>Delete</th>
                             </tr>
                             </thead>

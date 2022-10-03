@@ -390,9 +390,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
             claimInputBean.setVadd(false);
             claimInputBean.setVupdate(false);
             claimInputBean.setVdelete(false);
-            claimInputBean.setVconfirm(false);
-            claimInputBean.setVreject(false);
-            claimInputBean.setVdualauth(commonRepository.checkPageIsDualAuthenticate(PageVarList.CLAIMS_MGT_PAGE));
+
             //check task list one by one
             if (taskList != null && !taskList.isEmpty()) {
                 taskList.forEach(task -> {
@@ -402,10 +400,8 @@ public class ClaimController implements RequestBeanValidation<Object> {
                         claimInputBean.setVupdate(true);
                     } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DELETE_TASK)) {
                         claimInputBean.setVdelete(true);
-                    } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DUAL_AUTH_CONFIRM_TASK)) {
-                        claimInputBean.setVconfirm(true);
-                    } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.DUAL_AUTH_REJECT_TASK)) {
-                        claimInputBean.setVreject(true);
+                    } else if (task.getTaskCode().equalsIgnoreCase(TaskVarList.VIEW_TASK)) {
+                        claimInputBean.setVview(true);
                     }
                 });
             }

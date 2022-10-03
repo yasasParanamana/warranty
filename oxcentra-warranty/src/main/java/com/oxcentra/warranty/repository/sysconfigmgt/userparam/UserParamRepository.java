@@ -36,12 +36,12 @@ public class UserParamRepository {
     @Autowired
     CommonRepository commonRepository;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from USERPARAM d left outer join STATUS s on s.statuscode=d.status where ";
-    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from WEB_TMPAUTHREC wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
-    private final String SQL_INSERT_USERPARAM = "insert into USERPARAM(paramcode,description,category,status,lastupdateduser,lastupdatedtime,createduser,createdtime) values (?,?,?,?,?,?,?,?) ";
-    private final String SQL_FIND_USERPARAM = "select paramcode,description,category,status,lastupdateduser,lastupdatedtime,createdtime from USERPARAM d where d.paramcode = ?";
-    private final String SQL_UPDATE_USERPARAM = "update USERPARAM d set d.description = ? , d.status = ?, d.lastupdateduser = ?, d.lastupdatedtime = ? where d.paramcode = ?";
-    private final String SQL_DELETE_USERPARAM = "delete from USERPARAM where paramcode = ?";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from userparam d left outer join status s on s.statuscode=d.status where ";
+    private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec wta where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and ";
+    private final String SQL_INSERT_USERPARAM = "insert into userparam(paramcode,description,category,status,lastupdateduser,lastupdatedtime,createduser,createdtime) values (?,?,?,?,?,?,?,?) ";
+    private final String SQL_FIND_USERPARAM = "select paramcode,description,category,status,lastupdateduser,lastupdatedtime,createdtime from userparam d where d.paramcode = ?";
+    private final String SQL_UPDATE_USERPARAM = "update userparam d set d.description = ? , d.status = ?, d.lastupdateduser = ?, d.lastupdatedtime = ? where d.paramcode = ?";
+    private final String SQL_DELETE_USERPARAM = "delete from userparam where paramcode = ?";
 
     @Transactional(readOnly = true)
     public long getDataCount(UserParamInputBean userParamInputBean) {
@@ -75,9 +75,9 @@ public class UserParamRepository {
 
             String sql =
                     " select d.paramcode as code,d.description as description,d.category as category,upc.description as userparamcategorydescription,d.status as status,s.description as statusdescription," +
-                            " d.lastupdateduser as lastupdateduser,d.createduser as createduser,d.lastupdatedtime as lastupdatedtime, d.createdtime as createdtime  from USERPARAM d " +
-                            " left outer join STATUS s on s.statuscode=d.status " +
-                            " left outer join USERPARAMCATEGORY upc on upc.code=d.category " +
+                            " d.lastupdateduser as lastupdateduser,d.createduser as createduser,d.lastupdatedtime as lastupdatedtime, d.createdtime as createdtime  from userparam d " +
+                            " left outer join status s on s.statuscode=d.status " +
+                            " left outer join userparamcategory upc on upc.code=d.category " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + userParamInputBean.displayLength + " offset " + userParamInputBean.displayStart;
 
@@ -174,10 +174,10 @@ public class UserParamRepository {
             }
             String sql = "" +
                     " select wta.id,wta.key1,wta.key2,upc.description as userparamdescription,s.description as statusdescription ,t.description as taskdescription ,wta.createdtime,wta.lastupdatedtime,wta.lastupdateduser " +
-                    " from WEB_TMPAUTHREC wta" +
-                    " left outer join USERPARAMCATEGORY upc on upc.code = wta.key3 " +
-                    " left outer join STATUS s on s.statuscode = wta.key4 " +
-                    " left outer join WEB_TASK t on t.taskcode = wta.task " +
+                    " from web_tmpauthrec wta" +
+                    " left outer join userparamcategory upc on upc.code = wta.key3 " +
+                    " left outer join status s on s.statuscode = wta.key4 " +
+                    " left outer join web_task t on t.taskcode = wta.task " +
                     " where wta.page=? and wta.status=? and wta.lastupdateduser <> ? and " + dynamicClause.toString() + sortingStr +
                     " limit " + userParamInputBean.displayLength + " offset " + userParamInputBean.displayStart;
 

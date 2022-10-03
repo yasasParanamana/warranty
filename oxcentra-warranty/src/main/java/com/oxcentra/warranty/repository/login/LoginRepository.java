@@ -34,13 +34,13 @@ public class LoginRepository {
     @Autowired
     CommonVarList commonVarList;
 
-    private final String SQL_GET_USER_LOGIN = "select username,password,USERROLE,expirydate,fullname,email,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,dealership from WEB_SYSTEMUSER where lower(username)=?";
-    private final String SQL_UPDATE_VALID_USER_LOGIN = "update WEB_SYSTEMUSER set noofinvlidattempt=? , loggeddate = ? , status = ? , lastupdatedtime = ? where lower(username) =?";
-    private final String SQL_UPDATE_INVALID_USER_LOGIN = "update WEB_SYSTEMUSER set noofinvlidattempt=? , status = ? , lastupdatedtime = ? where lower(username) =?";
+    private final String SQL_GET_USER_LOGIN = "select username,password,userrole,expirydate,fullname,email,mobile,noofinvlidattempt,loggeddate,initialloginstatus,ad,status,lastupdateduser,lastupdatedtime,createtime,dealership from web_systemuser where lower(username)=?";
+    private final String SQL_UPDATE_VALID_USER_LOGIN = "update web_systemuser set noofinvlidattempt=? , loggeddate = ? , status = ? , lastupdatedtime = ? where lower(username) =?";
+    private final String SQL_UPDATE_INVALID_USER_LOGIN = "update web_systemuser set noofinvlidattempt=? , status = ? , lastupdatedtime = ? where lower(username) =?";
 
-    private final String SQL_GET_USER_SECTIONLIST = "select distinct s.description as description, sp.section as section, sp.USERROLE as USERROLE, s.sortkey as sortkey, s.status as status,s.lastupdateduser as lastupdateduser, s.lastupdatedtime as lastupdatedtime, s.createdtime as createdtime from WEB_SECTIONPAGE sp inner join WEB_SECTION s on sp.section = s.sectioncode where s.status=? and sp.USERROLE=? order by s.sortkey";
-    private final String SQL_GET_USER_PAGELIST = "select p.description as description,p.pagecode as pagecode ,p.url as url,p.sortkey as sortkey,p.status as status ,p.aflag as aflag ,p.cflag as cflag,sp.section as section ,sp.USERROLE as USERROLE,p.lastupdateduser as lastupdateduser , p.createdtime as createtime ,p.lastupdatedtime as lastupdatedtime from WEB_SECTIONPAGE sp inner join WEB_PAGE p on sp.page = p.pagecode where p.status = ? and sp.USERROLE = ? and p.pagecode != 'PWCM' order by p.sortkey";
-    private final String SQL_GET_USER_PAGETASKLIST = "select pt.USERROLE as USERROLE, wsp.section as section,pt.page as page ,p.description as pagedescription,pt.task as task ,t.description as taskdescription,t.status as taskstatus,t.lastupdateduser as tasklastupdateduser,t.createdtime as taskcreatetime , t.lastupdatedtime as tasklastupdatedtime,pt.lastupdateduser as lastupdateduser,pt.createtime as createtime , pt.lastupdatedtime as lastupdatedtime from WEB_PAGETASK pt inner join WEB_SECTIONPAGE wsp on pt.page = wsp.page inner join WEB_PAGE p on pt.page = p.pagecode inner join WEB_TASK t on pt.task = t.taskcode where pt.USERROLE=? and p.status =? and t.status = ?";
+    private final String SQL_GET_USER_SECTIONLIST = "select distinct s.description as description, sp.section as section, sp.userrole as userrole, s.sortkey as sortkey, s.status as status,s.lastupdateduser as lastupdateduser, s.lastupdatedtime as lastupdatedtime, s.createdtime as createdtime from web_sectionpage sp inner join web_section s on sp.section = s.sectioncode where s.status=? and sp.userrole=? order by s.sortkey";
+    private final String SQL_GET_USER_PAGELIST = "select p.description as description,p.pagecode as pagecode ,p.url as url,p.sortkey as sortkey,p.status as status ,p.aflag as aflag ,p.cflag as cflag,sp.section as section ,sp.userrole as userrole,p.lastupdateduser as lastupdateduser , p.createdtime as createtime ,p.lastupdatedtime as lastupdatedtime from web_sectionpage sp inner join web_page p on sp.page = p.pagecode where p.status = ? and sp.userrole = ? and p.pagecode != 'PWCM' order by p.sortkey";
+    private final String SQL_GET_USER_PAGETASKLIST = "select pt.userrole as userrole, wsp.section as section,pt.page as page ,p.description as pagedescription,pt.task as task ,t.description as taskdescription,t.status as taskstatus,t.lastupdateduser as tasklastupdateduser,t.createdtime as taskcreatetime , t.lastupdatedtime as tasklastupdatedtime,pt.lastupdateduser as lastupdateduser,pt.createtime as createtime , pt.lastupdatedtime as lastupdatedtime from web_pagetask pt inner join web_sectionpage wsp on pt.page = wsp.page inner join web_page p on pt.page = p.pagecode inner join web_task t on pt.task = t.taskcode where pt.userrole=? and p.status =? and t.status = ?";
 
     @Transactional(readOnly = true)
     public User getUser(LoginBean loginBean) {
@@ -61,7 +61,7 @@ public class LoginRepository {
                 }
 
                 try {
-                    u.setUserrole(rs.getString("USERROLE"));
+                    u.setUserrole(rs.getString("userrole"));
                 } catch (Exception e) {
                     u.setUserrole(null);
                 }
@@ -191,7 +191,7 @@ public class LoginRepository {
                 for (int i = 0; i < list.size(); i++) {
                     String sectionCode = list.get(i).get("section") + "";
                     String description = list.get(i).get("description") + "";
-                    String userRoleCode = list.get(i).get("USERROLE") + "";
+                    String userRoleCode = list.get(i).get("userrole") + "";
                     int sortKey = Integer.parseInt(list.get(i).get("sortkey") + "");
                     String status = list.get(i).get("status") + "";
                     Date createdTime = (Date) list.get(i).get("createdtime");
@@ -232,7 +232,7 @@ public class LoginRepository {
                     //byte aFlag = Byte.parseByte(list.get(i).get("aflag") + "");
                     //byte cFlag = Byte.parseByte(list.get(i).get("cflag") + "");
                     String sectionCode = list.get(i).get("section") + "";
-                    String userRoleCode = list.get(i).get("USERROLE") + "";
+                    String userRoleCode = list.get(i).get("userrole") + "";
                     //String lastUpdatedUser = list.get(i).get("lastupdateduser") + "";
                     //Date lastUpdatedTime = (Date) list.get(i).get("lastupdatedtime");
                     //Date createdTime = (Date) list.get(i).get("createdtime");
@@ -277,7 +277,7 @@ public class LoginRepository {
             List<Map<String, Object>> list = jdbcTemplate.queryForList(SQL_GET_USER_PAGETASKLIST, userRoleCode, commonVarList.STATUS_ACTIVE, commonVarList.STATUS_ACTIVE);
             if (list.size() != 0) {
                 for (int i = 0; i < list.size(); i++) {
-                    String userRole = list.get(i).get("USERROLE") + "";
+                    String userRole = list.get(i).get("userrole") + "";
                     String sectionCode = list.get(i).get("section") + "";
                     String page = list.get(i).get("page") + "";
                     String pageDescription = list.get(i).get("pagedescription") + "";

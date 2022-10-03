@@ -141,22 +141,34 @@ public class ClaimRepository {
                 sortingStr = " order by t.createdtime " + claimInputBean.sortDirections.get(0);
             }
 
-            String sql = "" +
-                    " select " +
-                    "t.id," +
-                    "t.first_name," +
-                    "t.last_name," +
-                    "t.phone," +
-                    "t.email," +
-                    "t.dealership," +
-                    "s.description as statusdes," +
-                    "t.createdtime," +
-                    "t.createduser," +
-                    "t.lastupdatedtime," +
-                    "t.lastupdateduser " +
-                    "from reg_warranty_claim t " +
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "where  b.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
+            String sql = "select " +
+                    " t.id, " +
+                    "t.first_name, " +
+                    "t.last_name, " +
+                    "t.phone, " +
+                    "t.email, " +
+                    "t.dealership, " +
+                    "s.description as statusdes, " +
+                    "t.createdtime, " +
+                    "t.createduser, " +
+                    "t.lastupdatedtime, " +
+                    "t.lastupdateduser  " +
+                    "from (SELECT * " +
+                    "from reg_warranty_claim b   " +
+                     dealershipString+") AS t " +
                     "left outer join status s on s.statuscode=t.status " +
-                    " where " + dynamicClause.toString() + sortingStr +
+                    "where "+dynamicClause.toString() + sortingStr +
                     " limit " + claimInputBean.displayLength + " offset " + claimInputBean.displayStart;
 
             claimList = jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -950,6 +962,7 @@ public class ClaimRepository {
 
     private StringBuilder setDynamicClause(ClaimInputBean claimInputBean, StringBuilder dynamicClause) {
         try {
+
             if (claimInputBean.getId() != null && !claimInputBean.getId().isEmpty()) {
                 dynamicClause.append(" 1=0 ");
                 dynamicClause.append("or lower(t.id) like lower('%").append(claimInputBean.getId()).append("%')");
@@ -958,7 +971,8 @@ public class ClaimRepository {
                 dynamicClause.append("or lower(t.phone) like lower('%").append(claimInputBean.getId()).append("%')");
                 dynamicClause.append("or lower(t.email) like lower('%").append(claimInputBean.getId()).append("%')");
                 dynamicClause.append("or lower(t.dealership) like lower('%").append(claimInputBean.getId()).append("%')");
-                dynamicClause.append("or t.status = '").append(claimInputBean.getStatus()).append("'");
+                dynamicClause.append("or lower(t.status) like lower('%").append(claimInputBean.getId()).append("%')");
+
             } else {
                 dynamicClause.append(" 1=1 ");
             }
