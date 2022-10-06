@@ -405,6 +405,9 @@ public class MessageVarList {
     public static final String CLAIM_MGT_EMPTY_LABOUR_RATE = "claim.empty.labourRate";
     public static final String CLAIM_MGT_EMPTY_TOTAL_COST = "claim.empty.totalCost";
     public static final String CLAIM_MGT_EMPTY_COST_DESCRIPTION = "claim.empty.costDescription";
+    public static final String CLAIM_MGT_EMPTY_FAILING_AREA = "claim.empty.failingArea";
+    public static final String CLAIM_MGT_EMPTY_COMMENT = "claim.empty.comment";
+    public static final String CLAIM_MGT_EMPTY_SUPPLIER = "claim.empty.supplier";
 
     public static final String CLAIM_MGT_SUCCESS_ADD = "claim.success.add";
     public static final String CLAIM_MGT_SUCCESS_UPDATE = "claim.success.update";
@@ -414,6 +417,8 @@ public class MessageVarList {
     public static final String CLAIM_MGT_ALREADY_EXISTS = "claim.already.exists";
     public static final String CLAIM_MGT_NO_RECORD_FOUND = "claim.no.record.found";
     public static final String CLAIM_MGT_SUCCESS_APPROVE = "claim.success.approve";
+
+    public static final String CLAIM_MGT_ERROR_MAIL_SEND = "claim.error.mail";
     //-------------------------- claim mgt-----------------------------------------------------------------------------//
 
 }

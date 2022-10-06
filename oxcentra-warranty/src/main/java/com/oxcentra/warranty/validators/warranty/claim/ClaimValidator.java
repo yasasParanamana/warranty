@@ -4,6 +4,7 @@ import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.util.validation.Validation;
 import com.oxcentra.warranty.util.varlist.CommonVarList;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
+import com.oxcentra.warranty.util.varlist.TaskVarList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,145 +47,193 @@ public class ClaimValidator implements Validator {
                     field.setAccessible(true);
                     String fieldName = field.getName();
 
+                    //validate the claim add and edit
+                    String userTask = ((ClaimInputBean) o).getUserTask();
+                    if (userTask.equals(TaskVarList.ADD_TASK)) {
 
-                    if (fieldName.equals("chassis")) {
-                        //validate the null and empty in chassis
-                        String chassis = ((ClaimInputBean) o).getChassis();
-                        if (validation.isEmptyFieldValue(chassis)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_CHASSIS, MessageVarList.CLAIM_MGT_EMPTY_CHASSIS);
-                        }
-                    } else if (fieldName.equals("model")) {
-                        //validate the null and empty in model
-                        String model = ((ClaimInputBean) o).getModel();
-                        if (validation.isEmptyFieldValue(model)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_MODEL, MessageVarList.CLAIM_MGT_EMPTY_MODEL);
-                        }
-                    } else if (fieldName.equals("firstName")) {
-                        //validate the null and empty in firstName
-                        String firstName = ((ClaimInputBean) o).getFirstName();
-                        if (validation.isEmptyFieldValue(firstName)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FIRSTNAME, MessageVarList.CLAIM_MGT_EMPTY_FIRSTNAME);
-                        }
-                    } else if (fieldName.equals("lastName")) {
-                        //validate the null and empty in lastName
-                        String lastName = ((ClaimInputBean) o).getLastName();
-                        if (validation.isEmptyFieldValue(lastName)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LASTNAME, MessageVarList.CLAIM_MGT_EMPTY_LASTNAME);
-                        }
-                    } else if (fieldName.equals("phone")) {
-                        //validate the null and empty in phone
-                        String phone = ((ClaimInputBean) o).getPhone();
-                        if (validation.isEmptyFieldValue(phone)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_PHONE, MessageVarList.CLAIM_MGT_EMPTY_PHONE);
-                        }
-                    } else if (fieldName.equals("email")) {
-                        //validate the null and empty in email
-                        String email = ((ClaimInputBean) o).getEmail();
-                        if (validation.isEmptyFieldValue(email)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_EMAIL, MessageVarList.CLAIM_MGT_EMPTY_EMAIL);
-                        }
-                    } else if (fieldName.equals("address")) {
-                        //validate the null and empty in address
-                        String address = ((ClaimInputBean) o).getAddress();
-                        if (validation.isEmptyFieldValue(address)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_ADDRESS, MessageVarList.CLAIM_MGT_EMPTY_ADDRESS);
-                        }
-                    } else if (fieldName.equals("surburb")) {
-                        //validate the null and empty in surburb
-                        String surburb = ((ClaimInputBean) o).getSurburb();
-                        if (validation.isEmptyFieldValue(surburb)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_SURBURB, MessageVarList.CLAIM_MGT_EMPTY_SURBURB);
-                        }
-                    } else if (fieldName.equals("state")) {
-                        //validate the null and empty in state
-                        String state = ((ClaimInputBean) o).getState();
-                        if (validation.isEmptyFieldValue(state)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_STATE, MessageVarList.CLAIM_MGT_EMPTY_STATE);
-                        }
-                    } else if (fieldName.equals("postcode")) {
-                        //validate the null and empty in postcode
-                        String postcode = ((ClaimInputBean) o).getPostcode();
-                        if (validation.isEmptyFieldValue(postcode)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_POSTCODE, MessageVarList.CLAIM_MGT_EMPTY_POSTCODE);
-                        }
-                    } else if (fieldName.equals("dealership")) {
-                        //validate the null and empty in dealership
-                        String dealership = ((ClaimInputBean) o).getDealership();
-                        if (validation.isEmptyFieldValue(dealership)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP);
-                        }
-                    } else if (fieldName.equals("claimType")) {
-                        //validate the null and empty in dealership
-                        String claimType = ((ClaimInputBean) o).getClaimType();
-                        if (validation.isEmptyFieldValue(claimType)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE);
-                        }
-                    } else if (fieldName.equals("purchasingDate")) {
-                        //validate the null and empty in purchasingDate
-                        String purchasingDate = ((ClaimInputBean) o).getPurchasingDate();
-                        if (validation.isEmptyFieldValue(purchasingDate)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_PURCHASING_DATE, MessageVarList.CLAIM_MGT_EMPTY_PURCHASING_DATE);
-                        }
-                    } else if (fieldName.equals("description")) {
-                        //validate the null and empty in description
-                        String description = ((ClaimInputBean) o).getDescription();
-                        if (validation.isEmptyFieldValue(description)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_DESCRIPTION);
-                        }
-                    } else if (fieldName.equals("failureType")) {
-                        //validate the null and empty in failureType
-                        String failureType = ((ClaimInputBean) o).getFailureType();
-                        if (validation.isEmptyFieldValue(failureType)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_TYPE, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_TYPE);
-                        }
-                    } else if (fieldName.equals("failureArea")) {
-                        //validate the null and empty in failureArea
-                        String failureArea = ((ClaimInputBean) o).getFailureArea();
-                        if (validation.isEmptyFieldValue(failureArea)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_AREA, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_AREA);
-                        }
-                    } else if (fieldName.equals("repairType")) {
-                        //validate the null and empty in repairType
-                        String repairType = ((ClaimInputBean) o).getRepairType();
-                        if (validation.isEmptyFieldValue(repairType)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_TYPE, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_TYPE);
-                        }
-                    } else if (fieldName.equals("repairDescription")) {
-                        //validate the null and empty in repairDescription
-                        String repairDescription = ((ClaimInputBean) o).getRepairDescription();
-                        if (validation.isEmptyFieldValue(repairDescription)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_DESCRIPTION);
-                        }
-                    } else if (fieldName.equals("costType")) {
-                        //validate the null and empty in costType
-                        String costType = ((ClaimInputBean) o).getCostType();
-                        if (validation.isEmptyFieldValue(costType)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE);
-                        }
-                    } else if (fieldName.equals("hours")) {
-                        /*//validate the null and empty in hours
-                        String hours = ((ClaimInputBean) o).getHours();
-                        if (validation.isEmptyFieldValue(hours)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_HOURS, MessageVarList.CLAIM_MGT_EMPTY_HOURS);
-                        }*/
-                    } else if (fieldName.equals("labourRate")) {
-                        /*//validate the null and empty in labourRate
-                        String labourRate = ((ClaimInputBean) o).getLabourRate();
-                        if (validation.isEmptyFieldValue(labourRate)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE);
-                        }*/
-                    } else if (fieldName.equals("totalCost")) {
-                        //validate the null and empty in totalCost
-                        String totalCost = ((ClaimInputBean) o).getTotalCost();
-                        if (validation.isEmptyFieldValue(totalCost)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST);
-                        }
+                        if (fieldName.equals("chassis")) {
+                            //validate the null and empty in chassis
+                            String chassis = ((ClaimInputBean) o).getChassis();
+                            if (validation.isEmptyFieldValue(chassis)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_CHASSIS, MessageVarList.CLAIM_MGT_EMPTY_CHASSIS);
+                            }
+                        } else if (fieldName.equals("model")) {
+                            //validate the null and empty in model
+                            String model = ((ClaimInputBean) o).getModel();
+                            if (validation.isEmptyFieldValue(model)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_MODEL, MessageVarList.CLAIM_MGT_EMPTY_MODEL);
+                            }
+                        } else if (fieldName.equals("firstName")) {
+                            //validate the null and empty in firstName
+                            String firstName = ((ClaimInputBean) o).getFirstName();
+                            if (validation.isEmptyFieldValue(firstName)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FIRSTNAME, MessageVarList.CLAIM_MGT_EMPTY_FIRSTNAME);
+                            }
+                        } else if (fieldName.equals("lastName")) {
+                            //validate the null and empty in lastName
+                            String lastName = ((ClaimInputBean) o).getLastName();
+                            if (validation.isEmptyFieldValue(lastName)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LASTNAME, MessageVarList.CLAIM_MGT_EMPTY_LASTNAME);
+                            }
+                        } else if (fieldName.equals("phone")) {
+                            //validate the null and empty in phone
+                            String phone = ((ClaimInputBean) o).getPhone();
+                            if (validation.isEmptyFieldValue(phone)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_PHONE, MessageVarList.CLAIM_MGT_EMPTY_PHONE);
+                            }
+                        } else if (fieldName.equals("email")) {
+                            //validate the null and empty in email
+                            String email = ((ClaimInputBean) o).getEmail();
+                            if (validation.isEmptyFieldValue(email)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_EMAIL, MessageVarList.CLAIM_MGT_EMPTY_EMAIL);
+                            }
+                        } else if (fieldName.equals("address")) {
+                            //validate the null and empty in address
+                            String address = ((ClaimInputBean) o).getAddress();
+                            if (validation.isEmptyFieldValue(address)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_ADDRESS, MessageVarList.CLAIM_MGT_EMPTY_ADDRESS);
+                            }
+                        } else if (fieldName.equals("surburb")) {
+                            //validate the null and empty in surburb
+                            String surburb = ((ClaimInputBean) o).getSurburb();
+                            if (validation.isEmptyFieldValue(surburb)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_SURBURB, MessageVarList.CLAIM_MGT_EMPTY_SURBURB);
+                            }
+                        } else if (fieldName.equals("state")) {
+                            //validate the null and empty in state
+                            String state = ((ClaimInputBean) o).getState();
+                            if (validation.isEmptyFieldValue(state)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_STATE, MessageVarList.CLAIM_MGT_EMPTY_STATE);
+                            }
+                        } else if (fieldName.equals("postcode")) {
+                            //validate the null and empty in postcode
+                            String postcode = ((ClaimInputBean) o).getPostcode();
+                            if (validation.isEmptyFieldValue(postcode)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_POSTCODE, MessageVarList.CLAIM_MGT_EMPTY_POSTCODE);
+                            }
+                        } else if (fieldName.equals("dealership")) {
+                            //validate the null and empty in dealership
+                            String dealership = ((ClaimInputBean) o).getDealership();
+                            if (validation.isEmptyFieldValue(dealership)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP, MessageVarList.CLAIM_MGT_EMPTY_DEALERSHIP);
+                            }
+                        } else if (fieldName.equals("claimType")) {
+                            //validate the null and empty in dealership
+                            String claimType = ((ClaimInputBean) o).getClaimType();
+                            if (validation.isEmptyFieldValue(claimType)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE, MessageVarList.CLAIM_MGT_EMPTY_CLAIM_TYPE);
+                            }
+                            if(!claimType.equalsIgnoreCase("Stock Van(Consignment)")){
+                                String purchasingDate = ((ClaimInputBean) o).getPurchasingDate();
+                                if (validation.isEmptyFieldValue(purchasingDate)) {
+                                    errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_PURCHASING_DATE, MessageVarList.CLAIM_MGT_EMPTY_PURCHASING_DATE);
+                                }
+                            }
+                        } else if (fieldName.equals("description")) {
+                            //validate the null and empty in description
+                            String description = ((ClaimInputBean) o).getDescription();
+                            if (validation.isEmptyFieldValue(description)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_DESCRIPTION);
+                            }
+                        } else if (fieldName.equals("failureType")) {
+                            //validate the null and empty in failureType
+                            String failureType = ((ClaimInputBean) o).getFailureType();
+                            if (validation.isEmptyFieldValue(failureType)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_TYPE, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_TYPE);
+                            }
+                        } else if (fieldName.equals("failureArea")) {
+                            //validate the null and empty in failureArea
+                            String failureArea = ((ClaimInputBean) o).getFailureArea();
+                            if (validation.isEmptyFieldValue(failureArea)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_AREA, MessageVarList.CLAIM_MGT_EMPTY_FAILURE_AREA);
+                            }
+                        } else if (fieldName.equals("repairType")) {
+                            //validate the null and empty in repairType
+                            String repairType = ((ClaimInputBean) o).getRepairType();
+                            if (validation.isEmptyFieldValue(repairType)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_TYPE, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_TYPE);
+                            }
+                        } else if (fieldName.equals("repairDescription")) {
+                            //validate the null and empty in repairDescription
+                            String repairDescription = ((ClaimInputBean) o).getRepairDescription();
+                            if (validation.isEmptyFieldValue(repairDescription)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_REPAIR_DESCRIPTION);
+                            }
+                        } else if (fieldName.equals("costType")) {
+                            //validate the null and empty in costType
+                            String costType = ((ClaimInputBean) o).getCostType();
+                            if (validation.isEmptyFieldValue(costType)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE);
+                            }
+                            if (costType.equalsIgnoreCase("Labour")) {
+                                //validate the null and empty in hours
+                                String hours = ((ClaimInputBean) o).getHours();
+                                if (validation.isEmptyFieldValue(hours)) {
+                                    errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_HOURS, MessageVarList.CLAIM_MGT_EMPTY_HOURS);
+                                }
+                                //validate the null and empty in labourRate
+                                String labourRate = ((ClaimInputBean) o).getLabourRate();
+                                if (validation.isEmptyFieldValue(labourRate)) {
+                                    errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE);
+                                }
+                            }
+                        } else if (fieldName.equals("totalCost")) {
+                            //validate the null and empty in totalCost
+                            String totalCost = ((ClaimInputBean) o).getTotalCost();
+                            if (validation.isEmptyFieldValue(totalCost)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST);
+                            }
 
-                    } else if (fieldName.equals("costDescription")) {
-                        //validate the null and empty in costDescription
-                        String costDescription = ((ClaimInputBean) o).getCostDescription();
-                        if (validation.isEmptyFieldValue(costDescription)) {
-                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION);
+                        } else if (fieldName.equals("costDescription")) {
+                            //validate the null and empty in costDescription
+                            String costDescription = ((ClaimInputBean) o).getCostDescription();
+                            if (validation.isEmptyFieldValue(costDescription)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION);
+                            }
+                        }
+                    } else if (userTask.equals(TaskVarList.UPDATE_TASK)) {
+                        if (fieldName.equals("failingArea")) {
+                            //validate the failing Area
+                            String failingArea = ((ClaimInputBean) o).getFailingArea();
+                            if (validation.isEmptyFieldValue(failingArea)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_FAILING_AREA, MessageVarList.CLAIM_MGT_EMPTY_FAILING_AREA);
+                            }
+                        } else if (fieldName.equals("costType")) {
+                            //validate the null and empty in costType
+                            String costType = ((ClaimInputBean) o).getCostType();
+                            if (validation.isEmptyFieldValue(costType)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE, MessageVarList.CLAIM_MGT_EMPTY_COST_TYPE);
+                            }
+                            if (costType.equalsIgnoreCase("Labour")) {
+                                    //validate the null and empty in hours
+                                    String hours = ((ClaimInputBean) o).getHours();
+                                    if (validation.isEmptyFieldValue(hours)) {
+                                        errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_HOURS, MessageVarList.CLAIM_MGT_EMPTY_HOURS);
+                                    }
+                                    //validate the null and empty in labourRate
+                                    String labourRate = ((ClaimInputBean) o).getLabourRate();
+                                    if (validation.isEmptyFieldValue(labourRate)) {
+                                        errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE, MessageVarList.CLAIM_MGT_EMPTY_LABOUR_RATE);
+                                }
+                            }
+                        } else if (fieldName.equals("totalCost")) {
+                            //validate the null and empty in totalCost
+                            String totalCost = ((ClaimInputBean) o).getTotalCost();
+                            if (validation.isEmptyFieldValue(totalCost)) {
+                                errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST, MessageVarList.CLAIM_MGT_EMPTY_TOTAL_COST);
+                            }
+                        }else if (fieldName.equals("isInHouse")){
+                            String isInHouse = ((ClaimInputBean) o).getIsInHouse();
+                            if(isInHouse.equalsIgnoreCase("0")){
+                                String comment = ((ClaimInputBean) o).getComment();
+                                if (validation.isEmptyFieldValue(comment)) {
+                                    errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COMMENT, MessageVarList.CLAIM_MGT_EMPTY_COMMENT);
+                                }
+                                String supplier = ((ClaimInputBean) o).getSupplier();
+                                if (validation.isEmptyFieldValue(supplier)) {
+                                    errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_SUPPLIER, MessageVarList.CLAIM_MGT_EMPTY_SUPPLIER);
+                                }
+                            }
                         }
                     }
                 }
@@ -201,10 +250,10 @@ public class ClaimValidator implements Validator {
 
         return new Field[]{allFields.get("chassis"), allFields.get("model"), allFields.get("firstName"), allFields.get("lastName"),
                 allFields.get("phone"), allFields.get("email"), allFields.get("address"), allFields.get("surburb")
-                , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"),allFields.get("claimType"), allFields.get("purchasingDate"), allFields.get("description")
+                , allFields.get("state"), allFields.get("postcode"), allFields.get("dealership"), allFields.get("claimType"), allFields.get("purchasingDate"), allFields.get("description")
                 , allFields.get("failureType"), allFields.get("failureArea"), allFields.get("repairType"), allFields.get("repairDescription")
-                , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription")};
-       /* return new Field[]{};*/
+                , allFields.get("costType"), allFields.get("hours"), allFields.get("labourRate"), allFields.get("totalCost"), allFields.get("costDescription"), allFields.get("failingArea"),allFields.get("isInHouse")};
+        /* return new Field[]{};*/
 
     }
 }

@@ -29,9 +29,20 @@
                        name="addClaimForm" enctype="multipart/form-data">
 
                 <div class="modal-body">
-                    <div class="form-group" style="text-align: center"><span id="responseMsgAdd"></span>
-
+                    <div class="form-group" style="text-align: center">
+                        <span id="responseMsgAdd"></span>
                     </div>
+
+                    <div class="form-group row" hidden="true">
+                        <label for="userTask" class="col-sm-4 col-form-label">User Task<span
+                                class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <form:input path="userTask" name="userTask" type="text"
+                                        class="form-control form-control-sm"
+                                        id="aUserTask" value="ADD" placeholder="User Task"/>
+                        </div>
+                    </div>
+
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -107,7 +118,7 @@
                                         onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="surburb">surburb<span
+                            <label for="surburb">Surburb<span
                                     class="text-danger">*</span></label>
                             <form:input path="surburb" name="surburb" type="text"
                                         class="form-control form-control-sm" id="addsurburb" maxlength="20"
@@ -445,18 +456,18 @@
 
         const costType = $('#addCostType').val();
 
-        if(costType === 'LABOUR'){
+        if(costType === 'Labour'){
 
             $('#addHoursDiv').show();
             $('#addLabourRateDiv').show();
             $('#addTotalCostDiv').show();
 
-        }else if (costType === 'MATERIALS' ){
+        }else if (costType === 'Materials' ){
             $('#addHoursDiv').hide();
             $('#addLabourRateDiv').hide();
             $('#addTotalCostDiv').show();
 
-        }else if(costType === 'SUBLET'){
+        }else if(costType === 'Sublet'){
 
             $('#addHoursDiv').hide();
             $('#addLabourRateDiv').hide();
@@ -658,7 +669,7 @@
 
         let failingArea = $('#claimType').val();
 
-        if(failingArea === 'STOCK_VAN' || failingArea === ''){
+        if(failingArea === 'Stock Van(Consignment)' || failingArea === ''){
             $('#purchasingDateDiv').hide();
             $('#claimTypeDocDiv').hide();
         }else{

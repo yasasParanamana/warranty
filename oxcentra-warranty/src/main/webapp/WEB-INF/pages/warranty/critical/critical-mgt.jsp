@@ -247,7 +247,7 @@
                     $('#editPostcode').html(data.postcode);
                     $('#editDealership').html(data.dealership);
                     $('#editClaimType').html(data.claimType);
-                    $('#editPurchasingDate').html(data.purchasingDate);
+                    $('#editPurchasingDate').text(moment(data.purchasingDate).format("YYYY-MM-DD"));
                     $('#editDescription').html(data.description);
                     $('#editFailureType').html(data.failureType);
                     $('#editFailureArea').html(data.failureArea);

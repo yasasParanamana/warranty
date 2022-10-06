@@ -27,10 +27,10 @@
 
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
-    <div class="brand flex-column-auto" id="kt_brand">
+    <div class="brand flex-column-auto" id="kt_brand" style="background-color: black;">
         <!--begin::Logo-->
         <a href="${pageContext.request.contextPath}/home.htm" class="brand-logo" id="header-brand-logo">
-            <img style="width: 120px" alt="Logo" src="${pageContext.request.contextPath}/resources/assets/media/logos/icon.png"/>
+            <img style="width: 120px" alt="Logo" src="${pageContext.request.contextPath}/resources/assets/media/logos/icon_hands.png"/>
         </a>
         <!--end::Logo-->
         <!--begin::Toggle-->

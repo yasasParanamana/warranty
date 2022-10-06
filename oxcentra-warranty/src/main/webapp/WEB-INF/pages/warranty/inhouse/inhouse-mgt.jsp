@@ -207,11 +207,11 @@
                     },
                     {
                         visible: ${inHouse.vupdate},
-                        title: "View",
+                        title: "Edit",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-view.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
                         targets: 11,
                         defaultContent: "--"
@@ -248,7 +248,9 @@
                     $('#editPostcode').html(data.postcode);
                     $('#editDealership').html(data.dealership);
                     $('#editClaimType').html(data.claimType);
-                    $('#editPurchasingDate').html(data.purchasingDate);
+
+                    $('#editPurchasingDate').text(moment(data.purchasingDate).format("YYYY-MM-DD"));
+
                     $('#editDescription').html(data.description);
                     $('#editFailureType').html(data.failureType);
                     $('#editFailureArea').html(data.failureArea);
@@ -524,7 +526,7 @@
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
                                 <th>Last Updated Time</th>
-                                <th>View</th>
+                                <th>Edit</th>
                             </tr>
                             </thead>
                             <tbody></tbody>

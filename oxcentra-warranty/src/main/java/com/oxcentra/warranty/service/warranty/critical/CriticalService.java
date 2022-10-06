@@ -134,17 +134,17 @@ public class CriticalService {
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
 
         CommonKeyVal costTYpe1 = new CommonKeyVal();
-        costTYpe1.setKey("LABOUR");
+        costTYpe1.setKey("Labour");
         costTYpe1.setValue("Labour");
         list.add(costTYpe1);
 
         CommonKeyVal costTYpe2 = new CommonKeyVal();
-        costTYpe2.setKey("MATERIALS");
+        costTYpe2.setKey("Materials");
         costTYpe2.setValue("Materials");
         list.add(costTYpe2);
 
         CommonKeyVal costTYpe3 = new CommonKeyVal();
-        costTYpe3.setKey("SUBLET");
+        costTYpe3.setKey("Sublet");
         costTYpe3.setValue("Sublet");
         list.add(costTYpe3);
 
@@ -157,18 +157,18 @@ public class CriticalService {
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
 
         CommonKeyVal failingArea1 = new CommonKeyVal();
-        failingArea1.setKey("FAILURE_1");
-        failingArea1.setValue("FAILURE_1");
+        failingArea1.setKey("Missing");
+        failingArea1.setValue("Missing");
         list.add(failingArea1);
 
         CommonKeyVal failingArea2 = new CommonKeyVal();
-        failingArea2.setKey("FAILURE_2");
-        failingArea2.setValue("FAILURE_2");
+        failingArea2.setKey("Rejected");
+        failingArea2.setValue("Rejected");
         list.add(failingArea2);
 
         CommonKeyVal failingArea3 = new CommonKeyVal();
-        failingArea3.setKey("FAILURE_3");
-        failingArea3.setValue("FAILURE_3");
+        failingArea3.setKey("Wrong Parts");
+        failingArea3.setValue("Wrong Parts");
         list.add(failingArea3);
 
         return list;
@@ -180,17 +180,17 @@ public class CriticalService {
         List<CommonKeyVal> list = new ArrayList<CommonKeyVal>();
 
         CommonKeyVal puchasingStatus1 = new CommonKeyVal();
-        puchasingStatus1.setKey("STOCK_VAN");
-        puchasingStatus1.setValue("stock van(Consignment)");
+        puchasingStatus1.setKey("Stock Van(Consignment)");
+        puchasingStatus1.setValue("Stock Van(Consignment)");
         list.add(puchasingStatus1);
 
         CommonKeyVal puchasingStatus2 = new CommonKeyVal();
-        puchasingStatus2.setKey("TO_BE_DELIVERED");
-        puchasingStatus2.setValue("to be delivered");
+        puchasingStatus2.setKey("To Be Delivered");
+        puchasingStatus2.setValue("To Be Delivered");
         list.add(puchasingStatus2);
 
         CommonKeyVal puchasingStatus3 = new CommonKeyVal();
-        puchasingStatus3.setKey("SOLD");
+        puchasingStatus3.setKey("Sold");
         puchasingStatus3.setValue("Sold");
         list.add(puchasingStatus3);
 

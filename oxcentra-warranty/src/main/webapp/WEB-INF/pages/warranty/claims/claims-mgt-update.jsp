@@ -21,14 +21,21 @@
             </div>
             <form:form class="form-horizontal sm" id="updateClaimForm" modelAttribute="claim" method="post"
                        name="updateClaimForm">
-                <div class="form-group" style="text-align: center"><span style="alignment: center"
-                                                                         id="responseMsgUpdate"></span></div>
+                <div class="form-group" style="text-align: center">
+                    <span style="alignment: center" id="responseMsgUpdate"></span></div>
+                <div class="form-group row" hidden="true">
+                    <label for="userTask" class="col-sm-4 col-form-label">User Task<span
+                            class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                        <form:input path="userTask" name="userTask" type="text" class="form-control form-control-sm"
+                                    id="eUserTask" value="UPDATE" placeholder="User Task"/>
+                    </div>
+                </div>
                 <div class="form-group row" hidden="true">
                     <div class="col-sm-8">
                         <form:input path="id" name="id" type="text" id="editId"/>
                     </div>
                 </div>
-
                 <div class="modal-body" id="firstTab">
                     <h5>Vehicle Details</h5>
                     <div class="form-row">
@@ -80,7 +87,7 @@
                             <label id="editAddress"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editSurburb">surburb</label>
+                            <label for="editSurburb">Surburb</label>
                             <label>:</label>
                             <label id="editSurburb"></label>
                         </div>
@@ -427,7 +434,7 @@
                                 </button>
                             </c:if>
                         </div>
-                            <div id="secondPageFirstButtons">
+                        <div id="secondPageFirstButtons">
                             <c:if test="${claim.vupdate}">
                                 <button id="sendEmailBtn" type="button" onclick="sendEmail()" class="btn btn-primary">
                                     Send E-mail to Supplier
@@ -495,6 +502,12 @@
             success: function (res) {
                 if (res.flag) { //success
                     $('#responseMsgUpdate').show();
+
+                    $('#firstButtons').hide();
+                    $('#secondPageFirstButtons').hide();
+                    $('#secondButton').hide();
+                    $('#secondPageSecondButton').hide();
+
                     $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
                     searchStart();
                 } else {
@@ -532,6 +545,13 @@
                 success: function (res) {
                     if (res.flag) { //success
                         $('#responseMsgUpdate').show();
+
+                        $('#firstButtons').hide();
+                        $('#secondPageFirstButtons').hide();
+                        $('#secondButton').hide();
+                        $('#secondPageSecondButton').hide();
+
+
                         $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
                         searchStart();
                     } else {
@@ -598,6 +618,10 @@
             success: function (res) {
                 if (res.flag) { //success
                     $('#responseMsgUpdate').show();
+                    $('#firstButtons').hide();
+                    $('#secondPageFirstButtons').hide();
+                    $('#secondButton').hide();
+                    $('#secondPageSecondButton').hide();
                     $('#responseMsgUpdate').addClass('success-response').text(res.successMessage);
                     searchStart();
                 } else {
@@ -634,18 +658,18 @@
 
         const costType = $('#editCostType').val();
 
-        if (costType === 'LABOUR') {
+        if (costType === 'Labour') {
 
             $('#editHoursDiv').show();
             $('#editLabourRateDiv').show();
             $('#editTotalCostDiv').show();
 
-        } else if (costType === 'MATERIALS') {
+        } else if (costType === 'Materials') {
             $('#editHoursDiv').hide();
             $('#editLabourRateDiv').hide();
             $('#editTotalCostDiv').show();
 
-        } else if (costType === 'SUBLET') {
+        } else if (costType === 'Sublet') {
 
             $('#editHoursDiv').hide();
             $('#editLabourRateDiv').hide();

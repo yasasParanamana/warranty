@@ -193,11 +193,11 @@
                     },
                     {
                         visible: ${claim.vview},
-                        title: "View",
+                        title: "Edit",
                         sortable: false,
                         className: "dt-center",
                         mRender: function (data, type, full) {
-                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-view.svg" alt=""></button>';
+                            return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
                         targets: 11,
                         defaultContent: "--"
@@ -230,6 +230,8 @@
                 success: function (data) {
                     $('#responseMsgUpdate').hide();
 
+                    console.log(data);
+
                     $('#editId').val(data.id);
                     $('#editId').attr('readOnly', true);
 
@@ -246,7 +248,7 @@
                     $('#editDealership').html(data.dealership);
                     $('#editClaimType').html(data.claimType);
 
-                    $('#editPurchasingDate').html(data.purchasingDate);
+                    $('#editPurchasingDate').text(moment(data.purchasingDate).format("YYYY-MM-DD"));
 
                     $('#editDescription').html(data.description);
                     $('#editFailureType').html(data.failureType);
@@ -541,7 +543,7 @@
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
                                 <th>Last Updated Time</th>
-                                <th>View</th>
+                                <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                             </thead>

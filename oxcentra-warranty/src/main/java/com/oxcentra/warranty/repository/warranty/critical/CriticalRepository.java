@@ -295,11 +295,6 @@ public class CriticalRepository {
 
                 try {
 
-                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println("Purchasing Date :" + rs.getDate("purchasing_date").toString());
-//                    System.out.println("Format Purchasing Date :"+formatter.parse(rs.getDate("purchasing_date").toString()));
-//                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
-
                     t.setPurchasingDate(rs.getDate("purchasing_date"));
                 } catch (Exception e) {
                     t.setPurchasingDate(null);
@@ -336,7 +331,6 @@ public class CriticalRepository {
                 }
 
                 try {
-//                    t.setCostType(rs.getString("cost_type").replace("LABOUR","labour").replace("MATERIALS","materials").replace("SUBLET","sublet"));
                     t.setCostType(rs.getString("cost_type"));
                 } catch (Exception e) {
                     t.setCostType(null);
@@ -385,7 +379,7 @@ public class CriticalRepository {
                 }
 
                 try {
-                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN", "stock van(Consignment)").replace("TO_BE_DELIVERED", "to be delivered").replace("SOLD", "Sold"));
+                    t.setClaimType(rs.getString("claim_type"));
                 } catch (Exception e) {
                     t.setClaimType(null);
                 }

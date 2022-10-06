@@ -1,21 +1,16 @@
 package com.oxcentra.warranty.repository.warranty.claim;
 
-import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
-import com.oxcentra.warranty.bean.warranty.claim.ClaimValueBean;
 import com.oxcentra.warranty.mapping.warranty.Claim;
-import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
+import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
-import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,11 +22,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.sql.Blob;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -471,12 +462,6 @@ public class ClaimRepository {
                 }
 
                 try {
-
-//                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                    System.out.println("Purchasing Date :" + rs.getDate("purchasing_date").toString());
-//                    System.out.println("Format Purchasing Date :"+formatter.parse(rs.getDate("purchasing_date").toString()));
-//                    t.setPurchasingDate(formatter.parse(rs.getDate("purchasing_date").toString()));
-
                     t.setPurchasingDate(rs.getDate("purchasing_date"));
                 } catch (Exception e) {
                     t.setPurchasingDate(null);
@@ -513,7 +498,6 @@ public class ClaimRepository {
                 }
 
                 try {
-//                    t.setCostType(rs.getString("cost_type").replace("LABOUR","labour").replace("MATERIALS","materials").replace("SUBLET","sublet"));
                     t.setCostType(rs.getString("cost_type"));
                 } catch (Exception e) {
                     t.setCostType(null);
@@ -562,7 +546,7 @@ public class ClaimRepository {
                 }
 
                 try {
-                    t.setClaimType(rs.getString("claim_type").replace("STOCK_VAN","stock van(Consignment)").replace("TO_BE_DELIVERED","to be delivered").replace("SOLD","Sold"));
+                    t.setClaimType(rs.getString("claim_type"));
                 } catch (Exception e) {
                     t.setClaimType(null);
                 }

@@ -125,7 +125,7 @@ public class ClaimController implements RequestBeanValidation<Object> {
         ResponseBean responseBean = null;
         try {
             claimInputBean.setId("WDC-" + common.getFormattedDate());
-            System.out.println("Claim ID    : " + claimInputBean.getId() );
+            System.out.println("Claim ID    : " + claimInputBean.getId());
 
             BindingResult bindingResult = validateRequestBean(claimInputBean);
 
@@ -152,12 +152,12 @@ public class ClaimController implements RequestBeanValidation<Object> {
     public @ResponseBody
     Claim getClaim(@RequestParam String id) {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM GET");
-        Claim claim= new Claim();
+        Claim claim = new Claim();
         SpareParts spareParts = new SpareParts();
         WarrantyAttachments warrantyAttachments = new WarrantyAttachments();
         try {
             if (id != null && !id.trim().isEmpty()) {
-                System.out.println("WARRANTY ID : " +id);
+                System.out.println("WARRANTY ID : " + id);
                 claim = claimService.getClaim(id);
 
                 //get model
@@ -172,7 +172,6 @@ public class ClaimController implements RequestBeanValidation<Object> {
                 List<WarrantyAttachments> attachmentsCostFileList = claimService.getFiles(id, commonVarList.ATTACHMENT_FILE_TYPE_DEALER);
                 claim.setClaimTypeFileList(attachmentsCostFileList);
 
-
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
@@ -185,10 +184,10 @@ public class ClaimController implements RequestBeanValidation<Object> {
     public @ResponseBody
     Supplier getSupplierDetails(@RequestParam String supplierId) {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM SUPPLIER DETAILS");
-        Supplier supplier= new Supplier();
+        Supplier supplier = new Supplier();
         try {
             if (supplierId != null && !supplierId.trim().isEmpty()) {
-                System.out.println("SUPPLIER ID : " +supplierId);
+                System.out.println("SUPPLIER ID : " + supplierId);
                 supplier = claimService.getSupplierDetails(supplierId);
             }
         } catch (Exception e) {
@@ -204,17 +203,17 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM UPDATE");
         ResponseBean responseBean = null;
         try {
-          /*  BindingResult bindingResult = validateRequestBean(claimInputBean);
-            if (bindingResult.hasErrors()) {
-                responseBean.setErrorMessage(messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
-            } else {*/
-                String message = claimService.updateClaim(claimInputBean, locale);
-                if (message.isEmpty()) {
-                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_UPDATE, null, locale), null);
-                } else {
-                    responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
-                }
-            /*}*//**/
+//          BindingResult bindingResult = validateRequestBean(claimInputBean);
+//            if (bindingResult.hasErrors()) {
+//                responseBean.setErrorMessage(messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
+//            } else {
+            String message = claimService.updateClaim(claimInputBean, locale);
+            if (message.isEmpty()) {
+                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_UPDATE, null, locale), null);
+            } else {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+            }
+//            }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
             responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
@@ -249,11 +248,17 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM APPROVE");
         ResponseBean responseBean = null;
         try {
-            String message = claimService.approveRequestClaim(claimInputBean, locale);
-            if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+            claimInputBean.setIsInHouse("1");
+            BindingResult bindingResult = validateRequestBean(claimInputBean);
+            if (bindingResult.hasErrors()) {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
-                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                String message = claimService.approveRequestClaim(claimInputBean, locale);
+                if (message.isEmpty()) {
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+                } else {
+                    responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                }
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
@@ -289,11 +294,17 @@ public class ClaimController implements RequestBeanValidation<Object> {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM SEND EMAIL");
         ResponseBean responseBean = null;
         try {
-            String message = claimService.SendEmail(claimInputBean, locale);
-            if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+            claimInputBean.setIsInHouse("0");
+            BindingResult bindingResult = validateRequestBean(claimInputBean);
+            if (bindingResult.hasErrors()) {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
-                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                String message = claimService.SendEmail(claimInputBean, locale);
+                if (message.isEmpty()) {
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+                } else {
+                    responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                }
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);
@@ -305,15 +316,21 @@ public class ClaimController implements RequestBeanValidation<Object> {
     @PostMapping(value = "/notedWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
     @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
     public @ResponseBody
-    ResponseBean notedRequestClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
+    ResponseBean notedRequestClaim(@ModelAttribute("claimUpdate") ClaimInputBean claimInputBean, Locale locale) {
         logger.info("[" + sessionBean.getSessionid() + "]  CLAIM NOTED");
         ResponseBean responseBean = null;
         try {
-            String message = claimService.notedRequestClaim(claimInputBean, locale);
-            if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+            claimInputBean.setIsInHouse("1");
+            BindingResult bindingResult = validateRequestBean(claimInputBean);
+            if (bindingResult.hasErrors()) {
+                responseBean = new ResponseBean(false, null, messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
             } else {
-                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                String message = claimService.notedRequestClaim(claimInputBean, locale);
+                if (message.isEmpty()) {
+                    responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.CLAIM_MGT_SUCCESS_APPROVE, null, locale), null);
+                } else {
+                    responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
+                }
             }
         } catch (Exception e) {
             logger.error("Exception  :  ", e);

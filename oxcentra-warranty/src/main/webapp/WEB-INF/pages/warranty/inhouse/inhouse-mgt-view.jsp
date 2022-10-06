@@ -14,7 +14,7 @@ responseBean<%--
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalUpdateTaskLabel">Request Approvals</h5>
+                <h5 class="modal-title" id="modalUpdateTaskLabel">In House Request</h5>
                 <button type="button" id="addPopupClose" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -80,7 +80,7 @@ responseBean<%--
                             <label id="editAddress"></label>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="editSurburb">surburb</label>
+                            <label for="editSurburb">Surburb</label>
                             <label>:</label>
                             <label id="editSurburb"></label>
                         </div>

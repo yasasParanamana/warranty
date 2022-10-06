@@ -26,6 +26,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class ClaimInputBean extends DataTablesRequest {
+    private String userTask;
     private String id;
     private String chassis;
     private String model;

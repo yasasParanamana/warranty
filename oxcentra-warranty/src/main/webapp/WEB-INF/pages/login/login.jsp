@@ -9,12 +9,12 @@
 <body id="kt_body"
       class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
 <!--begin::Main-->
-<div class="d-flex flex-column flex-root">
+<div class="d-flex flex-column flex-root" >
     <!--begin::Login-->
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
         <!--begin::Aside-->
-        <div class="login-aside d-flex flex-row-auto bgi-size-cover bgi-no-repeat p-10 p-lg-10"
-             style="background-image: url(${pageContext.request.contextPath}/resources/assets/media/bg/bg-login.jpg);">
+        <div class="login-aside d-flex flex-row-auto bgi-size-cover bgi-no-repeat p-10 p-lg-10" style="background: linear-gradient(#e66465, #9198e5);">
+<%--             style="background-image: url(${pageContext.request.contextPath}/resources/assets/media/bg/bg-login.jpg);">--%>
             <!--begin: Aside Container-->
             <div class="d-flex flex-row-fluid flex-column justify-content-between">
                 <!--begin: Aside header-->
@@ -25,8 +25,9 @@
                 <!--end: Aside header-->
                 <!--begin: Aside content-->
                 <div class="flex-column-fluid d-flex flex-column justify-content-center">
-                    <h3 class="font-size-h1 mb-5 text-white text-combank">OXCENTRA - WARRANTY</h3>
-                    <p class="font-weight-lighter text-white opacity-80">Having set a benchmark in banking in Sri Lanka
+                    <h3 class="font-size-h1 mb-5 text-white text-combank text-center ">WARRANTY MANAGEMENT SYSTEM</h3>
+                    <p class="font-size-h4 font-weight-bold text-dark-75 opacity-200 text-justify ">
+                        Having set a benchmark in banking in Sri Lanka
                         we have set standards, created an identity and forged an unsurpassable trend. Recognised as a
                         trend setter, we have maintained our cultural identity while providing a range of products and
                         services. Powered by state-of-the-art technology and driven by a team of highly motivated,
@@ -48,7 +49,7 @@
         </div>
         <!--begin::Aside-->
         <!--begin::Content-->
-        <div class="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden">
+        <div class="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden" style="background: linear-gradient(#e66465, #9198e5);">
             <!--begin::Content header-->
             <%--<div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">--%>
             <%--<span class="font-weight-bold text-dark-50">Dont have an account yet?</span>--%>
@@ -66,7 +67,7 @@
                     <!--begin::Form-->
                     <form:form novalidate="novalidate" method="post" class="form" modelAttribute="loginform"
                                action="checkuser.htm" id="kt_login_signin_form">
-<%--                               action="home.htm" id="kt_login_signin_form">--%>
+                        <%--                               action="home.htm" id="kt_login_signin_form">--%>
                         <!-- Error Message -->
                         <c:set var="errorMessage" value="${msg}"/>
                         <c:set var="successMessage" value="${cmsg}"/>
@@ -149,31 +150,11 @@
                     </form>
                     <!--end::Form-->
                 </div>
-                <!--end::Signup-->
-                <!--begin::Forgot-->
-                <%--<div class="login-form login-forgot">--%>
-                <%--<div class="text-center mb-10 mb-lg-20">--%>
-                <%--<h3 class="font-size-h1">Forgotten Password ?</h3>--%>
-                <%--<p class="text-muted font-weight-bold">Enter your email to reset your password</p>--%>
-                <%--</div>--%>
-                <%--<!--begin::Form-->--%>
-                <%--<form class="form" novalidate="novalidate" id="kt_login_forgot_form">--%>
-                <%--<div class="form-group">--%>
-                <%--<input class="form-control form-control-solid h-auto py-5 px-6" type="email" placeholder="Email" name="email" autocomplete="off" />--%>
-                <%--</div>--%>
-                <%--<div class="form-group d-flex flex-wrap flex-center">--%>
-                <%--<button type="button" id="kt_login_forgot_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Submit</button>--%>
-                <%--<button type="button" id="kt_login_forgot_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4">Cancel</button>--%>
-                <%--</div>--%>
-                <%--</form>--%>
-                <%--<!--end::Form-->--%>
-                <%--</div>--%>
-                <!--end::Forgot-->
             </div>
             <!--end::Content body-->
             <!--begin::Content footer for mobile-->
             <div class="d-flex d-lg-none flex-column-auto flex-column flex-sm-row justify-content-between align-items-center mt-5 p-5">
-                <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">&copy; 2022  Oxcentra (PVT) LTD
+                <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">&copy; 2022 Oxcentra (PVT) LTD
                 </div>
                 <%--<div class="d-flex order-1 order-sm-2 my-2">--%>
                 <%--<a href="#" class="text-dark-75 text-hover-primary">Privacy</a>--%>
@@ -186,6 +167,7 @@
         <!--end::Content-->
     </div>
     <!--end::Login-->
+
     <script>
         function disablePaste() {
             var input = document.getElementById("password");
