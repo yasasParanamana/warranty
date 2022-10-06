@@ -3,12 +3,10 @@ package com.oxcentra.warranty.service.warranty.claim;
 import com.oxcentra.warranty.bean.common.CommonKeyVal;
 import com.oxcentra.warranty.bean.common.TempAuthRecBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.sysconfigmgt.model.Model;
-import com.oxcentra.warranty.bean.usermgt.task.TaskInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
+import com.oxcentra.warranty.bean.warranty.claim.EmailRequestBean;
+import com.oxcentra.warranty.client.EmailClient;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
-import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
-import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
 import com.oxcentra.warranty.mapping.warranty.Supplier;
@@ -24,9 +22,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.ConstraintViolationException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +51,12 @@ public class ClaimService {
 
     @Autowired
     ClaimRepository claimRepository;
+
+    private EmailClient emailClient;
+
+    private static RestTemplate restTemplate = new RestTemplate();
+//    private static final String baseURL = "localhost:8082/v1.0/service/supplier/email/{token}";
+    private static final String baseURL = "http://localhost:8082/v1.0/service/supplier/email/";
 
     private final String fields = "Task Code|Description|Status|Created Time|Last Updated Time|Last Updated User";
 
@@ -253,7 +257,6 @@ public class ClaimService {
         }
         return supplier;
     }
-
 
     public String updateClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
         String message = "";
@@ -870,6 +873,7 @@ public class ClaimService {
         String message = "";
         String auditDescription = "";
         Claim existingClaim = null;
+        String Token="";
         try {
             existingClaim = claimRepository.getClaim(claimInputBean.getId());
             if (existingClaim != null) {
@@ -882,10 +886,32 @@ public class ClaimService {
                 claimInputBean.setLastUpdatedUser(lastUpdatedUser);
                 claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
                 claimInputBean.setIsInHouse("0");
-                claimInputBean.setSupplierUrlToken(common.GenerateUUID());
+                Token = common.GenerateUUID();
+                claimInputBean.setSupplierUrlToken(Token);
 
                 auditDescription = "Claim (ID: " + claimInputBean.getId() + ") acknowledge by " + sessionBean.getUsername();
                 message = claimRepository.sendEmail(claimInputBean);
+
+                if(message.isEmpty()){
+
+                    EmailRequestBean request = new EmailRequestBean();
+
+                    Claim claim = this.getClaim(claimInputBean.getId());
+
+                    request.setToken(Token);
+
+                    request.setClaimOnSupplier(claim.getTotalCost().toString());
+                    request.setModel(claim.getModel());
+                    request.setFailureArea(claim.getFailureArea());
+                    request.setRepairType(claim.getRepairType());
+                    request.setRepairDescription(claim.getRepairDescription());
+                    request.setCostDescription(claim.getCostDescription());
+
+                    EmailRequest emailRequest = new EmailRequest();
+                    message = emailRequest.sentEmail(request);
+                }else{
+                    message = MessageVarList.COMMON_ERROR_PROCESS;
+                }
 
             } else {
                 message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
@@ -895,10 +921,12 @@ public class ClaimService {
             message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
             //skip audit trace
             audittrace.setSkip(true);
+            ere.printStackTrace();
         } catch (Exception e) {
             message = MessageVarList.COMMON_ERROR_PROCESS;
             //skip audit trace
             audittrace.setSkip(true);
+            e.printStackTrace();
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
