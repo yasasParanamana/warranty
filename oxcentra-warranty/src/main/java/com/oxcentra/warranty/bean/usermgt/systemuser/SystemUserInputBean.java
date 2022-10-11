@@ -2,6 +2,7 @@ package com.oxcentra.warranty.bean.usermgt.systemuser;
 
 import com.oxcentra.warranty.bean.common.Status;
 import com.oxcentra.warranty.mapping.usermgt.UserRole;
+import com.oxcentra.warranty.mapping.warranty.Dealership;
 import com.oxcentra.warranty.util.common.DataTablesRequest;
 import lombok.*;
 
@@ -46,4 +47,5 @@ public class SystemUserInputBean extends DataTablesRequest {
     private List<Status> statusList;
     private List<Status> statusActList;
     private List<UserRole> userRoleList;
+    private List<Dealership> dealershipList;
 }

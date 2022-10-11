@@ -80,10 +80,11 @@ public class SystemUserRepository {
             }
             String sql =
                     " select wu.username as username,wu.fullname as fullname, u.description as userrole," +
-                            " wu.email as email,wu.mobile as mobile,wu.nic,wu.dealership,wu.expirydate as expirydate,wu.loggeddate as loggeddate," +
+                            " wu.email as email,wu.mobile as mobile,wu.nic,d.dealership_name as dealership ,wu.expirydate as expirydate,wu.loggeddate as loggeddate," +
                             " s.description as statusdescription,wu.createtime as createdtime,wu.createduser as createduser,wu.lastupdatedtime,wu.lastupdateduser from web_systemuser wu " +
                             " left outer join status s on s.statuscode=wu.status " +
                             " left outer join userrole u on u.userrolecode=wu.userrole " +
+                            " left outer join reg_dealership d on d.dealership_code=wu.dealership " +
                             " where " + dynamicClause.toString() + sortingStr +
                             " limit " + systemUserInputBean.displayLength + " offset " + systemUserInputBean.displayStart;
 

@@ -96,17 +96,22 @@
                             <label>NIC<span class="text-danger">*</span></label>
                             <form:input path="nic" name="nic" type="text"
                                         class="form-control form-control-sm" maxlength="10"
-                                        id="eNic" placeholder="NIC" onkeyup="$(this).val($(this).val().replace(/[^vVxX0-9 ]/g, ''));toUpperCase()"/>
+                                        id="eNic" placeholder="NIC"
+                                        onkeyup="$(this).val($(this).val().replace(/[^vVxX0-9 ]/g, ''));toUpperCase()"/>
                             <span class="form-text text-muted">Please enter NIC</span>
                         </div>
 
+
                         <div class="col-lg-4">
-                            <label>Dealership<span class="text-danger">*</span></label>
-                            <form:input path="serviceId" name="serviceId" type="text"
-                                        onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
-                                        class="form-control form-control-sm" maxlength="10"
-                                        id="eServiceId" placeholder="Dealership"/>
-                            <span class="form-text text-muted">Please enter Dealership</span>
+                            <label>User Role Code<span class="text-danger">*</span></label>
+                            <form:select path="serviceId" name="serviceId" class="form-control form-control-sm"
+                                         id="eServiceId" readonly="true">
+                                <c:forEach items="${systemuser.dealershipList}" var="dealership">
+                                    <form:option
+                                            value="${dealership.dealershipCode}">${dealership.dealershipName}</form:option>
+                                </c:forEach>
+                            </form:select>
+                            <span class="form-text text-muted">Please select Dealership</span>
                         </div>
                     </div>
 
@@ -143,6 +148,7 @@
             }
         }
     }
+
     function ValidateEmailUpdate() {
         var email = document.getElementById("eEmail").value;
         var lblError = document.getElementById("email-validation-msg-update");
@@ -152,7 +158,7 @@
             lblError.innerHTML = "Invalid email address.";
             document.getElementById("email-validation-msg-update").style.visibility = "visible";
             document.getElementById("email-default-msg-update").style.visibility = "hidden";
-        }else{
+        } else {
             lblError.innerHTML = "";
             document.getElementById("email-validation-msg-update").style.visibility = "hidden";
             document.getElementById("email-default-msg-update").style.visibility = "visible";

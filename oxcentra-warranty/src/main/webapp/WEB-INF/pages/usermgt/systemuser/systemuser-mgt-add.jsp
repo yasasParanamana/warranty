@@ -72,7 +72,7 @@
                                                 value="${userRoleList.userroleCode}">${userRoleList.description}</form:option>
                                     </c:forEach>
                                 </form:select>
-                                <span class="form-text text-muted">Please enter User Role Code</span>
+                                <span class="form-text text-muted">Please select User Role </span>
                             </div>
 
                             <div class="col-lg-4">
@@ -84,7 +84,7 @@
                                         <form:option value="${status.statusCode}">${status.description}</form:option>
                                     </c:forEach>
                                 </form:select>
-                                <span class="form-text text-muted">Please enter Status</span>
+                                <span class="form-text text-muted">Please select Status</span>
                             </div>
 
                             <div class="col-lg-4">
@@ -123,15 +123,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-lg-4">
-                                <label>Dealership<span class="text-danger">*</span></label>
-                                <form:input path="serviceId" name="serviceId" type="text"
-                                            onkeyup="$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
-                                            class="form-control form-control-sm" maxlength="10"
-                                            id="aServiceId" placeholder="Dealership"/>
-                                <span class="form-text text-muted">Please enter Dealership</span>
-                            </div>
+                        <div class="col-lg-4">
+                            <label>Status<span class="text-danger">*</span></label>
+                            <form:select path="serviceId" name="serviceId" class="form-control form-control-sm"
+                                         id="serviceId"
+                                         readonly="true">
+                                <c:forEach items="${systemuser.dealershipList}" var="dealership">
+                                    <form:option value="${dealership.dealershipCode}">${dealership.dealershipName}</form:option>
+                                </c:forEach>
+                            </form:select>
+                            <span class="form-text text-muted">Please select dealership</span>
                         </div>
 
                         <div class="form-group">

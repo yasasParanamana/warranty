@@ -8,14 +8,15 @@ import com.oxcentra.warranty.mapping.tmpauthrec.TempAuthRec;
 import com.oxcentra.warranty.mapping.usermgt.SystemUser;
 import com.oxcentra.warranty.mapping.usermgt.Task;
 import com.oxcentra.warranty.mapping.usermgt.UserRole;
+import com.oxcentra.warranty.mapping.warranty.Dealership;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.service.usermgt.systemuser.SystemUserService;
 import com.oxcentra.warranty.util.common.Common;
 import com.oxcentra.warranty.util.common.DataTablesResponse;
 import com.oxcentra.warranty.util.common.ResponseBean;
+import com.oxcentra.warranty.util.varlist.*;
 import com.oxcentra.warranty.validators.RequestBeanValidation;
 import com.oxcentra.warranty.validators.usermgt.systemuser.SystemUserValidator;
-import com.oxcentra.warranty.util.varlist.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -269,10 +270,12 @@ public class SystemUserController implements RequestBeanValidation<Object> {
         List<Status> statusList = commonRepository.getStatusList(StatusVarList.STATUS_CATEGORY_DEFAULT);
         List<Status> statusActList = common.getActiveStatusList();
         List<UserRole> userRoleList = commonRepository.getUserRoleListByUserRoleTypeCode(commonVarList.USERROLE_TYPE_WEB);
+        List<Dealership> dealershipList = commonRepository.getActiveDealershipList(commonVarList.STATUS_ACTIVE);
         //set values to task bean
         systemUserInputBean.setStatusList(statusList);
         systemUserInputBean.setStatusActList(statusActList);
         systemUserInputBean.setUserRoleList(userRoleList);
+        systemUserInputBean.setDealershipList(dealershipList);
         //add privileges to input bean
         this.applyUserPrivileges(systemUserInputBean);
         //add values to model map
