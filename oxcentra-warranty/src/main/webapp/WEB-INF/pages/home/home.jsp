@@ -181,7 +181,7 @@
                 $('span#purchaseCount').html(data.countInPurchase);
                 $('span#notedCount').html(data.countNoted);
 
-                // $('#totalCount').text(data.totalCount);
+                $('#totalCount').text(data.totalCount);
                 let totalClaimCost =  data.totalCost;
                 if(totalClaimCost != null){
                     $('#totalCost').text(data.totalCost+" $");
@@ -402,7 +402,7 @@
         $('#searchFromDate').datepicker({
             format: 'yyyy-mm-dd',
             endDate: '+0d',
-            setDate: new Date()+30,
+            setDate: new Date(),
             todayHighlight: true,
             forceParse: false,
         });
@@ -421,6 +421,8 @@
 
      function setFromDate() {
          var date = new Date();
+         date.setDate(date.getDate()-30);
+
          var month = date.getMonth() + 1;
          var day = date.getDate();
          if (day < 10) {
