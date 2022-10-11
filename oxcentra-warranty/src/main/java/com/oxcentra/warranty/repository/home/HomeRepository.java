@@ -52,10 +52,21 @@ public class HomeRepository {
         try {
             StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
             String sql
                     = "select count(*) "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString() ;
+                    + "where " + dynamicClause.toString()+dealershipString ;
 
             count = jdbcTemplate.queryForObject(sql, new Object[]{
 
@@ -83,10 +94,21 @@ public class HomeRepository {
         try {
             StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
             String sql
                     = "select sum(total_cost) "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString() ;
+                    + "where " + dynamicClause.toString()+dealershipString ;
 
             cost = jdbcTemplate.queryForObject(sql, new Object[]{
 
@@ -115,10 +137,21 @@ public class HomeRepository {
         try {
             StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
             String sql
                     = "select count(*) "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString() ;
+                    + "where " + dynamicClause.toString() + dealershipString;
 
             count = jdbcTemplate.queryForObject(sql, new Object[]{
             }, Long.class);
@@ -139,11 +172,21 @@ public class HomeRepository {
             //create groupBy
             String groupByStr = " GROUP BY wc.status ";
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
             String sql
                     = "SELECT s.DESCRIPTION as sts , count(wc.id) as stsCt "
                     + "FROM reg_warranty_claim wc "
                     + "LEFT OUTER JOIN status s ON s.STATUSCODE=wc.status "
-                    + "where " + dynamicClause.toString() + groupByStr;
+                    + "where" + dynamicClause.toString() + dealershipString + groupByStr;
 
             List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             statusBeanList = statusSummaryList.stream().map((record) -> {
@@ -233,10 +276,21 @@ public class HomeRepository {
             //create groupBy
             String groupByStr = " GROUP BY wc.failing_area ";
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
             String sql
                     = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" + groupByStr;
+                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" +dealershipString+ groupByStr;
 
             System.out.println(sql);
 
@@ -273,10 +327,21 @@ public class HomeRepository {
             //create sorting order
             String groupByStr = " GROUP BY wc.failing_area ";
 
+            String dealerhip ="";
+            String userRole = sessionBean.getUser().getUserrole();
+
+            String dealershipString = "";
+            if(!(userRole.equalsIgnoreCase("HEADOFFICE") || userRole.equalsIgnoreCase("ADMIN"))){
+                dealerhip = sessionBean.getUser().getDealership();
+                dealershipString = "and  wc.dealership = '"+dealerhip+"'";
+            }else{
+                dealershipString =" ";
+            }
+
             String sql
                     = "SELECT wc.failing_area AS fail_area, SUM(wc.total_cost) AS cost_count "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" + groupByStr;
+                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" + dealershipString +groupByStr;
 
             List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             if(statusSummaryList.size() > 0) {
