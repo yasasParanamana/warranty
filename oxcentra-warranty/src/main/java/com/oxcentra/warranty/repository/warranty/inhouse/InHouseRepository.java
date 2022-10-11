@@ -35,7 +35,7 @@ public class InHouseRepository {
     @Autowired
     CommonRepository commonRepository;
 
-    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where is_in_house='1' and status IN('WAR_NOTED','WAR_COMPLETED') and ";
+    private final String SQL_GET_LIST_DATA_COUNT = "select count(*) from reg_warranty_claim t left outer join status s on s.statuscode=t.status where is_in_house='1' and status IN('WAR_NOTED','WAR_APPROVE','WAR_COMPLETED') and ";
     private final String SQL_GET_LIST_DUAL_DATA_COUNT = "select count(*) from web_tmpauthrec d where d.page=? and d.status=? and d.lastupdateduser <> ? and ";
     private final String SQL_FIND_SUPPLIER = "select t.supplier_code,t.supplier_name,t.supplier_phone,t.supplier_email,t.supplier_address,t.status from reg_supplier t  where t.supplier_code = ? ";
     private final String SQL_FIND_CLAIM = "select " +
@@ -132,7 +132,7 @@ public class InHouseRepository {
                     "t.lastupdateduser " +
                     "from reg_warranty_claim t " +
                     "left outer join status s on s.statuscode=t.status " +
-                    " where t.is_in_house='1' and t.status IN('WAR_NOTED','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr +
+                    " where t.is_in_house='1' and t.status IN('WAR_NOTED','WAR_APPROVE','WAR_COMPLETED') and " + dynamicClause.toString() + sortingStr +
                     " limit " + inHouseInputBean.displayLength + " offset " + inHouseInputBean.displayStart;
 
 

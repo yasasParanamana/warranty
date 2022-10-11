@@ -168,6 +168,10 @@
                                     'title': 'Completed',
                                     'class': ' label-light-success'
                                 }
+                                , 'Supplier Approved': {
+                                    'title': 'Supplier Approved',
+                                    'class': ' label-light-success'
+                                }
                             };
                             if (typeof status[data] === 'undefined') {
                                 return data;

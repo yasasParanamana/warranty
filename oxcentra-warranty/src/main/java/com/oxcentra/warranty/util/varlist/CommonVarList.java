@@ -114,4 +114,7 @@ public class CommonVarList {
 
     @Value("${attachment.filetype.repair}")
     public String ATTACHMENT_FILE_TYPE_REPAIR;
+
+    @Value("${email.url.supplier}")
+    public String EMAIL_BASE_URL;
 }

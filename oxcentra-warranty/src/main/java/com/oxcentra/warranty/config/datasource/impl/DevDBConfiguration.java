@@ -15,10 +15,7 @@ public class DevDBConfiguration implements DBConfiguration {
     public DataSource setup() {
         final JndiDataSourceLookup jndiDataSourceLookup = new JndiDataSourceLookup();
         jndiDataSourceLookup.setResourceRef(true);
-        //return jndiDataSourceLookup.getDataSource("java:/PB");
-        //return jndiDataSourceLookup.getDataSource("jdbc/ORACLEPB");
         System.out.println("---------------------------------------DevDBConfiguration");
-//        return jndiDataSourceLookup.getDataSource("java:/COMBSMS");
-        return jndiDataSourceLookup.getDataSource("java:/RDBSMS");
+        return jndiDataSourceLookup.getDataSource("java:/AWS_WARRANTY");
     }
 }

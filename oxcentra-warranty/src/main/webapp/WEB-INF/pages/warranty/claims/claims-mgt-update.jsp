@@ -12,7 +12,7 @@
 <div class="modal fade" id="modalUpdateClaim" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modalUpdateTaskLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="background: linear-gradient(#ffa5a6, #888fd9);">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalUpdateTaskLabel">Request Approvals</h5>
                 <button type="button" id="addPopupClose" class="close" data-dismiss="modal" aria-label="Close">
@@ -261,7 +261,7 @@
                             <form:textarea path="costDescription" name="costDescription" type="text"
                                            class="form-control form-control-sm" id="editCostDescription" maxlength="256"
                                            placeholder="Description Of Cost"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
                                            data-toggle="tooltip" data-placement="top" data-html="true"
                                            title="<b>Input the reason for final cost<b> "
                             />

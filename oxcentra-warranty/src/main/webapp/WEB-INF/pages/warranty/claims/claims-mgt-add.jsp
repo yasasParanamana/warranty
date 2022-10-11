@@ -17,7 +17,7 @@
 <div class="modal fade " id="modalAddClaim" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modalAddClaimLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="background: linear-gradient(#ffa5a6, #888fd9);">
             <div class="modal-header">
                 <h6 class="modal-title" id="modalAddClaimLabel">Insert Claim</h6>
                 <button type="button" id="addPopupClose" class="close" data-dismiss="modal" aria-label="Close"
@@ -409,7 +409,7 @@
                             <form:textarea path="costDescription" name="costDescription" type="text"
                                            class="form-control form-control-sm" id="addcostDescription" maxlength="256"
                                            placeholder="Description Of Cost"
-                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9]/g,''))"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"
                                            data-toggle="tooltip" data-placement="top" data-html="true" title="<b>Input the reason for final cost<b> "
                             />
                         </div>

@@ -79,7 +79,7 @@ public class HomeRepository {
     @Transactional(readOnly = true)
     public String getRequestTotalCost(HomeInputBean homeInputBean) throws Exception {
 
-        String cost = "0";
+        String cost = "0.0";
         try {
             StringBuilder dynamicClause = this.setDynamicClause(homeInputBean, new StringBuilder());
 
@@ -92,7 +92,7 @@ public class HomeRepository {
 
             }, String.class);
         } catch (EmptyResultDataAccessException ere) {
-            cost = "0";
+            cost = "0.0";
         } catch (Exception ex) {
             throw ex;
         }
@@ -140,8 +140,9 @@ public class HomeRepository {
             String groupByStr = " GROUP BY wc.status ";
 
             String sql
-                    = "SELECT wc.status as sts , count(wc.id) as stsCt "
+                    = "SELECT s.DESCRIPTION as sts , count(wc.id) as stsCt "
                     + "FROM reg_warranty_claim wc "
+                    + "LEFT OUTER JOIN status s ON s.STATUSCODE=wc.status "
                     + "where " + dynamicClause.toString() + groupByStr;
 
             List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
@@ -235,7 +236,7 @@ public class HomeRepository {
             String sql
                     = "SELECT wc.failing_area AS fail_area, count(wc.id) AS failcount "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString()+ "AND wc.status != \"WAR_PEND\"" + groupByStr;
+                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" + groupByStr;
 
             System.out.println(sql);
 
@@ -275,7 +276,7 @@ public class HomeRepository {
             String sql
                     = "SELECT wc.failing_area AS fail_area, SUM(wc.total_cost) AS cost_count "
                     + "FROM reg_warranty_claim wc "
-                    + "where " + dynamicClause.toString()+ "AND wc.status != \"WAR_PEND\"" + groupByStr;
+                    + "where " + dynamicClause.toString()+ "AND wc.status NOT IN (\"WAR_REJECTED_HO\",\"WAR_PEND\")" + groupByStr;
 
             List<Map<String, Object>> statusSummaryList = jdbcTemplate.queryForList(sql);
             if(statusSummaryList.size() > 0) {

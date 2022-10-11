@@ -1,36 +1,25 @@
 package com.oxcentra.warranty.controller.home;
 
-import com.oxcentra.warranty.annotation.accesscontrol.AccessControl;
 import com.oxcentra.warranty.bean.home.HomeInputBean;
 import com.oxcentra.warranty.bean.home.SummaryBean;
-import com.oxcentra.warranty.bean.home.SummaryInputBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
-import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
-import com.oxcentra.warranty.mapping.warranty.Claim;
-import com.oxcentra.warranty.mapping.warranty.SpareParts;
-import com.oxcentra.warranty.mapping.warranty.Supplier;
-import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.service.common.CommonService;
 import com.oxcentra.warranty.service.home.HomeService;
 import com.oxcentra.warranty.util.common.Common;
-import com.oxcentra.warranty.util.common.DataTablesResponse;
-import com.oxcentra.warranty.util.varlist.PageVarList;
 import com.oxcentra.warranty.util.varlist.StatusVarList;
-import com.oxcentra.warranty.util.varlist.TaskVarList;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 @Scope("request")
@@ -111,29 +100,6 @@ public class HomeController {
     @ModelAttribute
     public void getHomeBean(org.springframework.ui.Model map) throws Exception {
         HomeInputBean homeInputBean = new HomeInputBean();
-
-        //pending request Count
-//        long pendingRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PENDING);
-//        long inPurchaseRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_PRE_APPROVED);
-//        long notedRequestCount = homeService.getRequestCount(StatusVarList.STATUS_CLAIM_NOTED);
-
-//        //Summary Status Count Chart
-//        List<SummaryBean> statusSummaryList = homeService.getStatusSummary(homeInputBean);
-//
-//        //Summary failing Area Count Chart
-//        List<SummaryBean> failingAreaSummaryList = homeService.getFailingAreaSummary();
-//
-//        //Summary failing Area Cost Chart
-//        List<SummaryBean> failingAreaCostSummaryList = homeService.getFailingAreaCostSummary();
-
-        //set values to claimInputBean bean
-//        homeInputBean.setCountPending(Long.toString(pendingRequestCount));
-//        homeInputBean.setCountInPurchase(Long.toString(inPurchaseRequestCount));
-//        homeInputBean.setCountNoted(Long.toString(notedRequestCount));
-//
-//        homeInputBean.setStatusCountList(statusSummaryList);
-//        homeInputBean.setFailingAreaCountList(failingAreaSummaryList);
-//        homeInputBean.setFailingAreaCostCountList(failingAreaCostSummaryList);
 
         //add values to model map
         map.addAttribute("homeform", homeInputBean);

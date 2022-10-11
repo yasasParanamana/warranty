@@ -5,7 +5,6 @@ import com.oxcentra.warranty.bean.common.TempAuthRecBean;
 import com.oxcentra.warranty.bean.session.SessionBean;
 import com.oxcentra.warranty.bean.warranty.claim.ClaimInputBean;
 import com.oxcentra.warranty.bean.warranty.claim.EmailRequestBean;
-import com.oxcentra.warranty.client.EmailClient;
 import com.oxcentra.warranty.mapping.audittrace.Audittrace;
 import com.oxcentra.warranty.mapping.warranty.Claim;
 import com.oxcentra.warranty.mapping.warranty.SpareParts;
@@ -52,13 +51,12 @@ public class ClaimService {
     @Autowired
     ClaimRepository claimRepository;
 
-    private EmailClient emailClient;
 
     private static RestTemplate restTemplate = new RestTemplate();
-//    private static final String baseURL = "localhost:8082/v1.0/service/supplier/email/{token}";
+
     private static final String baseURL = "http://localhost:8082/v1.0/service/supplier/email/";
 
-    private final String fields = "Task Code|Description|Status|Created Time|Last Updated Time|Last Updated User";
+    private final String fields = "Warranty ID|Description|Status|Created Time|Last Updated Time|Last Updated User";
 
     public long getDataCount(ClaimInputBean claimInputBean) throws Exception {
         long count = 0;
@@ -258,66 +256,6 @@ public class ClaimService {
         return supplier;
     }
 
-    public String updateClaim(ClaimInputBean claimInputBean, Locale locale) throws Exception {
-        String message = "";
-        String auditDescription = "";
-        Claim existingClaim = null;
-        try {
-            existingClaim = claimRepository.getClaim(claimInputBean.getId());
-            if (existingClaim != null) {
-                //check changed values
-                String oldValueAsString = this.getClaimAsString(existingClaim, true);
-                String newValueAsString = this.getClaimAsString(claimInputBean, true);
-                //check the old value and new value
-                /*if (oldValueAsString.equals(newValueAsString)) {
-                    message = MessageVarList.COMMON_ERROR_NO_VALUE_CHANGE;
-                } else
-                {*/
-                //set the other values to input bean
-                Date currentDate = commonRepository.getCurrentDate();
-                String lastUpdatedUser = sessionBean.getUsername();
-
-                    /*claimInputBean.setLastUpdatedTime(currentDate);
-                    claimInputBean.setLastUpdatedUser(lastUpdatedUser);*/
-                //check the page dual auth enable or disable
-                if (commonRepository.checkPageIsDualAuthenticate(PageVarList.TASK_MGT_PAGE)) {
-                    auditDescription = "Requested to update task (Task code: " + claimInputBean.getId() + ")";
-                    message = this.insertDualAuthRecord(claimInputBean, TaskVarList.UPDATE_TASK);
-                } else {
-                    auditDescription = "Task Mgt (Claim id: " + claimInputBean.getId() + ") updated by " + sessionBean.getUsername();
-                    message = claimRepository.updateClaim(claimInputBean);
-                }
-//                }
-            } else {
-                message = MessageVarList.TASK_MGT_NORECORD_FOUND;
-                auditDescription = messageSource.getMessage(MessageVarList.TASK_MGT_NORECORD_FOUND, null, locale);
-            }
-        } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
-            //skip audit trace
-            audittrace.setSkip(true);
-        } catch (Exception e) {
-            message = MessageVarList.COMMON_ERROR_PROCESS;
-            //skip audit trace
-            audittrace.setSkip(true);
-        } finally {
-            if (message.isEmpty()) {
-                //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
-                audittrace.setPage(PageVarList.USER_MGT_PAGE);
-                audittrace.setTask(TaskVarList.UPDATE_TASK);
-                audittrace.setDescription(auditDescription);
-                //create audit record
-                audittrace.setField(fields);
-                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
-                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
-            }
-            //set audit to session bean
-            sessionBean.setAudittrace(audittrace);
-        }
-        return message;
-    }
-
     public String deleteClaim(String id) throws Exception {
         String message = "";
         String auditDescription = "";
@@ -349,138 +287,6 @@ public class ClaimService {
             sessionBean.setAudittrace(audittrace);
         }
         return message;
-    }
-
-    public String confirmClaim(String id) throws Exception {
-        String message = "";
-        String auditDescription = "";
-        ClaimInputBean claimInputBean = null;
-        Claim existingClaim = null;
-        try {
-            //get tmp auth record
-            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(id);
-            if (tempAuthRecBean != null) {
-                claimInputBean = new ClaimInputBean();
-                claimInputBean.setId(tempAuthRecBean.getKey1());
-                claimInputBean.setDescription(tempAuthRecBean.getKey2());
-                claimInputBean.setStatus(tempAuthRecBean.getKey3());
-                /*claimInputBean.setLastUpdatedTime(commonRepository.getCurrentDate());
-                claimInputBean.setLastUpdatedUser(sessionBean.getUsername());*/
-
-                //get the existing task
-                try {
-                    String code = claimInputBean.getId();
-                    existingClaim = claimRepository.getClaim(id);
-                } catch (EmptyResultDataAccessException e) {
-                    existingClaim = null;
-                }
-
-                if (TaskVarList.ADD_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingClaim == null) {
-                       /* claimInputBean.setCreatedTime(commonRepository.getCurrentDate());
-                        claimInputBean.setCreatedUser(sessionBean.getUsername());*/
-                        message = claimRepository.insertClaim(claimInputBean);
-                    } else {
-                        message = MessageVarList.TASK_MGT_ALREADY_EXISTS;
-                    }
-                } else if (TaskVarList.UPDATE_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingClaim != null) {
-                        message = claimRepository.updateClaim(claimInputBean);
-                    } else {
-                        message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
-                    }
-                } else if (TaskVarList.DELETE_TASK.equals(tempAuthRecBean.getTask())) {
-                    if (existingClaim != null) {
-                        message = claimRepository.deleteClaim(claimInputBean.getId());
-                    } else {
-                        message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
-                    }
-                }
-
-                //if task db operation success, update temp auth record
-                if (message.isEmpty()) {
-                    message = commonRepository.updateTempAuthRecord(id, StatusVarList.STATUS_AUTH_CON);
-                    //if temp auth db operation success,insert the audit
-                    if (message.isEmpty()) {
-                        StringBuilder auditDesBuilder = new StringBuilder();
-                        auditDesBuilder.append("Approved performing  '").append(tempAuthRecBean.getTask())
-                                .append("' operation on task (ID: ").append(claimInputBean.getId())
-                                .append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" approved by ")
-                                .append(sessionBean.getUsername());
-
-                        auditDescription = auditDesBuilder.toString();
-                    } else {
-                        message = MessageVarList.COMMON_ERROR_PROCESS;
-                    }
-                } else {
-                    message = MessageVarList.COMMON_ERROR_PROCESS;
-                }
-            } else {
-                message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
-            }
-        } catch (EmptyResultDataAccessException ere) {
-            message = MessageVarList.TASK_MGT_NORECORD_FOUND;
-            //skip audit trace
-            audittrace.setSkip(true);
-        } catch (DataIntegrityViolationException | ConstraintViolationException cve) {
-            message = MessageVarList.COMMON_ERROR_ALRADY_USE;
-            //skip audit trace
-            audittrace.setSkip(true);
-        } catch (Exception e) {
-            message = MessageVarList.COMMON_ERROR_PROCESS;
-            //skip audit trace
-            audittrace.setSkip(true);
-        } finally {
-            if (message.isEmpty()) {
-                //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
-                audittrace.setPage(PageVarList.TASK_MGT_PAGE);
-                audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
-                audittrace.setDescription(auditDescription);
-                audittrace.setField(fields);
-                audittrace.setNewvalue(this.getClaimAsString(claimInputBean, false));
-                audittrace.setOldvalue(this.getClaimAsString(existingClaim, false));
-            }
-            //set audit to session bean
-            sessionBean.setAudittrace(audittrace);
-        }
-        return message;
-    }
-
-    public String rejectClaim(String code) throws Exception {
-        String message = "";
-        String auditDescription = "";
-        try {
-            //get tmp auth record
-            TempAuthRecBean tempAuthRecBean = commonRepository.getTempAuthRecord(code);
-            if (tempAuthRecBean != null) {
-                message = commonRepository.updateTempAuthRecord(code, StatusVarList.STATUS_AUTH_REJ);
-                if (message.isEmpty()) {
-                    //create audit description
-                    StringBuilder auditDesBuilder = new StringBuilder();
-                    auditDesBuilder.append("Rejected performing  '").append(tempAuthRecBean.getTask()).append("' operation on task mgt (code: ").append(tempAuthRecBean.getKey1()).append(") inputted by ").append(tempAuthRecBean.getLastUpdatedUser()).append(" rejected by ").append(sessionBean.getUsername());
-                    auditDescription = auditDesBuilder.toString();
-                } else {
-                    message = MessageVarList.COMMON_ERROR_PROCESS;
-                }
-            } else {
-                message = MessageVarList.COMMON_ERROR_RECORD_DOESNOT_EXISTS;
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            if (message.isEmpty()) {
-                //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_USER_MGT);
-                audittrace.setPage(PageVarList.TASK_MGT_PAGE);
-                audittrace.setTask(TaskVarList.DUAL_AUTH_CONFIRM_TASK);
-                audittrace.setDescription(auditDescription);
-            }
-            //set audit to session bean
-            sessionBean.setAudittrace(audittrace);
-        }
-        return message;
-
     }
 
     public String insertDualAuthRecord(ClaimInputBean claimInputBean, String id) throws Exception {
@@ -908,11 +714,19 @@ public class ClaimService {
                     request.setCostDescription(claim.getCostDescription());
 
                     EmailRequest emailRequest = new EmailRequest();
-                    message = emailRequest.sentEmail(request);
+                    try{
+                        message = emailRequest.sentEmail(request);
+                        System.out.println(message);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        //Reverse Status
+                        claimInputBean.setStatus(StatusVarList.STATUS_CLAIM_PENDING);
+                        message = claimRepository.updateClaimStatus(claimInputBean);
+                        message = MessageVarList.CLAIM_MGT_ERROR_MAIL_SEND;
+                    }
                 }else{
                     message = MessageVarList.CLAIM_MGT_ERROR_MAIL_SEND;
                 }
-
             } else {
                 message = MessageVarList.CLAIM_MGT_NO_RECORD_FOUND;
                 auditDescription = messageSource.getMessage(MessageVarList.CLAIM_MGT_NO_RECORD_FOUND, null, locale);
@@ -930,7 +744,7 @@ public class ClaimService {
         } finally {
             if (message.isEmpty()) {
                 //set the audit trace values
-                audittrace.setSection(SectionVarList.SECTION_SYS_CONFIGURATION_MGT);
+                audittrace.setSection(SectionVarList.SECTION_WARRANTY_MGT);
                 audittrace.setPage(PageVarList.CLAIMS_MGT_PAGE);
                 audittrace.setTask(TaskVarList.UPDATE_TASK);
                 audittrace.setDescription(auditDescription);

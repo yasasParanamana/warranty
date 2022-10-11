@@ -262,7 +262,7 @@ responseBean<%--
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="supplierTrackingNum">Tracking Number<span
-                                    class="text-danger">*</span></label>
+                                    class="text-danger"></span></label>
                             <form:input path="supplierTrackingNum" name="supplierTrackingNum" type="text" readonly="false"
                                         class="form-control form-control-sm" id="editSupplierTrackingNum" maxlength="50"
                                         placeholder="Tracking Number"

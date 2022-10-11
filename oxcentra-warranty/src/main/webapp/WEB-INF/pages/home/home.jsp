@@ -133,7 +133,7 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Total Cost For Approved Warranty Claims</th>
+                            <th scope="col">Total Cost For Approved Warranty Claims </th>
                             <th scope="col" id="totalCost"></th>
                         </tr>
                         </thead>
@@ -181,8 +181,13 @@
                 $('span#purchaseCount').html(data.countInPurchase);
                 $('span#notedCount').html(data.countNoted);
 
-                $('#totalCount').text(data.totalCount);
-                $('#totalCost').text(data.totalCost);
+                // $('#totalCount').text(data.totalCount);
+                let totalClaimCost =  data.totalCost;
+                if(totalClaimCost != null){
+                    $('#totalCost').text(data.totalCost+" $");
+                }else{
+                    $('#totalCost').text("0.00 $");
+                }
 
                 <!--summary chart status count-->
 
@@ -397,7 +402,7 @@
         $('#searchFromDate').datepicker({
             format: 'yyyy-mm-dd',
             endDate: '+0d',
-            setDate: new Date(),
+            setDate: new Date()+30,
             todayHighlight: true,
             forceParse: false,
         });

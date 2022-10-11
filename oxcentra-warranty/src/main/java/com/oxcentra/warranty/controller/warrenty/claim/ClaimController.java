@@ -196,31 +196,6 @@ public class ClaimController implements RequestBeanValidation<Object> {
         return supplier;
     }
 
-    @PostMapping(value = "/updateWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.UPDATE_TASK)
-    public @ResponseBody
-    ResponseBean updateClaim(@ModelAttribute("claim") ClaimInputBean claimInputBean, Locale locale) {
-        logger.info("[" + sessionBean.getSessionid() + "]  CLAIM UPDATE");
-        ResponseBean responseBean = null;
-        try {
-//          BindingResult bindingResult = validateRequestBean(claimInputBean);
-//            if (bindingResult.hasErrors()) {
-//                responseBean.setErrorMessage(messageSource.getMessage(bindingResult.getAllErrors().get(0).getCode(), new Object[]{bindingResult.getAllErrors().get(0).getDefaultMessage()}, locale));
-//            } else {
-            String message = claimService.updateClaim(claimInputBean, locale);
-            if (message.isEmpty()) {
-                responseBean = new ResponseBean(true, messageSource.getMessage(MessageVarList.TASK_MGT_SUCCESS_UPDATE, null, locale), null);
-            } else {
-                responseBean = new ResponseBean(false, null, messageSource.getMessage(message, null, locale));
-            }
-//            }
-        } catch (Exception e) {
-            logger.error("Exception  :  ", e);
-            responseBean = new ResponseBean(false, null, messageSource.getMessage(MessageVarList.COMMON_ERROR_PROCESS, null, locale));
-        }
-        return responseBean;
-    }
-
     @PostMapping(value = "/deleteWarrantyClaims", produces = {MediaType.APPLICATION_JSON_VALUE})
     @AccessControl(pageCode = PageVarList.CLAIMS_MGT_PAGE, taskCode = TaskVarList.DELETE_TASK)
     public @ResponseBody

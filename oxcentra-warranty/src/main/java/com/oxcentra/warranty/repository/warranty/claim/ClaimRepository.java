@@ -8,7 +8,6 @@ import com.oxcentra.warranty.mapping.warranty.Supplier;
 import com.oxcentra.warranty.mapping.warranty.WarrantyAttachments;
 import com.oxcentra.warranty.repository.common.CommonRepository;
 import com.oxcentra.warranty.util.varlist.MessageVarList;
-import com.oxcentra.warranty.util.varlist.StatusVarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -51,7 +50,7 @@ public class ClaimRepository {
     private final String SQL_DELETE_CLAIM_SPARE_PART = "delete from reg_spare_part where warranty_id=?";
     private final String SQL_DELETE_CLAIM_ATTACHMENT = "delete from reg_warranty_attachments where warranty_id=?";
     private final String SQL_STATUS_UPDATE_CLAIM = "update reg_warranty_claim set status=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=? ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=?, failing_area=? where id=? ";
-    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=?,supplier_url_token=? where id=?";
+    private final String SQL_EMAIL_SEND_UPDATE_CLAIM = "update reg_warranty_claim set status=?,supplier=?,is_in_house=?,lastupdateduser=?,lastupdatedtime=?,comment=?,supplier_url_token=?  ,cost_type=? ,hours=? ,labour_rate=? ,total_cost=?, cost_description=?, failing_area=?, claim_on_supplier=? where id=?";
     private final String SQL_FIND_CLAIM = "select " +
             "t.id," +
             "t.chassis," +
@@ -694,11 +693,11 @@ public class ClaimRepository {
     }
 
     @Transactional
-    public String updateClaim(ClaimInputBean claimInputBean) throws Exception {
+    public String updateClaimStatus(ClaimInputBean claimInputBean) throws Exception {
         String message = "";
         try {
             int value = 0;
-            value = jdbcTemplate.update(SQL_UPDATE_CLAIM, StatusVarList.STATUS_CLAIM_APPROVE, claimInputBean.getId());
+            value = jdbcTemplate.update(SQL_UPDATE_CLAIM,claimInputBean.getStatus(), claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;
             }
@@ -843,6 +842,13 @@ public class ClaimRepository {
                     claimInputBean.getLastUpdatedTime(),
                     claimInputBean.getComment(),
                     claimInputBean.getSupplierUrlToken(),
+                    claimInputBean.getCostType(),
+                    claimInputBean.getHours(),
+                    claimInputBean.getLabourRate(),
+                    claimInputBean.getTotalCost(),
+                    claimInputBean.getCostDescription(),
+                    claimInputBean.getFailingArea(),
+                    claimInputBean.getTotalCost(),
                     claimInputBean.getId());
             if (value != 1) {
                 message = MessageVarList.COMMON_ERROR_PROCESS;

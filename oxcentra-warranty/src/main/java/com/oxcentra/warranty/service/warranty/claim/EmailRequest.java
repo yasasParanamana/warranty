@@ -1,14 +1,21 @@
 package com.oxcentra.warranty.service.warranty.claim;
 
 import com.oxcentra.warranty.bean.warranty.claim.EmailRequestBean;
+import com.oxcentra.warranty.util.varlist.CommonVarList;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Service
 public class EmailRequest {
+
+    @Autowired
+    CommonVarList commonVarList;
 
         public String sentEmail(EmailRequestBean emailRequestBean) throws IOException, Exception {
             String response = "";
@@ -22,7 +29,16 @@ public class EmailRequest {
             String request = "";
             try {
 
+                System.out.println("Url "+commonVarList.EMAIL_BASE_URL);
+
                 urlDetail ="http://localhost:8082/v1.0/service/supplier/email/"+emailRequestBean.getToken()+"";
+
+//                urlDetail = commonVarList.EMAIL_BASE_URL +emailRequestBean.getToken()+"";
+
+                if(urlDetail.contains(" "))
+                    urlDetail = urlDetail.replace(" ", "%20");
+
+                System.out.println("url : "+ urlDetail);
 
                 url = new URL(urlDetail);
 
@@ -35,12 +51,12 @@ public class EmailRequest {
 
 
                 request = "{\n" +
-                        "  \"claimOnSupplier\": "+emailRequestBean.getClaimOnSupplier()+",\n" +
-                        "  \"model\": \""+emailRequestBean.getModel()+"\",\n" +
-                        "  \"failureArea\": \""+emailRequestBean.getFailureArea()+"\",\n" +
-                        "  \"repairType\": \""+emailRequestBean.getRepairType()+"\",\n" +
-                        "  \"repairDescription\": \""+emailRequestBean.getRepairDescription()+"\",\n" +
-                        "  \"costDescription\": \""+emailRequestBean.getCostDescription()+"\"\n" +
+                        "  \"claimOnSupplier\": "+emailRequestBean.getClaimOnSupplier().trim()+",\n" +
+                        "  \"model\": \""+emailRequestBean.getModel().trim()+"\",\n" +
+                        "  \"failureArea\": \""+emailRequestBean.getFailureArea().trim()+"\",\n" +
+                        "  \"repairType\": \""+emailRequestBean.getRepairType().trim()+"\",\n" +
+                        "  \"repairDescription\": \""+emailRequestBean.getRepairDescription().trim()+"\",\n" +
+                        "  \"costDescription\": \""+emailRequestBean.getCostDescription().trim()+"\"\n" +
                         "}";
 
                 System.out.println("request              : " + request);
@@ -48,6 +64,7 @@ public class EmailRequest {
                 bWriter = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
                 bWriter.write(request);
                 bWriter.flush();
+
 
                 // Get the response
                 bReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

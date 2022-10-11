@@ -154,6 +154,10 @@
                                     'title': 'Completed',
                                     'class': ' label-light-success'
                                 }
+                                , 'Supplier Approved': {
+                                    'title': 'Supplier Approved',
+                                    'class': ' label-light-success'
+                                }
                             };
                             if (typeof status[data] === 'undefined') {
                                 return data;
@@ -284,14 +288,19 @@
 
                     if(data.status === 'WAR_PEND'){
                         $('#firstButtons').show();
-                        $('#secondPageFirstButtons').show();
                         $('#secondButton').hide();
+                        $('#secondPageFirstButtons').show();
                         $('#secondPageSecondButton').show();
                     }else{
-                        $('#firstButtons').hide();
-                        $('#secondPageFirstButtons').hide();
-                        $('#secondButton').show();
-                        $('#secondPageSecondButton').show();
+                        if(data.inHouse === true ){
+                            $('#firstButtons').hide();
+                            $('#secondButton').hide();
+                        }else{
+                            $('#firstButtons').hide();
+                            $('#secondButton').show();
+                            $('#secondPageFirstButtons').hide();
+                            $('#secondPageSecondButton').show();
+                        }
                     }
 
                     if(data.inHouse === true ){
@@ -302,6 +311,7 @@
 
                     $("#updateSparePartList").empty();
                     $("#updatePdfFiletList").empty();
+                    $("#viewSparePartList").empty();
 
                     let sparePartLIst = data.sparePartList;
                     let table = $('<table/>').appendTo($('.sparePartList'));
