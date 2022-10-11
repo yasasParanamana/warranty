@@ -1,4 +1,4 @@
-responseBean<%--
+<%--
   Created by IntelliJ IDEA.
   User: yasas
   Date: 1/12/2021

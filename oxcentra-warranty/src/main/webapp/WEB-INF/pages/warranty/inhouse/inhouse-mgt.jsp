@@ -219,8 +219,9 @@
                         },
                         targets: 11,
                         defaultContent: "--"
-                    }
+                    },
                 ]
+
             });
         }
 
