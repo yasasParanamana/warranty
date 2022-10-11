@@ -160,6 +160,8 @@ public class ClaimController implements RequestBeanValidation<Object> {
                 System.out.println("WARRANTY ID : " + id);
                 claim = claimService.getClaim(id);
 
+                claim.setUserRole(sessionBean.getUser().getUserrole());
+
                 //get model
                 List<SpareParts> sparePartsList = claimService.getSpareParts(id);
                 claim.setSparePartList(sparePartsList);

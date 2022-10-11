@@ -19,7 +19,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content" style="background: linear-gradient(#ffa5a6, #888fd9);">
             <div class="modal-header">
-                <h6 class="modal-title" id="modalAddClaimLabel">Insert Claim</h6>
+                <h6 class="modal-title" id="modalAddClaimLabel">Requests Claim</h6>
                 <button type="button" id="addPopupClose" class="close" data-dismiss="modal" aria-label="Close"
                         onclick="resetAdd()">
                     <i aria-hidden="true" class="ki ki-close"></i>

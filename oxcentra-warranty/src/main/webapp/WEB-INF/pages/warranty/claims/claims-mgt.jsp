@@ -146,7 +146,7 @@
                                 'Noted': {
                                     'title': 'Noted',
                                     'class': ' label-light-success'
-                                },'In Purchase': {
+                                }, 'In Purchase': {
                                     'title': 'In Purchase',
                                     'class': ' label-light-info'
                                 }
@@ -286,26 +286,43 @@
                     $('#editSupAddress').html(data.supplierAddress);
                     $('#editComment').val(data.comment);
 
-                    if(data.status === 'WAR_PEND'){
-                        $('#firstButtons').show();
+                    if (data.userRole === 'DEALER') {
+
+                        $('#eIsInhouse').hide();
+                        $('#eFailingArea').hide();
+
+                        $('#editCostType').prop('disabled', 'disabled');
+                        $('#editHours').prop('disabled', 'disabled');
+                        $('#editLabourRate').prop('disabled', 'disabled');
+                        $('#editTotalCost').prop('disabled', 'disabled');
+                        $('#editCostDescription').prop('disabled', 'disabled');
+
+                        $('#firstButtons').hide();
                         $('#secondButton').hide();
-                        $('#secondPageFirstButtons').show();
-                        $('#secondPageSecondButton').show();
-                    }else{
-                        if(data.inHouse === true ){
-                            $('#firstButtons').hide();
+                        $('#secondPageFirstButtons').hide();
+                        $('#secondPageSecondButton').hide()
+                    } else {
+                        if (data.status === 'WAR_PEND') {
+                            $('#firstButtons').show();
                             $('#secondButton').hide();
-                        }else{
-                            $('#firstButtons').hide();
-                            $('#secondButton').show();
-                            $('#secondPageFirstButtons').hide();
+                            $('#secondPageFirstButtons').show();
                             $('#secondPageSecondButton').show();
+                        } else {
+                            if (data.inHouse === true) {
+                                $('#firstButtons').hide();
+                                $('#secondButton').hide();
+                            } else {
+                                $('#firstButtons').hide();
+                                $('#secondButton').show();
+                                $('#secondPageFirstButtons').hide();
+                                $('#secondPageSecondButton').show();
+                            }
                         }
                     }
 
-                    if(data.inHouse === true ){
+                    if (data.inHouse === true) {
                         $('#isInHouse').attr('checked', true);
-                    }else{
+                    } else {
                         $('#isInHouse').attr('checked', false);
                     }
 
@@ -323,7 +340,7 @@
                     $(sparePartLIst).each(function (i, sparePartLIst) {
                         x++;
                         $('<tr/>').appendTo(table)
-                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired'+x+'"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input type="text" name="quantity'+x+'" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequired' + x + '"  value="' + sparePartLIst.sparePartType + '" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input type="text" name="quantity' + x + '" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="' + sparePartLIst.qty + '" /></div></div>'));
                     });
 
                     let sparePartSupList = data.sparePartList;
@@ -336,7 +353,7 @@
                     $(sparePartSupList).each(function (i, sparePartLIst) {
                         y++;
                         $('<tr/>').appendTo(tableSup)
-                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequiredSup"  value="'+sparePartLIst.sparePartType+'" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantitySup" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="'+sparePartLIst.qty+'" /></div></div>'));
+                            .append($('<td/>').html('<div class="form-row" ><div class="form-group col-md-8"> <input readonly="true" type="text" class="form-control form-control-sm" maxlength="20" name="sparePartRequiredSup"  value="' + sparePartLIst.sparePartType + '" placeholder="Spare Part Required"/> </div> <div class="form-group col-md-2"><input readonly="true" type="text" name="quantitySup" class="form-control form-control-sm" maxlength="3" placeholder="Quantity" value="' + sparePartLIst.qty + '" /></div></div>'));
                     });
 
 
@@ -348,7 +365,7 @@
                         $('<tr/>').appendTo(tableAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
                             .append($('<td/>').text(repairFileList.fileName))
-                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + repairFileList.fileFormat +','+ repairFileList.base64value+','+repairFileList.fileName+'\')">Download</a>'));
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + repairFileList.fileFormat + ',' + repairFileList.base64value + ',' + repairFileList.fileName + '\')">Download</a>'));
                         ;
                     });
 
@@ -361,7 +378,7 @@
                         $('<tr/>').appendTo(tableClaimAttachment)
                             .append($('<td/>').html('<img width="17" height="16"  src="${pageContext.request.contextPath}/resources/images/attachment.svg" />'))
                             .append($('<td/>').text(claimTypeFileList.fileName))
-                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + claimTypeFileList.fileFormat +','+ claimTypeFileList.base64value+','+claimTypeFileList.fileName+'\')">Download</a>'));
+                            .append($('<td/>').html('<a href="#" class="downloadImage" onClick="downloadFile(\'' + claimTypeFileList.fileFormat + ',' + claimTypeFileList.base64value + ',' + claimTypeFileList.fileName + '\')">Download</a>'));
                         ;
                     });
 

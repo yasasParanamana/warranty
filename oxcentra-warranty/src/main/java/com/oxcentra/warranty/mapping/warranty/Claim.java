@@ -71,4 +71,6 @@ public class Claim {
     private List<SpareParts> sparePartList;
     private List<WarrantyAttachments> repairFileList;
     private List<WarrantyAttachments> claimTypeFileList;
+
+    private String userRole;
 }

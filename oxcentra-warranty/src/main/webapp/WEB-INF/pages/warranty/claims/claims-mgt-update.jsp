@@ -126,7 +126,7 @@
                             <label id="editPurchasingDate"></label>
                         </div>
 
-                        <div class="form-check">
+                        <div class="form-check" id="eIsInhouse">
                             <input class="form-check-input" type="checkbox" value="" id="isInHouse" checked>
                             <label class="form-check-label" for="isInHouse">
                                 Is In House
@@ -176,7 +176,7 @@
                             <label>:</label>
                             <label id="editRepairType"></label>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3" id="eFailingArea">
                             <label for="failingArea">Failing Area<span
                                     class="text-danger">*</span></label>
                             <form:select path="failingArea" name="failingArea"
