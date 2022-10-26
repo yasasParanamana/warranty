@@ -34,6 +34,7 @@ public class SystemUserInputBean extends DataTablesRequest {
     private Date lastUpdatedTime;
     private String lastUpdatedUser;
     private String createdUser;
+    private String landLine;
 
     /*-------for access control-----------*/
     private boolean vadd;

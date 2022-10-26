@@ -544,6 +544,7 @@
     function add() {
 
         resetAddClaimFormData();
+        // fileCountValidation();
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/addWarrantyClaims.json',
@@ -756,6 +757,17 @@
             console.log('Error: ', error);
         };
     };
+
+
+ /*   function fileCountValidation(){
+
+        alert("File Validation");
+            var fileUpload = $("input[type='file']");
+            if (parseInt(fileUpload.get(0).files.length)>3){
+                alert("You can only upload a maximum of 3 files");
+            }
+    };*/
+
 
 </script>
 <style>

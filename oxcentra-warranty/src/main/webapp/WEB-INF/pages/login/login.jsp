@@ -27,11 +27,7 @@
                 <div class="flex-column-fluid d-flex flex-column justify-content-center">
                     <h3 class="font-size-h1 mb-5 text-white text-combank text-center ">WARRANTY MANAGEMENT SYSTEM</h3>
                     <p class="font-size-h4 font-weight-bold text-dark-75 opacity-200 text-justify ">
-                        Having set a benchmark in banking in Sri Lanka
-                        we have set standards, created an identity and forged an unsurpassable trend. Recognised as a
-                        trend setter, we have maintained our cultural identity while providing a range of products and
-                        services. Powered by state-of-the-art technology and driven by a team of highly motivated,
-                        dynamic individuals we have become the leader in private banking in Sri Lanka.</p>
+                        Caravan Warranty Partner is a web-based claim management solution that provides caravan manufacturers with the information they need to handle warranty repairs and maintain the highest levels of service. It guarantees that you can manage your warranty claims effectively and efficiently while being aware of your company's needs.</p>
                 </div>
                 <!--end: Aside content-->
                 <!--begin: Aside footer for desktop-->

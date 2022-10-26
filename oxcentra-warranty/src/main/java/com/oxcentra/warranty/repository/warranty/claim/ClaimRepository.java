@@ -148,16 +148,18 @@ public class ClaimRepository {
                     "t.last_name, " +
                     "t.phone, " +
                     "t.email, " +
-                    "t.dealership, " +
+                    "rd.dealership_name, " +
                     "s.description as statusdes, " +
                     "t.createdtime, " +
                     "t.createduser, " +
                     "t.lastupdatedtime, " +
-                    "t.lastupdateduser  " +
+                    "t.lastupdateduser,  " +
+                    "t.chassis  " +
                     "from (SELECT * " +
                     "from reg_warranty_claim b   " +
                      dealershipString+") AS t " +
                     "left outer join status s on s.statuscode=t.status " +
+                    "left outer join reg_dealership rd on rd.dealership_code=t.dealership " +
                     "where "+dynamicClause.toString() + sortingStr +
                     " limit " + claimInputBean.displayLength + " offset " + claimInputBean.displayStart;
 
@@ -195,7 +197,7 @@ public class ClaimRepository {
                 }
 
                 try {
-                    claim.setDealership(rs.getString("dealership"));
+                    claim.setDealership(rs.getString("dealership_name"));
                 } catch (Exception e) {
                     claim.setDealership(null);
                 }
@@ -225,6 +227,11 @@ public class ClaimRepository {
                     claim.setLastUpdatedUser(rs.getString("lastupdateduser"));
                 } catch (Exception e) {
                     claim.setLastUpdatedUser(null);
+                }
+                try {
+                    claim.setChassis(rs.getString("chassis"));
+                } catch (Exception e) {
+                    claim.setChassis(null);
                 }
 
                 return claim;

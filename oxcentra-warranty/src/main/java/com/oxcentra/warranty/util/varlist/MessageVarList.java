@@ -408,6 +408,7 @@ public class MessageVarList {
     public static final String CLAIM_MGT_EMPTY_FAILING_AREA = "claim.empty.failingArea";
     public static final String CLAIM_MGT_EMPTY_COMMENT = "claim.empty.comment";
     public static final String CLAIM_MGT_EMPTY_SUPPLIER = "claim.empty.supplier";
+    public static final String CLAIM_MGT_ERROR_NO_OF_FILES = "claim.error.no.of.files";
 
     public static final String CLAIM_MGT_SUCCESS_ADD = "claim.success.add";
     public static final String CLAIM_MGT_SUCCESS_UPDATE = "claim.success.update";

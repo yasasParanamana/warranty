@@ -88,7 +88,7 @@ public class LoginService {
                     }
                     //update the user
                     loginRepository.updateUser(loginBean, audittrace, false);
-                } else if (user.getAd() == commonVarList.ENABLE_AD_AUTHENTICATION) {
+                } else if (user.getAd().equals( commonVarList.ENABLE_AD_AUTHENTICATION)) {
                     //handle the ad authentication -> TODO
 
                 } else if (user.getStatus().equals(commonVarList.STATUS_DEACTIVE)) {

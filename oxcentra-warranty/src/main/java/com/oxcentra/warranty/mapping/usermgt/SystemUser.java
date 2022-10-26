@@ -26,11 +26,12 @@ public class SystemUser {
     private Date lastUpdatedTime;
     private String lastUpdatedUser;
     private String createdUser;
+    private String landLine;
 
     public SystemUser() {
     }
 
-    public SystemUser(String userName, String fullName, String userRoleCode, String email, String mobileNumber, int noOfInvalidAttempt, Date expiryDate, Date lastLoggedDate, String status, int ad, Date createdTime, Date lastUpdatedTime, String lastUpdatedUser) {
+    public SystemUser(String userName, String fullName, String userRoleCode, String email, String mobileNumber, int noOfInvalidAttempt, Date expiryDate, Date lastLoggedDate, String status, int ad, Date createdTime, Date lastUpdatedTime, String lastUpdatedUser, String landLine) {
         this.userName = userName;
         this.fullName = fullName;
         this.userRoleCode = userRoleCode;
@@ -44,6 +45,7 @@ public class SystemUser {
         this.createdTime = createdTime;
         this.lastUpdatedTime = lastUpdatedTime;
         this.lastUpdatedUser = lastUpdatedUser;
+        this.landLine=landLine;
     }
 
     public String getUserName() {
@@ -188,5 +190,13 @@ public class SystemUser {
 
     public void setServiceid(String serviceid) {
         this.serviceid = serviceid;
+    }
+
+    public String getLandLine() {
+        return landLine;
+    }
+
+    public void setLandLine(String landLine) {
+        this.landLine = landLine;
     }
 }

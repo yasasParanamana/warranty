@@ -103,7 +103,7 @@
 
 
                         <div class="col-lg-4">
-                            <label>User Role Code<span class="text-danger">*</span></label>
+                            <label>Dealership<span class="text-danger">*</span></label>
                             <form:select path="serviceId" name="serviceId" class="form-control form-control-sm"
                                          id="eServiceId" readonly="true">
                                 <c:forEach items="${systemuser.dealershipList}" var="dealership">
@@ -112,6 +112,15 @@
                                 </c:forEach>
                             </form:select>
                             <span class="form-text text-muted">Please select Dealership</span>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label>Land Line<span class="text-danger">*</span></label>
+                            <form:input path="landLine" name="landLine" type="text"
+                                        onkeyup="$(this).val($(this).val().replace(/[^\d]/ig, ''))"
+                                        class="form-control form-control-sm" maxlength="15"
+                                        id="eLandLine" placeholder="Land Line"/>
+                            <span class="form-text text-muted">Please enter Land Line</span>
                         </div>
                     </div>
 

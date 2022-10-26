@@ -191,6 +191,12 @@ public class ClaimValidator implements Validator {
                                 errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION, MessageVarList.CLAIM_MGT_EMPTY_COST_DESCRIPTION);
                             }
                         }
+
+                     /*   int NumberOfFiles = ((ClaimInputBean) o).getFile().size();
+                        if(NumberOfFiles > 3){
+                            errors.rejectValue(fieldName, MessageVarList.CLAIM_MGT_ERROR_NO_OF_FILES, MessageVarList.CLAIM_MGT_ERROR_NO_OF_FILES);
+                        }
+*/
                     } else if (userTask.equals(TaskVarList.UPDATE_TASK)) {
                         if (fieldName.equals("failingArea")) {
                             //validate the failing Area

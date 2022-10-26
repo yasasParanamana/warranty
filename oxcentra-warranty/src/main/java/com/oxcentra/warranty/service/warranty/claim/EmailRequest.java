@@ -29,7 +29,7 @@ public class EmailRequest {
             String request = "";
             try {
 
-                System.out.println("Url "+commonVarList.EMAIL_BASE_URL);
+//                System.out.println("Url "+commonVarList.EMAIL_BASE_URL);
 
                 urlDetail ="http://localhost:8082/v1.0/service/supplier/email/"+emailRequestBean.getToken()+"";
 

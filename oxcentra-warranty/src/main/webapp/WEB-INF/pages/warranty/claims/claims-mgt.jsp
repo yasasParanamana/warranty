@@ -87,9 +87,9 @@
                         defaultContent: "--"
                     },
                     {
-                        title: "First Name",
+                        title: "Chassis",
                         targets: 1,
-                        mDataProp: "firstName",
+                        mDataProp: "chassis",
                         defaultContent: "--"
                     },
                     {
@@ -104,21 +104,21 @@
                         mDataProp: "phone",
                         defaultContent: "--"
                     },
-                    {
+                   /* {
                         title: "Email",
                         targets: 4,
                         mDataProp: "email",
                         defaultContent: "--"
-                    },
+                    },*/
                     {
                         title: "Delarship",
-                        targets: 5,
+                        targets: 4,
                         mDataProp: "dealership",
                         defaultContent: "--"
                     },
                     {
                         title: "Status",
-                        targets: 6,
+                        targets: 5,
                         mDataProp: "status",
                         defaultContent: "--",
                         render: function (data, type, full, meta) {
@@ -165,28 +165,28 @@
                             return '<span class="label label-lg font-weight-bold' + status[data].class + ' label-inline">' + status[data].title + '</span>';
                         },
                     },
-                    {
+                   /* {
                         title: "Created User",
                         targets: 7,
                         mDataProp: "createdUser",
                         defaultContent: "--"
-                    },
+                    },*/
                     {
-                        title: "Created Time",
-                        targets: 8,
+                        title: "Created Date",
+                        targets: 6,
                         mDataProp: "createdTime",
                         defaultContent: "--",
                         render: function (data) {
                             return moment(data).format("YYYY-MM-DD")
                         }
                     },
-                    {
+                   /* {
                         title: "Last Updated User",
                         targets: 9,
                         mDataProp: "lastUpdatedUser",
                         defaultContent: "--"
-                    },
-                    {
+                    },*/
+                   /* {
                         title: "Last Updated Time",
                         targets: 10,
                         mDataProp: "lastUpdatedTime",
@@ -194,7 +194,7 @@
                         render: function (data) {
                             return moment(data).format("YYYY-MM-DD")
                         }
-                    },
+                    },*/
                     {
                         visible: ${claim.vview},
                         title: "Edit",
@@ -203,7 +203,7 @@
                         mRender: function (data, type, full) {
                             return '<button id="editBtn" class="btn btn-default btn-sm"  onclick="editClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
-                        targets: 11,
+                        targets: 7,
                         defaultContent: "--"
                     },
                     {
@@ -214,7 +214,7 @@
                         mRender: function (data, type, full) {
                             return '<button id="deleteBtn" class="btn btn-default btn-sm"  onclick="deleteClaimInit(\'' + full.id + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
-                        targets: 12,
+                        targets: 8,
                         defaultContent: "--"
                     }
                 ]
@@ -560,16 +560,17 @@
                             <thead>
                             <tr>
                                 <th>Warrenty ID</th>
-                                <th>First Name</th>
+                                <th>Chassis Number</th>
+<%--                                <th>First Name</th>--%>
                                 <th>Last Name</th>
                                 <th>Phone Number</th>
-                                <th>Email</th>
+<%--                                <th>Email</th>--%>
                                 <th>Delarship</th>
                                 <th>Status</th>
-                                <th>Created User</th>
-                                <th>Created Time</th>
-                                <th>Last Updated User</th>
-                                <th>Last Updated Time</th>
+<%--                                <th>Created User</th>--%>
+                                <th>Created Date</th>
+<%--                                <th>Last Updated User</th>--%>
+<%--                                <th>Last Updated Time</th>--%>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>

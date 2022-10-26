@@ -215,6 +215,11 @@
                         render: function (data) {
                             return moment(data).format("YYYY-MM-DD")
                         }
+                    },{
+                        title: "Land Line",
+                        targets: 13,
+                        mDataProp: "landLine",
+                        defaultContent: "--"
                     },
                     {
                         visible: ${systemuser.vupdate},
@@ -224,7 +229,7 @@
                         mRender: function (data, type, full) {
                             return '<button id=' + full.userName + ' class="btn btn-default btn-sm" onclick="editSystemUser(\'' + full.userName + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-edit.svg" alt=""></button>';
                         },
-                        targets: 13,
+                        targets: 14,
                         defaultContent: "--"
                     },
                     {
@@ -235,7 +240,7 @@
                         mRender: function (data, type, full) {
                             return '<button id=' + full.userName + ' class="btn btn-default btn-sm" onclick="deleteSystemUser(\'' + full.userName + '\')"><img src="${pageContext.request.contextPath}/resources/images/action-delete.svg" alt=""></button>';
                         },
-                        targets: 14,
+                        targets: 15,
                         defaultContent: "--"
                     }
                 ]
@@ -477,6 +482,7 @@
                     $('#eMobileNumber').val(data.mobileNumber);
                     $('#eNic').val(data.nic);
                     $('#eServiceId').val(data.serviceid);
+                    $('#eLandLine').val(data.landLine);
 
                     $('#modalUpdateSystemUser').modal('toggle');
                     $('#modalUpdateSystemUser').modal('show');
@@ -792,6 +798,7 @@
                                 <th>Created Time</th>
                                 <th>Last Updated User</th>
                                 <th>Last Updated Time</th>
+                                <th>Land Line</th>
                                 <th>Update</th>
                                 <th>Delete</th>
                             </tr>

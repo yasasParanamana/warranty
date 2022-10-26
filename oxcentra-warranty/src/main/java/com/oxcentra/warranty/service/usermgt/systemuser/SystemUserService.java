@@ -557,6 +557,13 @@ public class SystemUserService {
                     systemUserStringBuilder.append("--");
                 }
 
+                systemUserStringBuilder.append("|");
+                if (systemUserInputBean.getLandLine() != null) {
+                    systemUserStringBuilder.append(systemUserInputBean.getLandLine());
+                } else {
+                    systemUserStringBuilder.append("--");
+                }
+
                 if (!checkChanges) {
                     systemUserStringBuilder.append("|");
                     if (systemUserInputBean.getCreatedTime() != null) {
@@ -578,6 +585,7 @@ public class SystemUserService {
                     } else {
                         systemUserStringBuilder.append("--");
                     }
+
                 }
             }
         } catch (Exception e) {
@@ -646,6 +654,13 @@ public class SystemUserService {
                     systemUserStringBuilder.append("--");
                 }
 
+                systemUserStringBuilder.append("|");
+                if (systemUser.getLandLine() != null) {
+                    systemUserStringBuilder.append(systemUser.getLandLine());
+                } else {
+                    systemUserStringBuilder.append("--");
+                }
+
                 if (!checkChanges) {
                     systemUserStringBuilder.append("|");
                     if (systemUser.getCreatedTime() != null) {
@@ -667,6 +682,7 @@ public class SystemUserService {
                     } else {
                         systemUserStringBuilder.append("--");
                     }
+
                 }
             }
         } catch (Exception e) {

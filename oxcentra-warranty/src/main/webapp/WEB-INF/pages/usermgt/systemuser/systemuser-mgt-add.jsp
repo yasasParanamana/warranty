@@ -118,23 +118,33 @@
                                 <label>NIC<span class="text-danger">*</span></label>
                                 <form:input path="nic" name="nic" type="text"
                                             class="form-control form-control-sm" maxlength="10"
-                                            id="aNic" placeholder="NIC" onkeyup="$(this).val($(this).val().replace(/[^vVxX0-9 ]/g, ''));toUpperCaseAdd()"/>
+                                            id="aNic" placeholder="NIC"
+                                            onkeyup="$(this).val($(this).val().replace(/[^vVxX0-9 ]/g, ''));toUpperCaseAdd()"/>
                                 <span class="form-text text-muted">Please enter NIC</span>
                             </div>
                         </div>
-
-                        <div class="col-lg-4">
-                            <label>Status<span class="text-danger">*</span></label>
-                            <form:select path="serviceId" name="serviceId" class="form-control form-control-sm"
-                                         id="serviceId"
-                                         readonly="true">
-                                <c:forEach items="${systemuser.dealershipList}" var="dealership">
-                                    <form:option value="${dealership.dealershipCode}">${dealership.dealershipName}</form:option>
-                                </c:forEach>
-                            </form:select>
-                            <span class="form-text text-muted">Please select dealership</span>
+                        <div class="form-group row">
+                            <div class="col-lg-4">
+                                <label>Dealership<span class="text-danger">*</span></label>
+                                <form:select path="serviceId" name="serviceId" class="form-control form-control-sm"
+                                             id="serviceId"
+                                             readonly="true">
+                                    <c:forEach items="${systemuser.dealershipList}" var="dealership">
+                                        <form:option
+                                                value="${dealership.dealershipCode}">${dealership.dealershipName}</form:option>
+                                    </c:forEach>
+                                </form:select>
+                                <span class="form-text text-muted">Please select dealership</span>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Land Line<span class="text-danger">*</span></label>
+                                <form:input path="landLine" name="landLine" type="text"
+                                            onkeyup="$(this).val($(this).val().replace(/[^\d]/ig, ''))"
+                                            class="form-control form-control-sm" maxlength="15"
+                                            id="aLandLine" placeholder="Land Line"/>
+                                <span class="form-text text-muted">Please enter Land Line</span>
+                            </div>
                         </div>
-
                         <div class="form-group">
                             <span class="text-danger">Required fields are marked by the '*'</span>
                         </div>
@@ -168,6 +178,7 @@
             }
         }
     }
+
     function ValidateEmail() {
         var email = document.getElementById("aEmail").value;
         var lblError = document.getElementById("email-validation-msg");
@@ -176,7 +187,7 @@
         if ((!expr.test(email)) && (email != "")) {
             lblError.innerHTML = "Invalid email address.";
             document.getElementById("email-default-msg").style.visibility = "hidden";
-        } else{
+        } else {
             lblError.innerHTML = "";
             document.getElementById("email-default-msg").style.visibility = "visible";
         }
