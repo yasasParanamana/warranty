@@ -162,19 +162,45 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="editFailureType">Type of Failure</label>
-                            <label>:</label>
-                            <label id="editFailureType"></label>
+                            <label for="failureType">Type of Failure<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="failureType" name="failureType"
+                                         class="form-control form-control-sm" id="editFailureType">
+                                <option selected value="">Select Failure Type</option>
+                                <c:forEach items="${claim.failureTypeActList}" var="failureType">
+                                    <form:option
+                                            value="${failureType.code}">${failureType.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
+
                         <div class="form-group col-md-3">
-                            <label for="editFailureArea">Area of Failure</label>
-                            <label>:</label>
-                            <label id="editFailureArea"></label>
+                            <label for="failureArea">Area of Failure<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="failureArea" name="failureArea"
+                                         class="form-control form-control-sm" id="editFailureArea">
+                                <option selected value="">Select Failure Area</option>
+                                <c:forEach items="${claim.failureAreaActList}" var="failureArea">
+                                    <form:option
+                                            value="${failureArea.code}">${failureArea.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
+
                         <div class="form-group col-md-3">
-                            <label for="editRepairType">Type of Repair</label>
-                            <label>:</label>
-                            <label id="editRepairType"></label>
+                            <label for="repairType">Type of Repair<span
+                                    class="text-danger">*</span></label>
+                            <form:select path="repairType" name="repairType"
+                                         class="form-control form-control-sm" id="editRepairType">
+                                <option selected value="">Select Type of Repair</option>
+                                <c:forEach items="${claim.repairTypeActList}" var="repairType">
+                                    <form:option
+                                            value="${repairType.code}">${repairType.description}
+                                    </form:option>
+                                </c:forEach>
+                            </form:select>
                         </div>
                         <div class="form-group col-md-3" id="eFailingArea">
                             <label for="failingArea">Failing Area<span
@@ -192,13 +218,16 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="editRepairDescription">Description of Repair</label>
-                            <label>:</label>
-                            <label id="editRepairDescription"></label>
+                        <div class="form-group col-md-9">
+                            <label for="repairDescription">Description of Repair<span
+                                    class="text-danger">*</span></label>
+
+                            <form:textarea path="repairDescription" name="repairDescription" type="text"
+                                           class="form-control form-control-sm" id="editRepairDescription" maxlength="256"
+                                           placeholder="Description Of Repair"
+                                           onkeyup="this.value=this.value.toUpperCase(),$(this).val($(this).val().replace(/[^a-zA-Z0-9 -]/g,''))"/>
                         </div>
                     </div>
-
                     <h5>Attachments</h5>
                     <div class="card">
                         <div class="card-body">

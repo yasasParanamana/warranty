@@ -255,10 +255,10 @@
                     $('#editPurchasingDate').text(moment(data.purchasingDate).format("YYYY-MM-DD"));
 
                     $('#editDescription').html(data.description);
-                    $('#editFailureType').html(data.failureType);
-                    $('#editFailureArea').html(data.failureArea);
-                    $('#editRepairType').html(data.repairType);
-                    $('#editRepairDescription').html(data.repairDescription);
+                    $('#editFailureType').val(data.failureType);
+                    $('#editFailureArea').val(data.failureArea);
+                    $('#editRepairType').val(data.repairType);
+                    $('#editRepairDescription').val(data.repairDescription);
 
                     $('#editCostType').val(data.costType);
                     $('#editHours').val(data.hours);
@@ -329,6 +329,9 @@
                     $("#updateSparePartList").empty();
                     $("#updatePdfFiletList").empty();
                     $("#viewSparePartList").empty();
+                    $("#updateClaimFiletList").empty();
+                    $("#updateRepairFiletList").empty();
+
 
                     let sparePartLIst = data.sparePartList;
                     let table = $('<table/>').appendTo($('.sparePartList'));
