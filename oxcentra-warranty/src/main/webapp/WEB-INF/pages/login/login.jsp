@@ -25,7 +25,8 @@
                 <!--end: Aside header-->
                 <!--begin: Aside content-->
                 <div class="flex-column-fluid d-flex flex-column justify-content-center">
-                    <h3 class="font-size-h1 mb-5 text-white text-combank text-center ">WARRANTY MANAGEMENT SYSTEM</h3>
+                    <h3 class="font-size-h1 mb-5 text-white text-combank text-center ">Caravan Warranty Partner</h3>
+                    <h3 class="font-size-h5 mb-5 text-white text-combank text-center ">- Friendly Safe Reliable -</h3>
                     <p class="font-size-h4 font-weight-bold text-dark-75 opacity-200 text-justify ">
                         Caravan Warranty Partner is a web-based claim management solution that provides caravan manufacturers with the information they need to handle warranty repairs and maintain the highest levels of service. It guarantees that you can manage your warranty claims effectively and efficiently while being aware of your company's needs.</p>
                 </div>
@@ -44,6 +45,15 @@
             <!--end: Aside Container-->
         </div>
         <!--begin::Aside-->
+
+        <div class="login-aside d-flex flex-row-auto bgi-size-cover bgi-no-repeat p-10 p-lg-10" style="background: linear-gradient(#e66465, #9198e5);">
+            <!--begin: Aside content-->
+            <div class="flex-column-fluid d-flex flex-column justify-content-center">
+                <img style="width: 450px" alt="Logo" src="${pageContext.request.contextPath}/resources/assets/media/logos/login.png"/>
+            </div>
+            <!--end: Aside content-->
+        </div>
+
         <!--begin::Content-->
         <div class="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden" style="background: linear-gradient(#e66465, #9198e5);">
             <!--begin::Content header-->
